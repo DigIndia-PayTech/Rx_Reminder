@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:Medicine_Remainder/Core/Models/ScheduleMessageFunction.dart';
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
@@ -16,8 +17,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sms_scheduler/sms_scheduler.dart';
 import 'package:stacked/stacked.dart';
-
 
 class AddManuallyViewModel extends BaseViewModel {
   var text;
@@ -25,7 +26,6 @@ class AddManuallyViewModel extends BaseViewModel {
   bool siPassword = false;
   Server server = new Server();
   List<Pill> pillList = [];
-  final NotificationManager notificationManager = NotificationManager();
   List<FamilyMember> membersList = [];
 
   //List<Pill> familyMembersList = [];
@@ -34,6 +34,7 @@ class AddManuallyViewModel extends BaseViewModel {
   List<Pill> expiringList = [];
   List<Pill> expiredPillList = [];
   String pillStatus;
+
   Time translateTime(String data) {
     int hh, mm;
     String meridian;
@@ -43,8 +44,8 @@ class AddManuallyViewModel extends BaseViewModel {
     hh = meridian == 'AM'
         ? hh
         : hh < 12
-        ? (hh + 12)
-        : hh;
+            ? (hh + 12)
+            : hh;
     mm = int.parse(data.substring(3, 5));
     Time time = Time(hh, mm, 0);
     print(time.hour);
@@ -166,8 +167,6 @@ class AddManuallyViewModel extends BaseViewModel {
     return date[2] + '-' + date[0] + '-' + date[1];
   }
 
-
-
   reverseGetDate(String data) {
     if (data != null) {
       List<String> date = data.split('-');
@@ -233,11 +232,10 @@ class AddManuallyViewModel extends BaseViewModel {
             context,
             MaterialPageRoute(
                 builder: (context) => SignIn(
-                  pill: pill,
-                )));
+                      pill: pill,
+                    )));
         // userId = data[0]['user_id'].toString();
         // sp.setInt('UserID', int.parse(userId));
-
 
         // SharedPreferences sp = await SharedPreferences.getInstance();
         // print('herrruuuuu');
@@ -249,7 +247,6 @@ class AddManuallyViewModel extends BaseViewModel {
       SharedPreferences sp = await SharedPreferences.getInstance();
       print('herrruuuuu');
       sp.setString('user_id', userId.toString());
-
     } else {
       print('failed...${response.statusCode}');
     }
@@ -375,15 +372,20 @@ class AddManuallyViewModel extends BaseViewModel {
     // manager.showNotificationDaily(medicineId, _name, _dose, hour, minute);
     // var body = json.encode(data);
     print('data..rxpost...$userId $map');
-
     var time1 = Time(16, 57, 0);
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print('success...rxpost posted....$userId');
       print(response.body);
-      notificationManager.initNotifications();
-      notificationManager.showNotificationDaily(01, 'Time to take your ${pill.rxTitle}',
-          'Take ${pill.whenInDay[0].count} pills', translateTime(pill.whenInDay[0].time));
+      scheduleNotifications(pill, '01');
+      scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
+      // pill.familyMembers.forEach((familyMember) {
+      //   pill.whenInDay.forEach((whenInDay) {
+      //
+      //   });
+      // });
+      // scheduleMessage();
+
       // var time1= translateTime(pill.whenInDay[0].time);
       //     if(time1==  Time(10, 18, 0)){
       //     manager.showNotificationDaily(01, pill.rxTitle, pill.whenInDay[0].count,
@@ -394,6 +396,16 @@ class AddManuallyViewModel extends BaseViewModel {
       print('failed...${response.statusCode}');
     }
     setBusy(false);
+  }
+
+  scheduleNotifications(Pill pill, rxID) {
+    final NotificationManager notificationManager = NotificationManager();
+    notificationManager.initNotifications();
+    notificationManager.showNotificationDaily(
+        int.parse(rxID),
+        'Time to take your ${pill.rxTitle}',
+        'Take ${pill.whenInDay[0].count} pills',
+        translateTime(pill.whenInDay[0].time));
   }
 
   //-------Add Family members post function-----
@@ -417,6 +429,8 @@ class AddManuallyViewModel extends BaseViewModel {
       print('success fam members... posted');
       print(response.body);
       var parsed = json.decode('${response.body}');
+      // scheduleMessage(famPhone.text);
+
       var memberId = parsed[0]['member_id'];
       print('member id $memberId');
       sp.setInt('MemberID', int.parse(memberId));
@@ -1093,9 +1107,7 @@ showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
     animType: AnimType.BOTTOMSLIDE,
     tittle: 'Success',
     desc: 'Login Successfull..',
-    btnOkOnPress: () {
-
-    },
+    btnOkOnPress: () {},
     btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,
   )..show();

@@ -1,4 +1,3 @@
-import 'package:Medicine_Remainder/addFamily%20Page.dart';
 import 'package:Medicine_Remainder/profilePage.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
@@ -612,10 +611,10 @@ class _ReminderState extends State<Reminder> {
     Widget cancelButton = FlatButton(
       child: Text("Yes", style: TextStyle(fontSize: 22, color: Colors.green),),
       onPressed: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => FamilyMembers()));
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => FamilyMembers()));
       },
     );
     Widget continueButton = FlatButton(

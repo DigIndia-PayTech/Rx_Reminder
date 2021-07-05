@@ -28,7 +28,7 @@ dependencies:
   flutter_spinkit: ^5.0.0
   timezone: #^0.7.0
   rxdart: ^0.27.1
-#  sms_scheduler:
+  sms_scheduler:
 #  flutter_sms:
 #  sms_scheduler: ^0.0.1
 #  telephony:

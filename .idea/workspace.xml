@@ -22,7 +22,31 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b7a2944-0f0f-4f12-9436-28d7afa47a00" name="Default Changelist" comment="Plugin file added" />
+    <list default="true" id="6b7a2944-0f0f-4f12-9436-28d7afa47a00" name="Default Changelist" comment="Test Commit">
+      <change afterPath="$PROJECT_DIR$/lib/Core/Models/ScheduleMessageFunction.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Rx_Reminder.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Rx_Reminder.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/MainPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/MainPage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/setReminder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/setReminder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,6 +63,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="flutter.settings" />
     <property name="show.migrate.to.gradle.popup" value="false" />
@@ -65,7 +90,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625486452976</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Test Commit">
+      <created>1625487326606</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1625487326606</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -78,27 +110,59 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Plugin file added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Plugin file added" />
+    <MESSAGE value="Test Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test Commit" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="303" y="190" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1625488476008">
+      <screen x="0" y="23" width="1280" height="716" />
+    </state>
+    <state x="303" y="190" key="#com.intellij.fileTypes.FileTypeChooser/0.23.1280.716@0.23.1280.716" timestamp="1625488476008" />
     <state x="100" y="100" width="1080" height="600" key="AVDManager" timestamp="1625486667112">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="100" y="100" width="1080" height="600" key="AVDManager/0.0.1280.800@0.0.1280.800" timestamp="1625486667112" />
+    <state width="1238" height="17" key="GridCell.Tab.0.bottom" timestamp="1625493067250">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="17" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1625493067250" />
+    <state width="1238" height="9" key="GridCell.Tab.0.bottom/0.23.1280.716@0.23.1280.716" timestamp="1625492530635" />
+    <state width="1238" height="17" key="GridCell.Tab.0.center" timestamp="1625493067249">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="17" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1625493067249" />
+    <state width="1238" height="9" key="GridCell.Tab.0.center/0.23.1280.716@0.23.1280.716" timestamp="1625492530634" />
+    <state width="1238" height="17" key="GridCell.Tab.0.left" timestamp="1625493067248">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="17" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1625493067248" />
+    <state width="1238" height="9" key="GridCell.Tab.0.left/0.23.1280.716@0.23.1280.716" timestamp="1625492530634" />
+    <state width="1238" height="17" key="GridCell.Tab.0.right" timestamp="1625493067249">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="17" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1625493067249" />
+    <state width="1238" height="9" key="GridCell.Tab.0.right/0.23.1280.716@0.23.1280.716" timestamp="1625492530635" />
     <state x="141" y="23" width="997" height="716" key="SettingsEditor" timestamp="1625486346058">
       <screen x="0" y="23" width="1280" height="716" />
     </state>
     <state x="141" y="23" width="997" height="716" key="SettingsEditor/0.23.1280.716@0.23.1280.716" timestamp="1625486346058" />
-    <state x="240" y="140" key="Vcs.Push.Dialog.v2" timestamp="1625486708017">
-      <screen x="0" y="0" width="1280" height="800" />
+    <state x="240" y="148" key="Vcs.Push.Dialog.v2" timestamp="1625487335563">
+      <screen x="0" y="23" width="1280" height="716" />
     </state>
     <state x="240" y="140" key="Vcs.Push.Dialog.v2/0.0.1280.800@0.0.1280.800" timestamp="1625486708017" />
-    <state x="305" y="124" width="670" height="676" key="search.everywhere.popup" timestamp="1625486437373">
-      <screen x="0" y="0" width="1280" height="800" />
+    <state x="240" y="148" key="Vcs.Push.Dialog.v2/0.23.1280.716@0.23.1280.716" timestamp="1625487335563" />
+    <state x="338" y="23" width="604" height="716" key="find.popup" timestamp="1625488433628">
+      <screen x="0" y="23" width="1280" height="716" />
+    </state>
+    <state x="338" y="23" width="604" height="716" key="find.popup/0.23.1280.716@0.23.1280.716" timestamp="1625488433628" />
+    <state x="305" y="134" width="670" height="606" key="search.everywhere.popup" timestamp="1625490350898">
+      <screen x="0" y="23" width="1280" height="716" />
     </state>
     <state x="305" y="124" width="670" height="676" key="search.everywhere.popup/0.0.1280.800@0.0.1280.800" timestamp="1625486437373" />
+    <state x="305" y="134" width="670" height="606" key="search.everywhere.popup/0.23.1280.716@0.23.1280.716" timestamp="1625490350898" />
   </component>
 </project>

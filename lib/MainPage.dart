@@ -26,6 +26,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('Date data:${DateTime.now()}');
     return Scaffold(
       bottomNavigationBar: FFNavigationBar(
         theme: FFNavigationBarTheme(
