@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
+import 'package:Medicine_Remainder/Core/Models/rxHistoryModel.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
 import 'package:Medicine_Remainder/log_Pages/Signup.dart';
@@ -26,6 +27,7 @@ class AddManuallyViewModel extends BaseViewModel {
   Server server = new Server();
   List<Pill> pillList = [];
   List<FamilyMember> membersList = [];
+  List<RxHistory> historyList = [];
 
   //List<Pill> familyMembersList = [];
   List<Pill> selectedPillList = [];
@@ -605,6 +607,61 @@ class AddManuallyViewModel extends BaseViewModel {
     updatePillListPageType(pageType);
     setBusy(false);
     //return data;
+  }
+  rxHistory() async{
+     setBusy(true);
+     sp = await SharedPreferences.getInstance();
+     userId = sp.getInt('UserID').toString();
+     Uri url = Uri.parse(
+         "${server.serverurl}members_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+     var response = await http.get(url);
+     data = jsonDecode(response.body)[0]["Data"];
+
+     print("Data famlist:....$data");
+     // return data;
+     data = jsonDecode(response.body)[0]['Data'];
+     membersList.clear();
+     for (int i = 0; i < data.length; i++) {
+       membersList.add(FamilyMember());
+       membersList.last.memberid = data[i]['member_id'];
+       membersList.last.membername = data[i]['member_name'];
+       membersList.last.memberPhone = data[i]['mobile_no'];
+       membersList.last.memberGender = data[i]['gender'];
+       membersList.last.memberMsg = data[i]['message'];
+     }
+     setBusy(false);
+   }
+
+  updateHistory() async{
+    sp = await SharedPreferences.getInstance();
+    memberId = sp.getInt('MemberID').toString();
+    var url = '${server.serverurl}edit_member';
+    var data = {
+      "secretpass": "ADMIN",
+      "secretkey": "ADMIN",
+      "member_id": memberId,
+      "member_name": famname.text,
+      "mobile_no": famPhn.text.toString(),
+      "message": famMsg.text.toString(),
+      "gender": gen.toString(),
+    };
+    // var body = json.encode(data);
+    print('data family..$data');
+    var response = await http.post(Uri.parse(url), body: data);
+    if (response.statusCode == 200) {
+      print('success fam members... edited');
+      print(response.body);
+
+      // var parsed = json.decode('${response.body}');
+      // var memberId = parsed['member_id'];
+      // print('member id $memberId');
+      // Navigator.pop(context);
+      notifyListeners();
+      familyList();
+    } else {
+      print('failed edit fam members...${response.statusCode}');
+    }
+
   }
 
   updatePillListPageType(String pageType) {

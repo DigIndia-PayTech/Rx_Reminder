@@ -2,6 +2,7 @@ import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/OnBoardingScreens/onboarding.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
 import 'package:Medicine_Remainder/landingPage/notService.dart';
+import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -45,10 +46,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:
+        home: HomePage()
         // StartPage()
         // LocalNotificationScreen(),
-        getPage(onBoarding, userID),
+        // getPage(onBoarding, userID),
         );
   }
 }

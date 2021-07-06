@@ -1,5 +1,7 @@
 import 'dart:collection';
+import 'package:Medicine_Remainder/FamilyMembers/calender.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
+import 'package:calendar_timeline/calendar_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_week/flutter_calendar_week.dart';
@@ -101,9 +103,9 @@ class _HomePageState extends State<HomePage> {
                             color: Color(0xff343434))),
                     Container(
                         height: 16,
-                        width: 30,
+                        // width: 30,
                         margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
-                        child: Text(count,
+                        child: Text('$count pills',
                             style: TextStyle(
                               fontFamily: 'Oxygen',
                               color: Color(0xff343434),
@@ -117,8 +119,8 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(
                               fontFamily: 'Oxygen',
                               color: reminderStatus=='Skipped'?
-                              Color(0xffff0000): Colors.green,
-                              fontSize: 12,
+                              Color(0xffff0000): Color(0xff037382),
+                              fontSize: 14,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
                             ))),
@@ -133,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                               )
                             : Icon(
                                 Icons.alarm_on_rounded,
-                                color: Colors.green,
+                                color: Color(0xff037382),
                               ))
                   ],
                 ),
@@ -145,6 +147,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               // Rectangle 88
               Container(
+                padding: EdgeInsets.all(3),
                 margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
                 width: 40,
                 height: 40,
@@ -152,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xffe7e7e7)),
                 child: Image.asset(
-                  'assets/images/matre.png',
+                  'assets/images/pillList.png',
                   height: 0.5,
                   color: Colors.grey,
                 ),
@@ -189,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           height: 16,
                           width: 30,
-                          padding: EdgeInsets.all(2),
+                          // padding: EdgeInsets.all(2),
                           decoration: new BoxDecoration(
                               color: Color(0xffe7e7e7),
                               borderRadius: BorderRadius.circular(5)),
@@ -201,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                                   fontFamily: "Oxygen",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 12.0),
-                              textAlign: TextAlign.left),
+                              textAlign: TextAlign.center),
                         ),
                       ],
                     ),
@@ -521,7 +524,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Color blue = Color(0xFF2c98f0);
+    Color blue = Color(0xff2c98f0);
     // Color blue = Color(0xFF2c98f0);
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
         viewModelBuilder: () => AddManuallyViewModel(),
@@ -565,16 +568,17 @@ class _HomePageState extends State<HomePage> {
           Container(
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withOpacity(0.1),
                     blurRadius: 10,
-                    spreadRadius: 1)
+                    spreadRadius: 0.5)
               ]),
               child: CalendarWeek(
                 todayDateStyle: TextStyle(
                   color: Colors.white,
                 ),
                 controller: _controller,
-                height: 150,
+                height: 120,
+
                 dayOfWeekStyle: TextStyle(
                   color: Colors.white,
                 ),
@@ -607,21 +611,21 @@ class _HomePageState extends State<HomePage> {
                 },
                 decorations: [
                   DecorationItem(
-                      decorationAlignment: FractionalOffset.bottomRight,
+                      decorationAlignment: FractionalOffset.center,
                       date: DateTime.now(),
                       decoration: Icon(
                         Icons.today,
-                        color: Colors.blue,
+                        color: Colors.white,
                       )),
-                  DecorationItem(
-                      date: DateTime.now().add(Duration(days: 3)),
-                      decoration: Text(
-                        'Holiday',
-                        style: TextStyle(
-                          color: Colors.brown,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      )),
+                  // DecorationItem(
+                  //     date: DateTime.now().add(Duration(days: 3)),
+                  //     decoration: Text(
+                  //       'Holiday',
+                  //       style: TextStyle(
+                  //         color: Colors.brown,
+                  //         fontWeight: FontWeight.w600,
+                  //       ),
+                  //     )),
                 ],
               )),
           // Container(
@@ -713,6 +717,8 @@ class _HomePageState extends State<HomePage> {
           // ),
           Expanded(
             child: Container(
+              // margin: EdgeInsets.only(top: 120),
+              // padding: EdgeInsets.only(top: 58),
               decoration: BoxDecoration(
                 color: Color(0xfffafafa),
                 borderRadius: BorderRadius.only(
@@ -723,74 +729,100 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Expanded(
+                  //   child: SingleChildScrollView(
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Container(
+                  //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                  //             child: Text("Morning",
+                  //                 style: TextStyle(
+                  //                   fontFamily: 'Oxygen',
+                  //                   color: Color(0xff9c9b9f),
+                  //                   fontSize: 16,
+                  //                   fontWeight: FontWeight.w700,
+                  //                   fontStyle: FontStyle.normal,
+                  //                 ))),
+                  //         // ListView.builder(
+                  //         //   itemCount: 3,
+                  //         //   itemBuilder: (context, index) {
+                  //         //     return pillCards();
+                  //         //   },
+                  //         // ),
+                  //           //---skipcards----
+                  //         // Expanded(
+                  //         //   child: viewModel.isBusy
+                  //         //       ? Center(
+                  //         //     child: CircularProgressIndicator(),
+                  //         //   )
+                  //         //       : ListView.builder(
+                  //         //     itemCount:3,
+                  //         //     viewModel.selectedPillList.length,
+                  //         //     itemBuilder: (context, index) {
+                  //         //       return skipped(
+                  //         //           title: viewModel
+                  //         //               .selectedPillList[index]
+                  //         //               .rxTitle,
+                  //         //           pillType: viewModel
+                  //         //               .selectedPillList[index]
+                  //         //               .type,
+                  //         //           count: viewModel
+                  //         //               .selectedPillList[index].whenInDay[0].count,
+                  //         //
+                  //         //           timeData: viewModel
+                  //         //               .selectedPillList[index].
+                  //         //           whenInDay[0].time,
+                  //         //           reminderStatus: viewModel
+                  //         //               .selectedPillList[index]
+                  //         //               .reminderStatus);
+                  //         //     },
+                  //         //   ),
+                  //         // ),
+                  //         completed(),
+                  //         completed(),
+                  //         Container(
+                  //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                  //             child: Text("Upcoming",
+                  //                 style: TextStyle(
+                  //                   fontFamily: 'Oxygen',
+                  //                   color: Color(0xff9c9b9f),
+                  //                   fontSize: 16,
+                  //                   fontWeight: FontWeight.w700,
+                  //                   fontStyle: FontStyle.normal,
+                  //                 ))),
+                  //         upcmg(),
+                  //         upcmg(),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                              child: Text("Morning",
-                                  style: TextStyle(
-                                    fontFamily: 'Oxygen',
-                                    color: Color(0xff9c9b9f),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ))),
-                          // ListView.builder(
-                          //   itemCount: 3,
-                          //   itemBuilder: (context, index) {
-                          //     return pillCards();
-                          //   },
-                          // ),
-                            //---skipcards----
-                          // Expanded(
-                          //   child: viewModel.isBusy
-                          //       ? Center(
-                          //     child: CircularProgressIndicator(),
-                          //   )
-                          //       : ListView.builder(
-                          //     itemCount:3,
-                          //     viewModel.selectedPillList.length,
-                          //     itemBuilder: (context, index) {
-                          //       return skipped(
-                          //           title: viewModel
-                          //               .selectedPillList[index]
-                          //               .rxTitle,
-                          //           pillType: viewModel
-                          //               .selectedPillList[index]
-                          //               .type,
-                          //           count: viewModel
-                          //               .selectedPillList[index].whenInDay[0].count,
-                          //
-                          //           timeData: viewModel
-                          //               .selectedPillList[index].
-                          //           whenInDay[0].time,
-                          //           reminderStatus: viewModel
-                          //               .selectedPillList[index]
-                          //               .reminderStatus);
-                          //     },
-                          //   ),
-                          // ),
-                          completed(),
-                          completed(),
-                          Container(
-                              margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                              child: Text("Upcoming",
-                                  style: TextStyle(
-                                    fontFamily: 'Oxygen',
-                                    color: Color(0xff9c9b9f),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ))),
-                          upcmg(),
-                          upcmg(),
-                        ],
-                      ),
+                    child: viewModel.isBusy
+                        ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                        : ListView.builder(
+                      itemCount: 5,
+                      // viewModel.selectedPillList.length,
+                      itemBuilder: (context, index) {
+                        return skipped(
+
+                            title: 'Dolo 650',
+                            // viewModel.selectedPillList[index].rxTitle,rxTitle,
+                            count: '3',
+                            // endDate: viewModel
+                            //     .selectedPillList[index]
+                            //     .endDate,
+                            timeData:'10: 30',
+                            // viewModel.selectedPillList[index].timeData,
+                            reminderStatus: 'skipped',
+                            pillType: 'pill',
+
+                        );
+                      },
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
