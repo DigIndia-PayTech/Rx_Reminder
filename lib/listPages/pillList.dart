@@ -1,13 +1,11 @@
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
-import 'package:Medicine_Remainder/main.dart';
-import 'package:ff_navigation_bar/ff_navigation_bar.dart';
+import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stacked/stacked.dart';
-// import 'package:telephony/telephony.dart';
+import 'package:telephony/telephony.dart';
 
 class MyPills extends StatefulWidget {
   @override
@@ -18,11 +16,6 @@ class _MyPillsState extends State<MyPills> {
   String pageStatus = 'Ongoing';
   var selectedIndex;
 
-  @override
-  void init() {
-
-
-  }
   Widget pillCards(
       {String title, String endDate, String timeData, String rxStatus}) {
     return Container(
@@ -192,6 +185,7 @@ class _MyPillsState extends State<MyPills> {
         viewModelBuilder: () => AddManuallyViewModel(),
         disposeViewModel: false,
         onModelReady: (viewModel) {
+
           viewModel.sharedPreferences();
           //viewModel.getUser();
         },

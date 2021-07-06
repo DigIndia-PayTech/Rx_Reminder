@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-import 'package:Medicine_Remainder/Core/Models/ScheduleMessageFunction.dart';
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
@@ -12,13 +10,14 @@ import 'package:Medicine_Remainder/log_Pages/Signup.dart';
 import 'package:Medicine_Remainder/log_Pages/signIn.dart';
 import 'package:Medicine_Remainder/server.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cron/cron.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sms_scheduler/sms_scheduler.dart';
 import 'package:stacked/stacked.dart';
+import 'package:telephony/telephony.dart';
 
 class AddManuallyViewModel extends BaseViewModel {
   var text;
@@ -377,20 +376,21 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       print('success...rxpost posted....$userId');
       print(response.body);
-      scheduleNotifications(pill, '01');
-      scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
+      pill.whenInDay.forEach((time) {
+        scheduleNotifications(pill, '01', translateTime(time.time));
+      });
+      // scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
       // pill.familyMembers.forEach((familyMember) {
-      //   pill.whenInDay.forEach((whenInDay) {
-      //
-      //   });
+      //   pill.whenInDay.forEach((whenInDay) {});
       // });
       // scheduleMessage();
-
-      // var time1= translateTime(pill.whenInDay[0].time);
-      //     if(time1==  Time(10, 18, 0)){
-      //     manager.showNotificationDaily(01, pill.rxTitle, pill.whenInDay[0].count,
-      //         translateTime(pill.whenInDay[0].time));
-      //     telephony.sendSms(to: '8618178237', message: 'Take your colpol 22 pill');
+      //
+      // var time1 = translateTime(pill.whenInDay[0].time);
+      // if (time1 == Time(10, 18, 0)) {
+      //   manager.showNotificationDaily(01, pill.rxTitle, pill.whenInDay[0].count,
+      //       translateTime(pill.whenInDay[0].time));
+      //   telephony.sendSms(
+      //       to: '8618178237', message: 'Take your colpol 22 pill');
       // }
     } else {
       print('failed...${response.statusCode}');
@@ -398,7 +398,27 @@ class AddManuallyViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  scheduleNotifications(Pill pill, rxID) {
+  scheduleNotifications(Pill pill, rxID, Time time) {
+    var cron = Cron();
+    print(time);
+    cron.schedule(Schedule.parse('*/5 */${time.minute} */${time.hour} * * *'),
+        () async {
+      print('Cron running');
+      var telephony = Telephony.instance;
+      pill.familyMembers.forEach((member) {
+        print('SMS sent to ${member.mobile}');
+        telephony.sendSms(to: member.mobile, message: 'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+      });
+      final NotificationManager notificationManager = NotificationManager();
+      notificationManager.initNotifications();
+      notificationManager.showNotification(
+        int.parse(rxID),
+        'Time to take your ${pill.rxTitle}',
+        'Take ${pill.whenInDay[0].count} pills',
+      );
+      cron.close();
+    });
+    //
     final NotificationManager notificationManager = NotificationManager();
     notificationManager.initNotifications();
     notificationManager.showNotificationDaily(
@@ -433,7 +453,7 @@ class AddManuallyViewModel extends BaseViewModel {
 
       var memberId = parsed[0]['member_id'];
       print('member id $memberId');
-      sp.setInt('MemberID', int.parse(memberId));
+      sp.setInt('MemberID', memberId);
     } else {
       print('failed fam members...${response.statusCode}');
     }

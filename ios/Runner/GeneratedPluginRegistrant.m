@@ -40,6 +40,12 @@
 @import shared_preferences;
 #endif
 
+#if __has_include(<telephony/TelephonyPlugin.h>)
+#import <telephony/TelephonyPlugin.h>
+#else
+@import telephony;
+#endif
+
 #if __has_include(<tesseract_ocr/TesseractOcrPlugin.h>)
 #import <tesseract_ocr/TesseractOcrPlugin.h>
 #else
@@ -55,6 +61,7 @@
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
   [FLTPathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPathProviderPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
+  [TelephonyPlugin registerWithRegistrar:[registry registrarForPlugin:@"TelephonyPlugin"]];
   [TesseractOcrPlugin registerWithRegistrar:[registry registrarForPlugin:@"TesseractOcrPlugin"]];
 }
 
