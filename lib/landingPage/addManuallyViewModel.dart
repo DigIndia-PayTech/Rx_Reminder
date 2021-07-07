@@ -418,16 +418,41 @@ class AddManuallyViewModel extends BaseViewModel {
         'Time to take your ${pill.rxTitle}',
         'Take ${pill.whenInDay[0].count} pills',
       );
+      var url = '${server.serverurl}add_rx_history';
+      var data = {
+        "secretpass": "ADMIN",
+        "secretkey": "ADMIN",
+        "rx_id": rxID,
+        "track_date": pill.startDate,
+        "track_time": pill.whenInDay[0].time,
+        "status": 'Completed',
+        // "gender": famGender.toString(),
+      };
+      // var body = json.encode(data);
+      print('data family..$data');
+      var response = await http.post(Uri.parse(url), body: data);
+      if (response.statusCode == 200) {
+        print('success noti data ... posted');
+        print(response.body);
+        var parsed = json.decode('${response.body}');
+        // scheduleMessage(famPhone.text);
+
+        var trackId = parsed[0]['track_id'];
+        print('member id $memberId');
+        // sp.setInt('MemberID', trackId);
+      } else {
+        print('failed noti post..${response.statusCode}');
+      }
       cron.close();
     });
     //
-    final NotificationManager notificationManager = NotificationManager();
-    notificationManager.initNotifications();
-    notificationManager.showNotificationDaily(
-        int.parse(rxID),
-        'Time to take your ${pill.rxTitle}',
-        'Take ${pill.whenInDay[0].count} pills',
-        translateTime(pill.whenInDay[0].time));
+    // final NotificationManager notificationManager = NotificationManager();
+    // notificationManager.initNotifications();
+    // notificationManager.showNotificationDaily(
+    //     int.parse(rxID),
+    //     'Time to take your ${pill.rxTitle}',
+    //     'Take ${pill.whenInDay[0].count} pills',
+    //     translateTime(pill.whenInDay[0].time));
   }
 
   //-------Add Family members post function-----
@@ -456,6 +481,7 @@ class AddManuallyViewModel extends BaseViewModel {
       var memberId = parsed[0]['member_id'];
       print('member id $memberId');
       sp.setInt('MemberID', memberId);
+      // familyList();
     } else {
       print('failed fam members...${response.statusCode}');
     }
@@ -556,6 +582,7 @@ class AddManuallyViewModel extends BaseViewModel {
     var response = await http.get(url);
     data = jsonDecode(response.body)[0]['Data'];
     print('rxxxxx$userId');
+    pillList.clear();
     for (int i = 0; i < data.length; i++) {
       pillList.add(Pill());
       pillList.last.rxId = data[i]['rx_id'];
@@ -613,21 +640,29 @@ class AddManuallyViewModel extends BaseViewModel {
      sp = await SharedPreferences.getInstance();
      userId = sp.getInt('UserID').toString();
      Uri url = Uri.parse(
-         "${server.serverurl}members_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+         "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
      var response = await http.get(url);
      data = jsonDecode(response.body)[0]["Data"];
 
-     print("Data famlist:....$data");
+     print("Data rxhistory:....$data");
      // return data;
      data = jsonDecode(response.body)[0]['Data'];
-     membersList.clear();
+     // historyList.clear();
      for (int i = 0; i < data.length; i++) {
-       membersList.add(FamilyMember());
-       membersList.last.memberid = data[i]['member_id'];
-       membersList.last.membername = data[i]['member_name'];
-       membersList.last.memberPhone = data[i]['mobile_no'];
-       membersList.last.memberGender = data[i]['gender'];
-       membersList.last.memberMsg = data[i]['message'];
+       historyList.add(RxHistory());
+       historyList.last.track_time = data[i]['track_time'];
+       historyList.last.rx_name = data[i]['rx_name'];
+       print(historyList.last.rx_name );
+       historyList.last.type = data[i]['type'];
+       historyList.last.status = data[i]['status'];
+       historyList.last.rx_name = data[i]['rx_name'];
+       for (int j = 0; j < data[i]['when_in_day'].length; j++) {
+         historyList.last.hiswhenInDay.add(HisWhenInDay());
+         historyList.last.hiswhenInDay.last.count =
+         data[i]['when_in_day'][j]['count'];
+         // pillList.last.familyMembers.last.mobile =
+         // data[i]['family_members'][j]['mobile'];
+       }
      }
      setBusy(false);
    }

@@ -185,7 +185,6 @@ class _MyPillsState extends State<MyPills> {
         viewModelBuilder: () => AddManuallyViewModel(),
         disposeViewModel: false,
         onModelReady: (viewModel) {
-
           viewModel.sharedPreferences();
           //viewModel.getUser();
         },

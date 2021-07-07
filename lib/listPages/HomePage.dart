@@ -79,8 +79,10 @@ class _HomePageState extends State<HomePage> {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10),
                     ),
-                    color: reminderStatus=='Skipped'?
-                    Color(0xffffeaf0):Color(0xfff1f6fe)),
+                    color: reminderStatus == 'Missed' ||
+                            reminderStatus == 'Skipped'
+                        ? Color(0xffffeaf0)
+                        : Color(0xfff1f6fe)),
                 child: Row(
                   children: [
                     Container(
@@ -118,8 +120,10 @@ class _HomePageState extends State<HomePage> {
                         child: new Text(reminderStatus,
                             style: TextStyle(
                               fontFamily: 'Oxygen',
-                              color: reminderStatus=='Skipped'?
-                              Color(0xffff0000): Color(0xff037382),
+                              color: reminderStatus == 'Missed' ||
+                                      reminderStatus == 'Skipped'
+                                  ? Color(0xffff0000)
+                                  : Color(0xff037382),
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.normal,
@@ -128,7 +132,8 @@ class _HomePageState extends State<HomePage> {
                         width: 16,
                         height: 16,
                         decoration: new BoxDecoration(),
-                        child: reminderStatus == 'Skipped'
+                        child: reminderStatus == 'Missed' ||
+                                reminderStatus == 'Skipped'
                             ? Icon(
                                 Icons.cancel,
                                 color: Colors.red,
@@ -190,13 +195,14 @@ class _HomePageState extends State<HomePage> {
                               textAlign: TextAlign.left),
                         ),
                         Container(
-                          height: 16,
-                          width: 30,
+                          padding: EdgeInsets.all(3),
+                          height: 17,
+                          // width: 30,
                           // padding: EdgeInsets.all(2),
                           decoration: new BoxDecoration(
                               color: Color(0xffe7e7e7),
                               borderRadius: BorderRadius.circular(5)),
-                          margin: EdgeInsets.fromLTRB(2, 10, 0, 0),
+                          margin: EdgeInsets.fromLTRB(2, 10, 3, 0),
                           child: Text(pillType,
                               style: const TextStyle(
                                   color: const Color(0xff9c9b9f),
@@ -207,6 +213,38 @@ class _HomePageState extends State<HomePage> {
                               textAlign: TextAlign.center),
                         ),
                       ],
+                    ),
+                    // SizedBox(width: 700,),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 5),
+                        height: 17,
+                        padding: EdgeInsets.all(2),
+                        decoration: new BoxDecoration(
+                            color:  reminderStatus == 'Missed' ||
+                                reminderStatus == 'Skipped'
+                                ? Color(0xffffeaf0):Color(0xfff1f6fe),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: reminderStatus == 'Missed' ||
+                                reminderStatus == 'Skipped'
+                            ? Text('Mark as Skipped',
+                                style: const TextStyle(
+                                    color: const Color(0xff9c9b9f),
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Oxygen",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 12.0),
+                                textAlign: TextAlign.center)
+                            : Text('Mark as Consumed',
+                                style: const TextStyle(
+                                    color: const Color(0xff9c9b9f),
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Oxygen",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 12.0),
+                                textAlign: TextAlign.center),
+                      ),
                     ),
                   ],
                 ),
@@ -530,306 +568,310 @@ class _HomePageState extends State<HomePage> {
         viewModelBuilder: () => AddManuallyViewModel(),
         disposeViewModel: false,
         onModelReady: (viewModel) {
+          viewModel.rxHistory();
           viewModel.sharedPreferences();
           //viewModel.getUser();
         },
         builder: (context, viewModel, child) {
-    return Scaffold(
-      backgroundColor: blue,
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: blue,
-      //   leading:  IconButton(
-      //       onPressed: () {
-      //         Navigator.push(context,
-      //             MaterialPageRoute(builder: (context) => OnBoarding()));
-      //       },
-      //       icon: Icon(
-      //         Icons.keyboard_arrow_left_sharp,
-      //         size: 40,
-      //       )),
-      //   title: // Title
-      //       Text("November",
-      //           style: const TextStyle(
-      //               color: const Color(0xffffffff),
-      //               fontWeight: FontWeight.w700,
-      //               fontFamily: "Oxygen",
-      //               fontStyle: FontStyle.normal,
-      //               fontSize: 20.0),
-      //           textAlign: TextAlign.center),
-      // ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 40,
-          ),
-          Container(
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 10,
-                    spreadRadius: 0.5)
-              ]),
-              child: CalendarWeek(
-                todayDateStyle: TextStyle(
-                  color: Colors.white,
+          return Scaffold(
+            backgroundColor: blue,
+            // appBar: AppBar(
+            //   elevation: 0,
+            //   backgroundColor: blue,
+            //   leading:  IconButton(
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => OnBoarding()));
+            //       },
+            //       icon: Icon(
+            //         Icons.keyboard_arrow_left_sharp,
+            //         size: 40,
+            //       )),
+            //   title: // Title
+            //       Text("November",
+            //           style: const TextStyle(
+            //               color: const Color(0xffffffff),
+            //               fontWeight: FontWeight.w700,
+            //               fontFamily: "Oxygen",
+            //               fontStyle: FontStyle.normal,
+            //               fontSize: 20.0),
+            //           textAlign: TextAlign.center),
+            // ),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 40,
                 ),
-                controller: _controller,
-                height: 120,
-
-                dayOfWeekStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                backgroundColor: Colors.blue,
-                dateBackgroundColor: Colors.white,
-                dateStyle: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
-                showMonth: true,
-                monthStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                minDate: DateTime.now().add(
-                  Duration(days: -365),
-                ),
-                maxDate: DateTime.now().add(
-                  Duration(days: 365),
-                ),
-                onDatePressed: (DateTime datetime) {
-                  // Do something
-                  setState(() {});
-                },
-                onDateLongPressed: (DateTime datetime) {
-                  // Do something
-                },
-                onWeekChanged: () {
-                  // Do something
-                },
-                decorations: [
-                  DecorationItem(
-                      decorationAlignment: FractionalOffset.center,
-                      date: DateTime.now(),
-                      decoration: Icon(
-                        Icons.today,
+                Container(
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          spreadRadius: 0.5)
+                    ]),
+                    child: CalendarWeek(
+                      todayDateStyle: TextStyle(
                         color: Colors.white,
-                      )),
-                  // DecorationItem(
-                  //     date: DateTime.now().add(Duration(days: 3)),
-                  //     decoration: Text(
-                  //       'Holiday',
-                  //       style: TextStyle(
-                  //         color: Colors.brown,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //     )),
-                ],
-              )),
-          // Container(
-          //   child: Center(
-          //     child: Text(
-          //       '${_controller.selectedDate.day}/${_controller.selectedDate.month}/${_controller.selectedDate.year}',
-          //       style: TextStyle(fontSize: 30),
-          //     ),
-          //   ),
-          // ),
-
-          // TableCalendar(
-          //
-          //   firstDay: kFirstDay,
-          //   lastDay: kLastDay,
-          //   focusedDay: _focusedDay,
-          //   calendarFormat: _calendarFormat,
-          //   selectedDayPredicate: (day) {
-          //     // Use `selectedDayPredicate` to determine which day is currently selected.
-          //     // If this returns true, then `day` will be marked as selected.
-          //
-          //     // Using `isSameDay` is recommended to disregard
-          //     // the time-part of compared DateTime objects.
-          //     return isSameDay(_selectedDay, day);
-          //   },
-          //   onDaySelected: (selectedDay, focusedDay) {
-          //     if (!isSameDay(_selectedDay, selectedDay)) {
-          //       // Call `setState()` when updating the selected day
-          //       setState(() {
-          //         _selectedDay = selectedDay;
-          //         _focusedDay = focusedDay;
-          //       });
-          //     }
-          //   },
-          //   // onFormatChanged: (format) {
-          //   //   if (_calendarFormat != format) {
-          //   //     // Call `setState()` when updating calendar format
-          //   //     setState(() {
-          //   //       _calendarFormat = format;
-          //   //     });
-          //   //   }
-          //   // },
-          //   onPageChanged: (focusedDay) {
-          //     // No need to call `setState()` here
-          //     _focusedDay = focusedDay;
-          //   },
-          // ),
-          // CalendarTimeline(
-          //   initialDate: DateTime(2020, 4, 20),
-          //   firstDate: DateTime(2019, 1, 15),
-          //   lastDate: DateTime(2020, 11, 20),
-          //   onDateSelected: (date) => print(date),
-          //   leftMargin: 20,
-          //   monthColor: Colors.blueGrey,
-          //   dayColor: Colors.teal[200],
-          //   activeDayColor: Colors.white,
-          //   activeBackgroundDayColor: Colors.redAccent[100],
-          //   dotsColor: Color(0xFF333A47),
-          //   selectableDayPredicate: (date) => date.day != 23,
-          //   locale: 'en_ISO',
-          // ),
-          // SizedBox(height: 50,),
-          // CalendarTimeline(
-          //   showYears: true,
-          //   initialDate: _selectedDate,
-          //   firstDate: DateTime.now(),
-          //   lastDate: DateTime.now().add(Duration(days: 365)),
-          //   onDateSelected: (date) {
-          //     setState(() {
-          //       _selectedDate = date;
-          //
-          //     });
-          //   },
-          //   leftMargin: 20,
-          //   monthColor: Colors.white70,
-          //   dayColor: Colors.white,
-          //   dayNameColor: Color(0xFF333A47),
-          //   activeDayColor: Colors.blue,
-          //   activeBackgroundDayColor: Colors.white,
-          //   dotsColor: Color(0xFF333A47),
-          //   // selectableDayPredicate: (date) => date.day != 23,
-          //   locale: 'en',
-          // ),
-
-          // Container(
-          //   margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
-          //   // padding: EdgeInsets.symmetric(horizontal: 5.0),
-          //   child: Calendar(chooseDay,_daysList),
-          // ),
-          Expanded(
-            child: Container(
-              // margin: EdgeInsets.only(top: 120),
-              // padding: EdgeInsets.only(top: 58),
-              decoration: BoxDecoration(
-                color: Color(0xfffafafa),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Expanded(
-                  //   child: SingleChildScrollView(
-                  //     child: Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Container(
-                  //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                  //             child: Text("Morning",
-                  //                 style: TextStyle(
-                  //                   fontFamily: 'Oxygen',
-                  //                   color: Color(0xff9c9b9f),
-                  //                   fontSize: 16,
-                  //                   fontWeight: FontWeight.w700,
-                  //                   fontStyle: FontStyle.normal,
-                  //                 ))),
-                  //         // ListView.builder(
-                  //         //   itemCount: 3,
-                  //         //   itemBuilder: (context, index) {
-                  //         //     return pillCards();
-                  //         //   },
-                  //         // ),
-                  //           //---skipcards----
-                  //         // Expanded(
-                  //         //   child: viewModel.isBusy
-                  //         //       ? Center(
-                  //         //     child: CircularProgressIndicator(),
-                  //         //   )
-                  //         //       : ListView.builder(
-                  //         //     itemCount:3,
-                  //         //     viewModel.selectedPillList.length,
-                  //         //     itemBuilder: (context, index) {
-                  //         //       return skipped(
-                  //         //           title: viewModel
-                  //         //               .selectedPillList[index]
-                  //         //               .rxTitle,
-                  //         //           pillType: viewModel
-                  //         //               .selectedPillList[index]
-                  //         //               .type,
-                  //         //           count: viewModel
-                  //         //               .selectedPillList[index].whenInDay[0].count,
-                  //         //
-                  //         //           timeData: viewModel
-                  //         //               .selectedPillList[index].
-                  //         //           whenInDay[0].time,
-                  //         //           reminderStatus: viewModel
-                  //         //               .selectedPillList[index]
-                  //         //               .reminderStatus);
-                  //         //     },
-                  //         //   ),
-                  //         // ),
-                  //         completed(),
-                  //         completed(),
-                  //         Container(
-                  //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                  //             child: Text("Upcoming",
-                  //                 style: TextStyle(
-                  //                   fontFamily: 'Oxygen',
-                  //                   color: Color(0xff9c9b9f),
-                  //                   fontSize: 16,
-                  //                   fontWeight: FontWeight.w700,
-                  //                   fontStyle: FontStyle.normal,
-                  //                 ))),
-                  //         upcmg(),
-                  //         upcmg(),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  Expanded(
-                    child: viewModel.isBusy
-                        ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                        : ListView.builder(
-                      itemCount: 5,
-                      // viewModel.selectedPillList.length,
-                      itemBuilder: (context, index) {
-                        return skipped(
-
-                            title: 'Dolo 650',
-                            // viewModel.selectedPillList[index].rxTitle,rxTitle,
-                            count: '3',
-                            // endDate: viewModel
-                            //     .selectedPillList[index]
-                            //     .endDate,
-                            timeData:'10: 30',
-                            // viewModel.selectedPillList[index].timeData,
-                            reminderStatus: 'skipped',
-                            pillType: 'pill',
-
-                        );
+                      ),
+                      controller: _controller,
+                      height: 120,
+                      dayOfWeekStyle: TextStyle(
+                        color: Colors.white,
+                      ),
+                      backgroundColor: Colors.blue,
+                      dateBackgroundColor: Colors.white,
+                      dateStyle: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      showMonth: true,
+                      monthStyle: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold),
+                      minDate: DateTime.now().add(
+                        Duration(days: -365),
+                      ),
+                      maxDate: DateTime.now().add(
+                        Duration(days: 365),
+                      ),
+                      onDatePressed: (DateTime datetime) {
+                        // Do something
+                        setState(() {});
                       },
+                      onDateLongPressed: (DateTime datetime) {
+                        // Do something
+                      },
+                      onWeekChanged: () {
+                        // Do something
+                      },
+
+                      decorations: [
+                        DecorationItem(
+
+                            decorationAlignment: FractionalOffset.bottomCenter,
+                            date: DateTime.now(),
+                            decoration: Icon(
+                              Icons.today,
+                              color: Colors.white,
+                            )),
+                        // DecorationItem(
+                        //     date: DateTime.now().add(Duration(days: 3)),
+                        //     decoration: Text(
+                        //       'Holiday',
+                        //       style: TextStyle(
+                        //         color: Colors.brown,
+                        //         fontWeight: FontWeight.w600,
+                        //       ),
+                        //     )),
+                      ],
+                    )),
+                // Container(
+                //   child: Center(
+                //     child: Text(
+                //       '${_controller.selectedDate.day}/${_controller.selectedDate.month}/${_controller.selectedDate.year}',
+                //       style: TextStyle(fontSize: 30),
+                //     ),
+                //   ),
+                // ),
+
+                // TableCalendar(
+                //
+                //   firstDay: kFirstDay,
+                //   lastDay: kLastDay,
+                //   focusedDay: _focusedDay,
+                //   calendarFormat: _calendarFormat,
+                //   selectedDayPredicate: (day) {
+                //     // Use `selectedDayPredicate` to determine which day is currently selected.
+                //     // If this returns true, then `day` will be marked as selected.
+                //
+                //     // Using `isSameDay` is recommended to disregard
+                //     // the time-part of compared DateTime objects.
+                //     return isSameDay(_selectedDay, day);
+                //   },
+                //   onDaySelected: (selectedDay, focusedDay) {
+                //     if (!isSameDay(_selectedDay, selectedDay)) {
+                //       // Call `setState()` when updating the selected day
+                //       setState(() {
+                //         _selectedDay = selectedDay;
+                //         _focusedDay = focusedDay;
+                //       });
+                //     }
+                //   },
+                //   // onFormatChanged: (format) {
+                //   //   if (_calendarFormat != format) {
+                //   //     // Call `setState()` when updating calendar format
+                //   //     setState(() {
+                //   //       _calendarFormat = format;
+                //   //     });
+                //   //   }
+                //   // },
+                //   onPageChanged: (focusedDay) {
+                //     // No need to call `setState()` here
+                //     _focusedDay = focusedDay;
+                //   },
+                // ),
+                // CalendarTimeline(
+                //   initialDate: DateTime(2020, 4, 20),
+                //   firstDate: DateTime(2019, 1, 15),
+                //   lastDate: DateTime(2020, 11, 20),
+                //   onDateSelected: (date) => print(date),
+                //   leftMargin: 20,
+                //   monthColor: Colors.blueGrey,
+                //   dayColor: Colors.teal[200],
+                //   activeDayColor: Colors.white,
+                //   activeBackgroundDayColor: Colors.redAccent[100],
+                //   dotsColor: Color(0xFF333A47),
+                //   selectableDayPredicate: (date) => date.day != 23,
+                //   locale: 'en_ISO',
+                // ),
+                // SizedBox(height: 50,),
+                // CalendarTimeline(
+                //   showYears: true,
+                //   initialDate: _selectedDate,
+                //   firstDate: DateTime.now(),
+                //   lastDate: DateTime.now().add(Duration(days: 365)),
+                //   onDateSelected: (date) {
+                //     setState(() {
+                //       _selectedDate = date;
+                //
+                //     });
+                //   },
+                //   leftMargin: 20,
+                //   monthColor: Colors.white70,
+                //   dayColor: Colors.white,
+                //   dayNameColor: Color(0xFF333A47),
+                //   activeDayColor: Colors.blue,
+                //   activeBackgroundDayColor: Colors.white,
+                //   dotsColor: Color(0xFF333A47),
+                //   // selectableDayPredicate: (date) => date.day != 23,
+                //   locale: 'en',
+                // ),
+
+                // Container(
+                //   margin: EdgeInsets.fromLTRB(20, 40, 20, 0),
+                //   // padding: EdgeInsets.symmetric(horizontal: 5.0),
+                //   child: Calendar(chooseDay,_daysList),
+                // ),
+                Expanded(
+                  child: Container(
+                    // margin: EdgeInsets.only(top: 120),
+                    // padding: EdgeInsets.only(top: 58),
+                    decoration: BoxDecoration(
+                      color: Color(0xfffafafa),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
                     ),
-                  )
-                ],
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Expanded(
+                        //   child: SingleChildScrollView(
+                        //     child: Column(
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //         Container(
+                        //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                        //             child: Text("Morning",
+                        //                 style: TextStyle(
+                        //                   fontFamily: 'Oxygen',
+                        //                   color: Color(0xff9c9b9f),
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.w700,
+                        //                   fontStyle: FontStyle.normal,
+                        //                 ))),
+                        //         // ListView.builder(
+                        //         //   itemCount: 3,
+                        //         //   itemBuilder: (context, index) {
+                        //         //     return pillCards();
+                        //         //   },
+                        //         // ),
+                        //           //---skipcards----
+                        //         // Expanded(
+                        //         //   child: viewModel.isBusy
+                        //         //       ? Center(
+                        //         //     child: CircularProgressIndicator(),
+                        //         //   )
+                        //         //       : ListView.builder(
+                        //         //     itemCount:3,
+                        //         //     viewModel.selectedPillList.length,
+                        //         //     itemBuilder: (context, index) {
+                        //         //       return skipped(
+                        //         //           title: viewModel
+                        //         //               .selectedPillList[index]
+                        //         //               .rxTitle,
+                        //         //           pillType: viewModel
+                        //         //               .selectedPillList[index]
+                        //         //               .type,
+                        //         //           count: viewModel
+                        //         //               .selectedPillList[index].whenInDay[0].count,
+                        //         //
+                        //         //           timeData: viewModel
+                        //         //               .selectedPillList[index].
+                        //         //           whenInDay[0].time,
+                        //         //           reminderStatus: viewModel
+                        //         //               .selectedPillList[index]
+                        //         //               .reminderStatus);
+                        //         //     },
+                        //         //   ),
+                        //         // ),
+                        //         completed(),
+                        //         completed(),
+                        //         Container(
+                        //             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                        //             child: Text("Upcoming",
+                        //                 style: TextStyle(
+                        //                   fontFamily: 'Oxygen',
+                        //                   color: Color(0xff9c9b9f),
+                        //                   fontSize: 16,
+                        //                   fontWeight: FontWeight.w700,
+                        //                   fontStyle: FontStyle.normal,
+                        //                 ))),
+                        //         upcmg(),
+                        //         upcmg(),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        Expanded(
+                          child: viewModel.isBusy
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ListView.builder(
+                                  itemCount: viewModel.historyList.length,
+                                  itemBuilder: (context, index) {
+                                    return skipped(
+                                      title:
+                                          viewModel.historyList[index].rx_name,
+                                      count: viewModel.historyList[index]
+                                          .hiswhenInDay[0].count,
+                                      // endDate: viewModel
+                                      //     .selectedPillList[index]
+                                      //     .endDate,
+                                      timeData: viewModel
+                                          .historyList[index].track_time,
+                                      reminderStatus:
+                                          viewModel.historyList[index].status,
+                                      pillType:
+                                          viewModel.historyList[index].type ??
+                                              '',
+                                    );
+                                  },
+                                ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
-    );});
+          );
+        });
   }
 // void chooseDay(CalendarDayModel clickedDay){
 //   setState(() {

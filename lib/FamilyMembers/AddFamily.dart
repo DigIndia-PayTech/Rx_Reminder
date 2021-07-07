@@ -608,18 +608,18 @@ class _AddFamilyState extends State<AddFamily> {
                           fontStyle: FontStyle.normal,
                           letterSpacing: -0.408,
                         ))),
-                Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.fromLTRB(80, 20, 0, 0),
-                    child: new Text("Edit",
-                        style: TextStyle(
-                          fontFamily: 'Oxygen',
-                          color: Color(0xff4b5567),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          letterSpacing: -0.408,
-                        )))
+                // Container(
+                //     alignment: Alignment.topRight,
+                //     margin: EdgeInsets.fromLTRB(80, 20, 0, 0),
+                //     child: new Text("Edit",
+                //         style: TextStyle(
+                //           fontFamily: 'Oxygen',
+                //           color: Color(0xff4b5567),
+                //           fontSize: 14,
+                //           fontWeight: FontWeight.w700,
+                //           fontStyle: FontStyle.normal,
+                //           letterSpacing: -0.408,
+                //         )))
               ],
             ),
             Container(
@@ -655,8 +655,11 @@ class _AddFamilyState extends State<AddFamily> {
             Padding(
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: InkWell(
-                onTap: () {
+                onTap: () async{
                   viewModel.familyPost();
+
+                await viewModel.familyList();
+
                   showAlertDialog(context, viewModel);
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => MyPills()));

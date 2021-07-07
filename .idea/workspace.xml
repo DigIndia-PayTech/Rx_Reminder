@@ -23,10 +23,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b7a2944-0f0f-4f12-9436-28d7afa47a00" name="Default Changelist" comment="Test Commit">
-      <change afterPath="$PROJECT_DIR$/lib/Core/Models/rxHistoryModel.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/FamilyMembers/selectFamily.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/jarAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/jarAnalysis.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/javaCompile.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/javaCompile/taskHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/Core/Models/rxHistoryModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/Core/Models/rxHistoryModel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/FamilyMembers/AddFamily.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/FamilyMembers/AddFamily.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/landingPage/RemainderPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/RemainderPage.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/listPages/HomePage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/listPages/HomePage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/listPages/pillList.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/listPages/pillList.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -124,42 +139,58 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="100" y="100" width="1080" height="600" key="AVDManager/0.0.1280.800@0.0.1280.800" timestamp="1625486667112" />
-    <state width="489" height="466" key="DebuggerActiveHint" timestamp="1625556852712">
+    <state x="433" y="153" key="AndroidProcessChooserDialog" timestamp="1625643029261">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="489" height="466" key="DebuggerActiveHint/0.0.1280.800@0.0.1280.800" timestamp="1625556852712" />
-    <state width="1238" height="67" key="GridCell.Tab.0.bottom" timestamp="1625575613289">
+    <state x="433" y="153" key="AndroidProcessChooserDialog/0.0.1280.800@0.0.1280.800" timestamp="1625643029261" />
+    <state width="583" height="466" key="DebuggerActiveHint" timestamp="1625640119699">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="67" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1625575613289" />
-    <state width="1194" height="247" key="GridCell.Tab.0.bottom/0.23.1280.709@0.23.1280.709" timestamp="1625548441331" />
+    <state width="583" height="466" key="DebuggerActiveHint/0.0.1280.800@0.0.1280.800" timestamp="1625640119699" />
+    <state x="128" y="69" key="DiffContextDialog" timestamp="1625640508637">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="128" y="69" key="DiffContextDialog/0.0.1280.800@0.0.1280.800" timestamp="1625640508637" />
+    <state width="1238" height="65" key="GridCell.Tab.0.bottom" timestamp="1625647949461">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state width="1238" height="65" key="GridCell.Tab.0.bottom/0.0.1280.800@0.0.1280.800" timestamp="1625647949461" />
+    <state width="1159" height="90" key="GridCell.Tab.0.bottom/0.23.1280.709@0.23.1280.709" timestamp="1625639147190" />
+    <state width="1238" height="156" key="GridCell.Tab.0.bottom/0.23.1280.715@0.23.1280.715" timestamp="1625577103891" />
     <state width="1238" height="9" key="GridCell.Tab.0.bottom/0.23.1280.716@0.23.1280.716" timestamp="1625492530635" />
-    <state width="1238" height="67" key="GridCell.Tab.0.center" timestamp="1625575613287">
+    <state width="1238" height="65" key="GridCell.Tab.0.center" timestamp="1625647949460">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="67" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1625575613287" />
-    <state width="1194" height="247" key="GridCell.Tab.0.center/0.23.1280.709@0.23.1280.709" timestamp="1625548441330" />
+    <state width="1238" height="65" key="GridCell.Tab.0.center/0.0.1280.800@0.0.1280.800" timestamp="1625647949460" />
+    <state width="1159" height="90" key="GridCell.Tab.0.center/0.23.1280.709@0.23.1280.709" timestamp="1625639147189" />
+    <state width="1238" height="156" key="GridCell.Tab.0.center/0.23.1280.715@0.23.1280.715" timestamp="1625577103890" />
     <state width="1238" height="9" key="GridCell.Tab.0.center/0.23.1280.716@0.23.1280.716" timestamp="1625492530634" />
-    <state width="1238" height="67" key="GridCell.Tab.0.left" timestamp="1625575613286">
+    <state width="1238" height="65" key="GridCell.Tab.0.left" timestamp="1625647949459">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="67" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1625575613286" />
-    <state width="1194" height="247" key="GridCell.Tab.0.left/0.23.1280.709@0.23.1280.709" timestamp="1625548441329" />
+    <state width="1238" height="65" key="GridCell.Tab.0.left/0.0.1280.800@0.0.1280.800" timestamp="1625647949459" />
+    <state width="1159" height="90" key="GridCell.Tab.0.left/0.23.1280.709@0.23.1280.709" timestamp="1625639147189" />
+    <state width="1238" height="156" key="GridCell.Tab.0.left/0.23.1280.715@0.23.1280.715" timestamp="1625577103890" />
     <state width="1238" height="9" key="GridCell.Tab.0.left/0.23.1280.716@0.23.1280.716" timestamp="1625492530634" />
-    <state width="1238" height="67" key="GridCell.Tab.0.right" timestamp="1625575613288">
+    <state width="1238" height="65" key="GridCell.Tab.0.right" timestamp="1625647949461">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state width="1238" height="67" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1625575613288" />
-    <state width="1194" height="247" key="GridCell.Tab.0.right/0.23.1280.709@0.23.1280.709" timestamp="1625548441331" />
+    <state width="1238" height="65" key="GridCell.Tab.0.right/0.0.1280.800@0.0.1280.800" timestamp="1625647949461" />
+    <state width="1159" height="90" key="GridCell.Tab.0.right/0.23.1280.709@0.23.1280.709" timestamp="1625639147189" />
+    <state width="1238" height="156" key="GridCell.Tab.0.right/0.23.1280.715@0.23.1280.715" timestamp="1625577103891" />
     <state width="1238" height="9" key="GridCell.Tab.0.right/0.23.1280.716@0.23.1280.716" timestamp="1625492530635" />
-    <state x="397" y="109" key="RollbackChangesDialog" timestamp="1625552424252">
+    <state x="397" y="109" key="RollbackChangesDialog" timestamp="1625640617452">
       <screen x="0" y="0" width="1280" height="800" />
     </state>
-    <state x="397" y="109" key="RollbackChangesDialog/0.0.1280.800@0.0.1280.800" timestamp="1625552424252" />
+    <state x="397" y="109" key="RollbackChangesDialog/0.0.1280.800@0.0.1280.800" timestamp="1625640617452" />
     <state x="141" y="23" width="997" height="716" key="SettingsEditor" timestamp="1625486346058">
       <screen x="0" y="23" width="1280" height="716" />
     </state>
     <state x="141" y="23" width="997" height="716" key="SettingsEditor/0.23.1280.716@0.23.1280.716" timestamp="1625486346058" />
+    <state x="394" y="88" key="VCS.ChangeListViewerDialog" timestamp="1625640620858">
+      <screen x="0" y="0" width="1280" height="800" />
+    </state>
+    <state x="394" y="88" key="VCS.ChangeListViewerDialog/0.0.1280.800@0.0.1280.800" timestamp="1625640620858" />
     <state x="240" y="148" key="Vcs.Push.Dialog.v2" timestamp="1625487335563">
       <screen x="0" y="23" width="1280" height="716" />
     </state>
@@ -189,13 +220,43 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
           <url>file://$PROJECT_DIR$/lib/listPages/pillList.dart</url>
-          <line>295</line>
+          <line>294</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
           <url>file://$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart</url>
           <line>256</line>
           <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart</url>
+          <line>876</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/listPages/HomePage.dart</url>
+          <line>859</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/listPages/HomePage.dart</url>
+          <line>849</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/listPages/HomePage.dart</url>
+          <line>850</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/listPages/HomePage.dart</url>
+          <line>855</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart</url>
+          <line>652</line>
+          <option name="timeStamp" value="21" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

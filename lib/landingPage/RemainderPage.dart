@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/FamilyMembers/AddFamily.dart';
+import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
@@ -799,7 +800,7 @@ class _RemainderPageState extends State<RemainderPage> {
       btnOkOnPress: () {
         // Navigator.pop(context);
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => AddFamily(pill:widget.pill)));
+            MaterialPageRoute(builder: (context) => SelectFamily(pill:widget.pill)));
       },
       btnOkText: 'Yes',
       // btnOkIcon: Icons.app_registration_rounded,
