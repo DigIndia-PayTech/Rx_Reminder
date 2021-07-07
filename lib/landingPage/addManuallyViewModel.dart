@@ -378,8 +378,13 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       print('success...rxpost posted....$userId');
       print(response.body);
+      var parsed = json.decode('${response.body}');
+      String rxID = parsed[0]['rx_id'].toString();
+      print('Pill when in day length:${pill.whenInDay.length}');
       pill.whenInDay.forEach((time) {
-        scheduleNotifications(pill, '01', translateTime(time.time));
+        if (time.toString().toString() != '') {
+          scheduleNotifications(pill, rxID, translateTime(time.time));
+        }
       });
       // scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
       // pill.familyMembers.forEach((familyMember) {
@@ -409,7 +414,10 @@ class AddManuallyViewModel extends BaseViewModel {
       var telephony = Telephony.instance;
       pill.familyMembers.forEach((member) {
         print('SMS sent to ${member.mobile}');
-        telephony.sendSms(to: member.mobile, message: 'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        telephony.sendSms(
+            to: member.mobile,
+            message:
+                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
       });
       final NotificationManager notificationManager = NotificationManager();
       notificationManager.initNotifications();
@@ -429,16 +437,15 @@ class AddManuallyViewModel extends BaseViewModel {
         // "gender": famGender.toString(),
       };
       // var body = json.encode(data);
-      print('data family..$data');
+      print('data notiii..$data');
       var response = await http.post(Uri.parse(url), body: data);
       if (response.statusCode == 200) {
         print('success noti data ... posted');
         print(response.body);
         var parsed = json.decode('${response.body}');
         // scheduleMessage(famPhone.text);
-
         var trackId = parsed[0]['track_id'];
-        print('member id $memberId');
+        print('track id $trackId');
         // sp.setInt('MemberID', trackId);
       } else {
         print('failed noti post..${response.statusCode}');
@@ -635,50 +642,49 @@ class AddManuallyViewModel extends BaseViewModel {
     setBusy(false);
     //return data;
   }
-  rxHistory() async{
-     setBusy(true);
-     sp = await SharedPreferences.getInstance();
-     userId = sp.getInt('UserID').toString();
-     Uri url = Uri.parse(
-         "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
-     var response = await http.get(url);
-     data = jsonDecode(response.body)[0]["Data"];
 
-     print("Data rxhistory:....$data");
-     // return data;
-     data = jsonDecode(response.body)[0]['Data'];
-     // historyList.clear();
-     for (int i = 0; i < data.length; i++) {
-       historyList.add(RxHistory());
-       historyList.last.track_time = data[i]['track_time'];
-       historyList.last.rx_name = data[i]['rx_name'];
-       print(historyList.last.rx_name );
-       historyList.last.type = data[i]['type'];
-       historyList.last.status = data[i]['status'];
-       historyList.last.rx_name = data[i]['rx_name'];
-       for (int j = 0; j < data[i]['when_in_day'].length; j++) {
-         historyList.last.hiswhenInDay.add(HisWhenInDay());
-         historyList.last.hiswhenInDay.last.count =
-         data[i]['when_in_day'][j]['count'];
-         // pillList.last.familyMembers.last.mobile =
-         // data[i]['family_members'][j]['mobile'];
-       }
-     }
-     setBusy(false);
-   }
+  rxHistory() async {
+    setBusy(true);
+    sp = await SharedPreferences.getInstance();
+    userId = sp.getInt('UserID').toString();
+    Uri url = Uri.parse(
+        "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+    var response = await http.get(url);
+    data = jsonDecode(response.body)[0]["Data"];
 
-  updateHistory() async{
+    print("Data rxhistory:....$data");
+    // return data;
+    data = jsonDecode(response.body)[0]['Data'];
+    historyList.clear();
+    for (int i = 0; i < data.length; i++) {
+      historyList.add(RxHistory());
+      historyList.last.track_time = data[i]['track_time'];
+      historyList.last.trackId = data[i]['track_id'];
+      historyList.last.rx_name = data[i]['rx_name'];
+      print(historyList.last.rx_name);
+      historyList.last.type = data[i]['type'];
+      historyList.last.status = data[i]['status'];
+      historyList.last.rx_name = data[i]['rx_name'];
+      for (int j = 0; j < data[i]['when_in_day'].length; j++) {
+        historyList.last.hiswhenInDay.add(HisWhenInDay());
+        historyList.last.hiswhenInDay.last.count =
+            data[i]['when_in_day'][j]['count'];
+        // pillList.last.familyMembers.last.mobile =
+        // data[i]['family_members'][j]['mobile'];
+      }
+    }
+    setBusy(false);
+  }
+
+  updateHistory(trackId, status) async {
     sp = await SharedPreferences.getInstance();
     memberId = sp.getInt('MemberID').toString();
-    var url = '${server.serverurl}edit_member';
+    var url = '${server.serverurl}update_rx_history';
     var data = {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
-      "member_id": memberId,
-      "member_name": famname.text,
-      "mobile_no": famPhn.text.toString(),
-      "message": famMsg.text.toString(),
-      "gender": gen.toString(),
+      "track_id": trackId,
+      "status": status,
     };
     // var body = json.encode(data);
     print('data family..$data');
@@ -686,17 +692,15 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       print('success fam members... edited');
       print(response.body);
-
       // var parsed = json.decode('${response.body}');
       // var memberId = parsed['member_id'];
       // print('member id $memberId');
       // Navigator.pop(context);
+      rxHistory();
       notifyListeners();
-      familyList();
     } else {
       print('failed edit fam members...${response.statusCode}');
     }
-
   }
 
   updatePillListPageType(String pageType) {

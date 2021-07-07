@@ -121,9 +121,6 @@ class _RemainderPageState extends State<RemainderPage> {
   ];
 
   acquireData(AddManuallyViewModel viewModel){
-    widget.pill.whenInDay.add(WhenInDay());
-    widget.pill.whenInDay.add(WhenInDay());
-    widget.pill.whenInDay.add(WhenInDay());
     widget.pill.whenInDay[0].time=viewModel.timeController1.text;
     widget.pill.whenInDay[1].time=viewModel.timeController2.text;
     widget.pill.whenInDay[2].time=viewModel.timeController3.text;

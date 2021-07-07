@@ -214,26 +214,22 @@ class _MyPillsState extends State<MyPills> {
                 ),
               ),
               appBar: AppBar(
-                // leading: IconButton(
-                //     onPressed: () {
-                //       Navigator.push(context,
-                //           MaterialPageRoute(builder: (context) => HomePage()));
-                //     },
-                //     icon: Icon(
-                //       Icons.keyboard_arrow_left_sharp,
-                //       size: 40,
-                //     )),
+                leading: null,
                 elevation: 0,
                 backgroundColor: blue,
                 title: // Title
-                    Text("Home",
-                        style: const TextStyle(
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Oxygen",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 20.0),
-                        textAlign: TextAlign.center),
+                    Container(
+                      padding: EdgeInsets.only(left: 10),
+                      alignment: Alignment.centerLeft,
+                      child: Text("Home",
+                          style: const TextStyle(
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Oxygen",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 20.0),
+                          textAlign: TextAlign.center),
+                    ),
               ),
               body: ViewModelBuilder<AddManuallyViewModel>.reactive(
                   onModelReady: (viewModel) {

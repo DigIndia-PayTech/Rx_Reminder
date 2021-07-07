@@ -971,6 +971,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                           }),
                     ),
 
+
                     Padding(
                       padding: EdgeInsets.fromLTRB(40, 0, 40, 20),
                       child: Container(
@@ -999,7 +1000,9 @@ class _SelectFamilyState extends State<SelectFamily> {
                             _showMessage();
 
                           },
-                          child: Container(
+
+                          child:
+                          Container(
                             padding: EdgeInsets.all(12),
                             alignment: Alignment.center,
                             child: Text("Continue",

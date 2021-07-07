@@ -157,225 +157,281 @@ class _ProfileState extends State<Profile> {
       viewModelBuilder: () => AddManuallyViewModel(),
       onModelReady: (viewModel) => viewModel.viewProfile(),
       builder: (context, viewModel, child) {
-        return Scaffold(
-          key: scaffoldState,
-          backgroundColor: Color(0xff2c98f0),
-          appBar: AppBar(
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            key: scaffoldState,
             backgroundColor: Color(0xff2c98f0),
-            // toolbarHeight: 70,
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HomePage()));
-                },
-                icon: Icon(
-                  Icons.keyboard_arrow_left_sharp,
-                  size: 40,
-                )),
-            elevation: 0.0,
-            title: Text(
-              'Account',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white),
+            appBar: AppBar(
+              backgroundColor: Color(0xff2c98f0),
+              // toolbarHeight: 70,
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainPage()));
+                  },
+                  icon: Icon(
+                    Icons.keyboard_arrow_left_sharp,
+                    size: 40,
+                  )),
+              elevation: 0.0,
+              title: Text(
+                'Account',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
             ),
-          ),
-          body: viewModel.isBusy
-              ? Center(child: CircularProgressIndicator(color: Colors.white,),)
-              :Stack(children: [
-             Container(
-                    height: 108,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            alignment: Alignment.topLeft,
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: new BoxDecoration(
-                                      image: DecorationImage(
-                                          fit: BoxFit.contain,
-                                          image: AssetImage(
-                                              'assets/images/wife.png')),
-                                      color: Color(0xfffafafa),
-                                      borderRadius: BorderRadius.circular(10)),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        margin: EdgeInsets.only(left: 20),
-                                        child: Text(viewModel.editProfile.name??'User Name',
-                                            style: TextStyle(
-                                              fontFamily: 'Oxygen',
-                                              color: Color(0xffffffff),
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                              letterSpacing: -0.408,
-                                            ))),
-                                    Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                        child: Text(
-                                            '${viewModel.editProfile.gender??'gender'}, ${viewModel.editProfile.age??'Age'}',
-                                            style: TextStyle(
-                                              fontFamily: 'Oxygen',
-                                              color: Color(0xffffffff),
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                              letterSpacing: -0.408,
-                                            ))),
-                                    Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                        child: InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    editprofile(
-                                                  editProfile:
-                                                      viewModel.editProfile,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                          child: Text("Edit Details",
+            body: viewModel.isBusy
+                ? Center(child: CircularProgressIndicator(color: Colors.white,),)
+                :Stack(children: [
+               Container(
+                      height: 108,
+                      padding: EdgeInsets.only(left: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              alignment: Alignment.topLeft,
+                              margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 80,
+                                    height: 80,
+                                    decoration: new BoxDecoration(
+                                        image: DecorationImage(
+                                            fit: BoxFit.contain,
+                                            image: AssetImage(
+                                                'assets/images/wife.png')),
+                                        color: Color(0xfffafafa),
+                                        borderRadius: BorderRadius.circular(10)),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          margin: EdgeInsets.only(left: 20),
+                                          child: Text(viewModel.editProfile.name??'User Name',
                                               style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.underline,
+                                                fontFamily: 'Oxygen',
+                                                color: Color(0xffffffff),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w700,
+                                                fontStyle: FontStyle.normal,
+                                                letterSpacing: -0.408,
+                                              ))),
+                                      Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                          child: Text(
+                                              '${viewModel.editProfile.gender??'gender'}, ${viewModel.editProfile.age??'Age'}',
+                                              style: TextStyle(
                                                 fontFamily: 'Oxygen',
                                                 color: Color(0xffffffff),
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
                                                 letterSpacing: -0.408,
-                                              )),
-                                        )),
-                                  ],
-                                ),
-                              ],
-                            ))
-                        //
-                      ],
+                                              ))),
+                                      Container(
+                                          margin:
+                                              EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                          child: InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      editprofile(
+                                                    editProfile:
+                                                        viewModel.editProfile,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            child: Text("Edit Details",
+                                                style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                  fontFamily: 'Oxygen',
+                                                  color: Color(0xffffffff),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontStyle: FontStyle.normal,
+                                                  letterSpacing: -0.408,
+                                                )),
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ))
+                          //
+                        ],
+                      ),
                     ),
+              Container(
+                margin: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.only(top: 30),
+                // width: 360,
+                // height: 155,
+                decoration: BoxDecoration(
+                  color: Color(0xfffafafa),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
                   ),
-            Container(
-              margin: EdgeInsets.only(top: 100),
-              padding: EdgeInsets.only(top: 30),
-              // width: 360,
-              // height: 155,
-              decoration: BoxDecoration(
-                color: Color(0xfffafafa),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
                 ),
-              ),
 
-              child: SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          alignment: Alignment.centerLeft,
-                          child: Text("Medicines",
-                              style: TextStyle(
-                                fontFamily: 'Oxygen',
-                                color: Color(0xff9c9b9f),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing: -0.408,
-                              ))),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MyPills()));
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(5),
-                              margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                              height: 40,
-                              width: 40,
-                              decoration: new BoxDecoration(
-                                  // image: DecorationImage(
-                                  //     image: AssetImage('assets/images/ptab.png',),
-                                  //   fit: BoxFit.contain
-                                  // ),
-                                  color: Color(0xffe8f1fe),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset('assets/images/ptab.png'),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                  child: Text("My Pills",
-                                      style: TextStyle(
-                                        fontFamily: 'Oxygen',
-                                        color: Color(0xff000000),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        letterSpacing: -0.408,
-                                      )),
-                                ),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                    child: Text("Activity ,pauses ,edit",
+                child: SingleChildScrollView(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Medicines",
+                                style: TextStyle(
+                                  fontFamily: 'Oxygen',
+                                  color: Color(0xff9c9b9f),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  letterSpacing: -0.408,
+                                ))),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MyPills()));
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                height: 40,
+                                width: 40,
+                                decoration: new BoxDecoration(
+                                    // image: DecorationImage(
+                                    //     image: AssetImage('assets/images/ptab.png',),
+                                    //   fit: BoxFit.contain
+                                    // ),
+                                    color: Color(0xffe8f1fe),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Image.asset('assets/images/ptab.png'),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                    child: Text("My Pills",
                                         style: TextStyle(
                                           fontFamily: 'Oxygen',
-                                          color: Color(0xff9c9b9f),
-                                          fontSize: 12,
+                                          color: Color(0xff000000),
+                                          fontSize: 16,
                                           fontWeight: FontWeight.w700,
                                           fontStyle: FontStyle.normal,
                                           letterSpacing: -0.408,
-                                        )))
-                              ],
-                            )
-                          ],
+                                        )),
+                                  ),
+                                  Container(
+                                      margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                      child: Text("Activity ,pauses ,edit",
+                                          style: TextStyle(
+                                            fontFamily: 'Oxygen',
+                                            color: Color(0xff9c9b9f),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing: -0.408,
+                                          )))
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Divider(),
-                      Container(
-                          margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                          alignment: Alignment.centerLeft,
-                          child: Text("Account",
-                              style: TextStyle(
-                                fontFamily: 'Oxygen',
-                                color: Color(0xff9c9b9f),
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing: -0.408,
-                              ))),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AddFamily()));
-                        },
-                        child: Row(
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: Text("Account",
+                                style: TextStyle(
+                                  fontFamily: 'Oxygen',
+                                  color: Color(0xff9c9b9f),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                  letterSpacing: -0.408,
+                                ))),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AddFamily()));
+                          },
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                height: 40,
+                                width: 40,
+                                decoration: new BoxDecoration(
+                                    // image: DecorationImage(
+                                    //     image: AssetImage('assets/images/proFam.png', ),
+                                    //
+                                    // fit: BoxFit.contain),
+                                    color: Color(0xffe0f7f9),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Image.asset(
+                                  'assets/images/proFam.png',
+                                  height: 2,
+                                ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                    child: Text("family Members",
+                                        style: TextStyle(
+                                          fontFamily: 'Oxygen',
+                                          color: Color(0xff000000),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                          letterSpacing: -0.408,
+                                        )),
+                                  ),
+                                  Container(
+                                      margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                                      child: Text("Add ,Remove ,Remind",
+                                          style: TextStyle(
+                                            fontFamily: 'Oxygen',
+                                            color: Color(0xff9c9b9f),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing: -0.408,
+                                          )))
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(),
+                        Row(
                           children: [
                             Container(
                               padding: EdgeInsets.all(5),
@@ -384,14 +440,16 @@ class _ProfileState extends State<Profile> {
                               width: 40,
                               decoration: new BoxDecoration(
                                   // image: DecorationImage(
-                                  //     image: AssetImage('assets/images/proFam.png', ),
-                                  //
-                                  // fit: BoxFit.contain),
-                                  color: Color(0xffe0f7f9),
+                                  //   image: AssetImage('assets/images/pol.png'),
+                                  //   fit: BoxFit.contain
+                                  // ),
+                                  color: Color(0xfff2e5fc),
                                   borderRadius: BorderRadius.circular(5)),
                               child: Image.asset(
-                                'assets/images/proFam.png',
-                                height: 2,
+                                'assets/images/pol.png',
+                                height: 10,
+                                width: 10,
+                                fit: BoxFit.contain,
                               ),
                             ),
                             Column(
@@ -399,7 +457,7 @@ class _ProfileState extends State<Profile> {
                               children: [
                                 Container(
                                   margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                  child: Text("family Members",
+                                  child: Text("Privacy policy",
                                       style: TextStyle(
                                         fontFamily: 'Oxygen',
                                         color: Color(0xff000000),
@@ -409,122 +467,67 @@ class _ProfileState extends State<Profile> {
                                         letterSpacing: -0.408,
                                       )),
                                 ),
-                                Container(
-                                    margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                    child: Text("Add ,Remove ,Remind",
-                                        style: TextStyle(
-                                          fontFamily: 'Oxygen',
-                                          color: Color(0xff9c9b9f),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal,
-                                          letterSpacing: -0.408,
-                                        )))
                               ],
                             )
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Divider(),
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                            height: 40,
-                            width: 40,
-                            decoration: new BoxDecoration(
-                                // image: DecorationImage(
-                                //   image: AssetImage('assets/images/pol.png'),
-                                //   fit: BoxFit.contain
-                                // ),
-                                color: Color(0xfff2e5fc),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Image.asset(
-                              'assets/images/pol.png',
-                              height: 10,
-                              width: 10,
-                              fit: BoxFit.contain,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider(),
+                        InkWell(
+                          onTap: () async{
+
+                            showAlertDialogConfirm(context, viewModel);
+                          },
+                          child: Row(
                             children: [
                               Container(
                                 margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                child: Text("Privacy policy",
-                                    style: TextStyle(
-                                      fontFamily: 'Oxygen',
-                                      color: Color(0xff000000),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      letterSpacing: -0.408,
-                                    )),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Divider(),
-                      InkWell(
-                        onTap: () async{
-
-                          showAlertDialogConfirm(context, viewModel);
-                        },
-                        child: Row(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                              height: 40,
-                              width: 40,
-                              decoration: new BoxDecoration(
-                                  // image: DecorationImage(
-                                  //     image: AssetImage('assets/images/log.png'),
-                                  //     fit: BoxFit.contain
-                                  // ),
-                                  color: Color(0xfffee7e3),
-                                  borderRadius: BorderRadius.circular(5)),
-                              child: Image.asset(
-                                'assets/images/log.png',
-                                height: 20,
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                  child: Text("Log Out",
-                                      style: TextStyle(
-                                        fontFamily: 'Oxygen',
-                                        color: Color(0xff000000),
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        letterSpacing: -0.408,
-                                      )),
+                                height: 40,
+                                width: 40,
+                                decoration: new BoxDecoration(
+                                    // image: DecorationImage(
+                                    //     image: AssetImage('assets/images/log.png'),
+                                    //     fit: BoxFit.contain
+                                    // ),
+                                    color: Color(0xfffee7e3),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Image.asset(
+                                  'assets/images/log.png',
+                                  height: 20,
                                 ),
-                              ],
-                            )
-                          ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                    child: Text("Log Out",
+                                        style: TextStyle(
+                                          fontFamily: 'Oxygen',
+                                          color: Color(0xff000000),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          fontStyle: FontStyle.normal,
+                                          letterSpacing: -0.408,
+                                        )),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         );
       },
     );
