@@ -208,6 +208,7 @@ class _MyPillsState extends State<MyPills> {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LandingPage()));
                   },

@@ -115,7 +115,7 @@ class _editprofileState extends State<editprofile> {
             ),
             child: SingleChildScrollView(
               child: Container(
-                height: MediaQuery.of(context).size.height + 160,
+                height: MediaQuery.of(context).size.height + 100,
                 child: Column(
                   children: [
                     Row(
@@ -220,6 +220,7 @@ class _editprofileState extends State<editprofile> {
                       child: TextField(
                         keyboardType: TextInputType.name,
                         maxLines: 1,
+                        textInputAction: TextInputAction.next,
                         controller: viewModel.editUsername,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
@@ -249,6 +250,7 @@ class _editprofileState extends State<editprofile> {
                         keyboardType: TextInputType.phone,
                         maxLength: 10,
                         maxLines: 1,
+                        textInputAction: TextInputAction.next,
                         controller: viewModel.editUserphone,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -278,6 +280,7 @@ class _editprofileState extends State<editprofile> {
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
                       child: TextField(
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         maxLines: 1,
                         controller: viewModel.editUseremail,
@@ -306,6 +309,7 @@ class _editprofileState extends State<editprofile> {
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
                       child: TextField(
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                         maxLines: 1,
                         controller: viewModel.editUserage,
@@ -334,6 +338,7 @@ class _editprofileState extends State<editprofile> {
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
                       child: TextField(
+                        textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.streetAddress,
                         maxLines: 1,
                         controller: viewModel.editUsercity,
@@ -362,6 +367,7 @@ class _editprofileState extends State<editprofile> {
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
                       child: TextField(
+                        textInputAction: TextInputAction.next,
                         obscureText: !userpasswrd,
                         maxLines: 1,
                         controller: viewModel.editUserpassword,
@@ -394,101 +400,101 @@ class _editprofileState extends State<editprofile> {
                     //         child: Text('$validText', style: TextStyle(color: Colors.white),))
                     // ),
 
-                    Container(
-                      margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                      alignment: Alignment.centerLeft,
-                      child: Text("Gender",
-                          style: TextStyle(
-                            fontFamily: 'Oxygen',
-                            color: Color(0xff4b5567),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                            letterSpacing: -0.408,
-                          )),
-                    ),
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  viewModel.editUsergender= "Male";
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
-                                    color:  viewModel.editUsergender== 'Male'
-                                        ? Color(0xff2c98f0)
-                                        : Color(0xffffffff),
-                                    borderRadius: BorderRadius.circular(10)),
-                                height: 50,
-                                width: 50,
-                                margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                                child: Icon(
-                                  Icons.male_outlined,
-                                  size: 35,
-                                ),
-                                // color: Colors.blue,
-                              ),
-                            ),
-                            Container(
-                                margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                                child: Text("Male",
-                                    style: TextStyle(
-                                      fontFamily: 'Oxygen',
-                                      color: Color(0xff9c9b9f),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      letterSpacing: -0.408,
-                                    ))),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  viewModel.editUsergender = "Female";
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
-                                    color: viewModel.editUsergender== 'Female'
-                                        ? Color(0xff2c98f0)
-                                        : Color(0xffffffff),
-                                    borderRadius: BorderRadius.circular(10)),
-                                height: 50,
-                                width: 50,
-                                margin: EdgeInsets.fromLTRB(40, 10, 0, 0),
-                                child: Icon(
-                                  Icons.female_outlined,
-                                  size: 35,
-                                ),
-                              ),
-                            ),
-                            Container(
-                                margin: EdgeInsets.fromLTRB(40, 5, 0, 0),
-                                child: Text("Female",
-                                    style: TextStyle(
-                                      fontFamily: 'Oxygen',
-                                      color: Color(0xff9c9b9f),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                      letterSpacing: -0.408,
-                                    ))),
-                          ],
-                        )
-                      ],
-                    ),
-                    Spacer(),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text("Gender",
+                    //       style: TextStyle(
+                    //         fontFamily: 'Oxygen',
+                    //         color: Color(0xff4b5567),
+                    //         fontSize: 14,
+                    //         fontWeight: FontWeight.w700,
+                    //         fontStyle: FontStyle.normal,
+                    //         letterSpacing: -0.408,
+                    //       )),
+                    // ),
+                    // Row(
+                    //   children: [
+                    //     Column(
+                    //       children: [
+                    //         InkWell(
+                    //           onTap: () {
+                    //             setState(() {
+                    //               viewModel.editUsergender= "Male";
+                    //             });
+                    //           },
+                    //           child: Container(
+                    //             decoration: BoxDecoration(
+                    //                 border: Border.all(color: Colors.black12),
+                    //                 color:  viewModel.editUsergender== 'Male'
+                    //                     ? Color(0xff2c98f0)
+                    //                     : Color(0xffffffff),
+                    //                 borderRadius: BorderRadius.circular(10)),
+                    //             height: 50,
+                    //             width: 50,
+                    //             margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
+                    //             child: Icon(
+                    //               Icons.male_outlined,
+                    //               size: 35,
+                    //             ),
+                    //             // color: Colors.blue,
+                    //           ),
+                    //         ),
+                    //         Container(
+                    //             margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
+                    //             child: Text("Male",
+                    //                 style: TextStyle(
+                    //                   fontFamily: 'Oxygen',
+                    //                   color: Color(0xff9c9b9f),
+                    //                   fontSize: 14,
+                    //                   fontWeight: FontWeight.w700,
+                    //                   fontStyle: FontStyle.normal,
+                    //                   letterSpacing: -0.408,
+                    //                 ))),
+                    //       ],
+                    //     ),
+                    //     Column(
+                    //       children: [
+                    //         InkWell(
+                    //           onTap: () {
+                    //             setState(() {
+                    //               viewModel.editUsergender = "Female";
+                    //             });
+                    //           },
+                    //           child: Container(
+                    //             decoration: BoxDecoration(
+                    //                 border: Border.all(color: Colors.black12),
+                    //                 color: viewModel.editUsergender== 'Female'
+                    //                     ? Color(0xff2c98f0)
+                    //                     : Color(0xffffffff),
+                    //                 borderRadius: BorderRadius.circular(10)),
+                    //             height: 50,
+                    //             width: 50,
+                    //             margin: EdgeInsets.fromLTRB(40, 10, 0, 0),
+                    //             child: Icon(
+                    //               Icons.female_outlined,
+                    //               size: 35,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         Container(
+                    //             margin: EdgeInsets.fromLTRB(40, 5, 0, 0),
+                    //             child: Text("Female",
+                    //                 style: TextStyle(
+                    //                   fontFamily: 'Oxygen',
+                    //                   color: Color(0xff9c9b9f),
+                    //                   fontSize: 14,
+                    //                   fontWeight: FontWeight.w700,
+                    //                   fontStyle: FontStyle.normal,
+                    //                   letterSpacing: -0.408,
+                    //                 ))),
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
+                    SizedBox(height: 40,),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: InkWell(
                         onTap: () {
                           if (viewModel.editUsername.text.toString() ==
@@ -505,8 +511,6 @@ class _editprofileState extends State<editprofile> {
                           } else if (viewModel.editUserage.text.toString() ==
                               '') {
                             showAlertDialogAge(context, viewModel);
-                          } else if (viewModel.editUsergender == '') {
-                            showAlertDialogGender(context, viewModel);
                           } else if (viewModel.editUsercity.text.toString() ==
                               '') {
                             showAlertDialogCity(context, viewModel);

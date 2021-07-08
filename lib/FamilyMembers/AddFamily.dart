@@ -14,6 +14,7 @@ import 'package:stacked/stacked.dart';
 class AddFamily extends StatefulWidget {
   Pill pill;
 
+
   AddFamily({this.pill});
 
   @override
@@ -711,6 +712,7 @@ class _AddFamilyState extends State<AddFamily> {
                 toolbarHeight: 90,
                 leading: IconButton(
                     onPressed: () {
+                      // Navigator.of(context).pop();
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Profile()));
                     },
@@ -791,9 +793,7 @@ class _AddFamilyState extends State<AddFamily> {
                               // Text('hhh'),
                               SizedBox(height: 20),
                               Expanded(
-                                child: viewModel.isBusy
-                                    ? Center(child: CircularProgressIndicator())
-                                    : ListView.builder(
+                                child:  ListView.builder(
                                         itemCount: viewModel.membersList.length,
                                         itemBuilder: (context, index) {
                                           return Column(
@@ -944,8 +944,7 @@ class _AddFamilyState extends State<AddFamily> {
                                                       ),
                                                       itemBuilder: (BuildContext
                                                               context) =>
-                                                          <
-                                                              PopupMenuEntry<
+                                                          <PopupMenuEntry<
                                                                   dynamic>>[
                                                         PopupMenuItem<dynamic>(
                                                           value: 'Edit',
@@ -965,55 +964,55 @@ class _AddFamilyState extends State<AddFamily> {
                                           );
                                         }),
                               ),
-                              widget.pill != null
-                                  ? Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(40, 0, 40, 20),
-                                      child: Container(
-                                        height: 50,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.black12),
-                                            color: Color(0xff2c98f0),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: InkWell(
-                                          onTap: () {
-                                            viewModel.membersList.forEach(
-                                              (element) {
-                                                if (element.selected) {
-                                                  widget.pill.familyMembers
-                                                      .add(FamilyList());
-                                                  widget.pill.familyMembers.last
-                                                          .name =
-                                                      element.membername;
-                                                  widget.pill.familyMembers.last
-                                                          .mobile =
-                                                      element.memberPhone;
-                                                }
-                                              },
-                                            );
-                                            viewModel
-                                                .setReminderPost(widget.pill);
-                                            _showMessage(); //
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(12),
-                                            alignment: Alignment.center,
-                                            child: Text("Continue",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  color: Color(0xffffffff),
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : Container()
+                              // widget.pill != null
+                              //     ? Padding(
+                              //         padding:
+                              //             EdgeInsets.fromLTRB(40, 0, 40, 20),
+                              //         child: Container(
+                              //           height: 50,
+                              //           decoration: BoxDecoration(
+                              //               border: Border.all(
+                              //                   color: Colors.black12),
+                              //               color: Color(0xff2c98f0),
+                              //               borderRadius:
+                              //                   BorderRadius.circular(10)),
+                              //           child: InkWell(
+                              //             onTap: () {
+                              //               viewModel.membersList.forEach(
+                              //                 (element) {
+                              //                   if (element.selected) {
+                              //                     widget.pill.familyMembers
+                              //                         .add(FamilyList());
+                              //                     widget.pill.familyMembers.last
+                              //                             .name =
+                              //                         element.membername;
+                              //                     widget.pill.familyMembers.last
+                              //                             .mobile =
+                              //                         element.memberPhone;
+                              //                   }
+                              //                 },
+                              //               );
+                              //               viewModel
+                              //                   .setReminderPost(widget.pill);
+                              //               _showMessage(); //
+                              //             },
+                              //             child: Container(
+                              //               padding: EdgeInsets.all(12),
+                              //               alignment: Alignment.center,
+                              //               child: Text("Continue",
+                              //                   textAlign: TextAlign.center,
+                              //                   style: TextStyle(
+                              //                     fontFamily: 'Poppins',
+                              //                     color: Color(0xffffffff),
+                              //                     fontSize: 18,
+                              //                     fontWeight: FontWeight.w500,
+                              //                     fontStyle: FontStyle.normal,
+                              //                   )),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       )
+                              //     : Container()
                             ],
                           ),
                         )
@@ -1102,8 +1101,8 @@ showAlertDialog(BuildContext context, AddManuallyViewModel viewModel,
     desc: 'Family member added successfully..!',
     btnOkOnPress: () {
       // Navigator.pop(context);
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AddFamily(pill: pill)));
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => AddFamily(pill: pill)));
     },
     btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,

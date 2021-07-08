@@ -35,6 +35,7 @@ class AddManuallyViewModel extends BaseViewModel {
   List<Pill> expiringList = [];
   List<Pill> expiredPillList = [];
   String pillStatus;
+  String selectedDate;
 
   Time translateTime(String data) {
     int hh, mm;
@@ -107,6 +108,8 @@ class AddManuallyViewModel extends BaseViewModel {
   TextEditingController signinPass = TextEditingController();
 
   TextEditingController editUsername = TextEditingController();
+  TextEditingController editLastname = TextEditingController();
+
   TextEditingController editUserphone = TextEditingController();
   TextEditingController editUserage = TextEditingController();
   TextEditingController editUsercity = TextEditingController();
@@ -195,8 +198,8 @@ class AddManuallyViewModel extends BaseViewModel {
     var url = '${server.serverurl}sign_up';
     var data = {
       "secretpass": "ADMIN",
-      "full_name": username.text,
-      "": lastname.text,
+      "first_name": username.text,
+      "last_name": lastname.text,
       "mobile_no": phone.text.toString(),
       "email": email.text,
       "password": password.text,
@@ -225,9 +228,10 @@ class AddManuallyViewModel extends BaseViewModel {
         showAlertDialogSignInMobile(context, pill: pill);
       } else if (responseCode == "001") {
         print('tyuii');
+
         showAlertDialogSucessSignUp(context, pill: pill);
         // Timer(),
-        await Future<String>.delayed(const Duration(seconds: 2));
+        await Future<String>.delayed(const Duration(seconds: 5));
 
         Navigator.push(
             context,
@@ -412,7 +416,10 @@ class AddManuallyViewModel extends BaseViewModel {
         () async {
       print('Cron running');
       var telephony = Telephony.instance;
+      int i=0;
       pill.familyMembers.forEach((member) {
+        i++;
+        print('Member Count: $i');
         print('SMS sent to ${member.mobile}');
         telephony.sendSms(
             to: member.mobile,
@@ -427,6 +434,7 @@ class AddManuallyViewModel extends BaseViewModel {
         'Take ${pill.whenInDay[0].count} pills',
       );
       var url = '${server.serverurl}add_rx_history';
+      print('fuiooo');
       var data = {
         "secretpass": "ADMIN",
         "secretkey": "ADMIN",
@@ -643,15 +651,17 @@ class AddManuallyViewModel extends BaseViewModel {
     //return data;
   }
 
-  rxHistory() async {
+  rxHistory(selectedDate) async {
     setBusy(true);
+    notifyListeners();
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
+    // selectedDate = sp.getString('selectedDate');
     Uri url = Uri.parse(
-        "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+        "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId&track_date=$selectedDate");
     var response = await http.get(url);
+    print(url);
     data = jsonDecode(response.body)[0]["Data"];
-
     print("Data rxhistory:....$data");
     // return data;
     data = jsonDecode(response.body)[0]['Data'];
@@ -674,9 +684,10 @@ class AddManuallyViewModel extends BaseViewModel {
       }
     }
     setBusy(false);
+    notifyListeners();
   }
 
-  updateHistory(trackId, status) async {
+  updateHistory(trackId, status,selectedDate) async {
     sp = await SharedPreferences.getInstance();
     memberId = sp.getInt('MemberID').toString();
     var url = '${server.serverurl}update_rx_history';
@@ -696,7 +707,7 @@ class AddManuallyViewModel extends BaseViewModel {
       // var memberId = parsed['member_id'];
       // print('member id $memberId');
       // Navigator.pop(context);
-      rxHistory();
+      rxHistory(selectedDate);
       notifyListeners();
     } else {
       print('failed edit fam members...${response.statusCode}');
@@ -796,7 +807,8 @@ class AddManuallyViewModel extends BaseViewModel {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
       "user_id": userId,
-      "name": editUsername.text,
+      "first_name": editUsername.text,
+      "last_name": editLastname.text,
       "mobile_no": editUserphone.text.toString(),
       "email": editUseremail.text.toString(),
       "age": editUserage.text.toString(),
@@ -831,10 +843,11 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       final parsed = json.decode(response.body);
       print(parsed);
-      editProfile.name = parsed[0]["name"];
+      editProfile.name = parsed[0]["first_name"];
+      editProfile.lastname = parsed[0]["last_name"];
       editProfile.mobile_no = parsed[0]['mobile_no'];
       editProfile.age = parsed[0]['age'];
-      editProfile.gender = parsed[0]['gender'];
+      // editProfile.gender = parsed[0]['gender'];
       editProfile.email = parsed[0]['email'];
       editProfile.city = parsed[0]['city'];
       editProfile.dob = parsed[0]['dob'];
@@ -961,7 +974,7 @@ showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
     btnCancelText: 'SignUp',
     // btnCancelIcon: Icons.login,
     btnOkOnPress: () {
-      Navigator.pop(context);
+      // Navigator.of(context).pop();
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(
@@ -1041,7 +1054,7 @@ showAlertDialogSignInEmail(BuildContext context, {Pill pill}) {
     // btnCancelText: 'SignUp',
     // btnCancelIcon: Icons.login,
     btnOkOnPress: () {
-      Navigator.pop(context);
+      // Navigator.pop(context);
     },
     btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,
@@ -1087,78 +1100,29 @@ showAlertDialogSignInMobile(BuildContext context, {Pill pill}) {
   // );
 
   // set up the AlertDialog
-  AlertDialog alert = AlertDialog(
-    title: Text("AlertDialog"),
-    content: Text(
-      "Invalid login credentials..!!!",
-      style: TextStyle(color: Colors.red),
-    ),
-    // actions: [
-    //   submitButton,
-    //   cancelButton
-    // ],
-  );
+  // AlertDialog alert = AlertDialog(
+  //   title: Text("AlertDialog"),
+  //   content: Text(
+  //     "Invalid login credentials..!!!",
+  //     style: TextStyle(color: Colors.red),
+  //   ),
+  //   // actions: [
+  //   //   submitButton,
+  //   //   cancelButton
+  //   // ],
+  // );
   AwesomeDialog(
     context: context,
     dialogType: DialogType.ERROR,
     animType: AnimType.BOTTOMSLIDE,
     tittle: 'Alert',
     desc: 'Mobile Number Already Exists...!',
-    // btnCancelOnPress: () {
-    //   Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //       builder: (BuildContext context) => SignIn(pill:pill),
-    //     ),
-    //   );
-    // },
-    // btnCancelText: 'SignUp',
-    // btnCancelIcon: Icons.login,
-    btnOkOnPress: () {
-      Navigator.pop(context);
-    },
     btnOkText: 'Okay',
-    // btnOkIcon: Icons.app_registration_rounded,
+    btnOkOnPress: (){}
   )..show();
-  // show the dialog
-  // showDialog(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return alert;
-  //   },
-  // );
 }
 
 showAlertDialogSucessSignUp(BuildContext context, {Pill pill}) {
-  Widget cancelButton = FlatButton(
-    child: Text(
-      "Try Again",
-      style: TextStyle(color: Colors.green, fontSize: 20),
-    ),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
-
-  Widget submitButton = FlatButton(
-    child: Text(
-      "Ok",
-      style: TextStyle(color: Colors.red, fontSize: 20),
-    ),
-    onPressed: () {
-      // viewModel.setReminderPost();
-      // getImage(imageSource);
-
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (BuildContext context) => SignUp(pill:pill),
-      //   ),
-      // );
-      //---log out of app----
-      // _showMessage();
-    },
-  );
 
   // set up the AlertDialog
   AwesomeDialog(
@@ -1169,31 +1133,23 @@ showAlertDialogSucessSignUp(BuildContext context, {Pill pill}) {
     tittle: 'Success',
     desc: 'User created Successfully..',
     btnOkOnPress: () {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AddManual(pill: pill)));
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => AddManual(pill: pill)));
     },
-    btnOkText: 'Okay',
-    // btnOkIcon: Icons.app_registration_rounded,
-  )..show();
-  // show the dialog
-  // showDialog(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return alert;
-  //   },
-  // );
+    btnOkText: 'Okay',);
+    // btnOkIcon: Icon
 }
 
 showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
-  Widget cancelButton = FlatButton(
-    child: Text(
-      "Try Again",
-      style: TextStyle(color: Colors.green, fontSize: 20),
-    ),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
+  // Widget cancelButton = FlatButton(
+  //   child: Text(
+  //     "Try Again",
+  //     style: TextStyle(color: Colors.green, fontSize: 20),
+  //   ),
+  //   onPressed: () {
+  //     Navigator.pop(context);
+  //   },
+  // );
 
   Widget submitButton = FlatButton(
     child: Text(
@@ -1219,12 +1175,11 @@ showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
   AwesomeDialog(
     context: context,
     dialogType: DialogType.SUCCES,
-
     animType: AnimType.BOTTOMSLIDE,
     tittle: 'Success',
     desc: 'Login Successfull..',
     btnOkOnPress: () {},
-    btnOkText: 'Okay',
+    // btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,
   )..show();
   // show the dialog

@@ -85,9 +85,9 @@ flutter:
     - family: Mate_SC
       fonts:
         - asset: fonts/Mate_SC/MateSC-Regular.ttf
-    - family: FlutterMyApp
+    - family: Baloo_2
       fonts:
-        - asset: assets/icons/MyFlutterApp.ttf
+        - asset: fonts/Baloo_2/Baloo2-Regular.ttf
   #    - family: Schyler
   #       fonts:
   #         - asset: fonts/Schyler-Regular.ttf

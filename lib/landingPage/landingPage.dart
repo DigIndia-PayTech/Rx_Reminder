@@ -63,6 +63,10 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   getImage(imageSource, viewModel) async {
+
+
+
+
     print("Getting Image");
     final _pickedImage = await picker.getImage(source: imageSource);
     File temp = File(_pickedImage.path);
@@ -238,178 +242,190 @@ class _LandingPageState extends State<LandingPage> {
     double sWidth = MediaQuery.of(context).size.width;
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
         disposeViewModel: false,
+        onModelReady: (viewModel) {
+          viewModel.sharedPreferences();
+
+          //viewModel.getUser();
+        },
         builder: (context, viewModel, child) {
-          return Scaffold(
-              backgroundColor: Color(0xff2c98f0),
-              appBar: AppBar(
-                toolbarHeight: 70,
-                leading: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomePage()));
-                    },
-                    icon: Icon(
-                      Icons.keyboard_arrow_left_sharp,
-                      size: 40,
-                    )),
+          return WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
                 backgroundColor: Color(0xff2c98f0),
-                elevation: 0.0,
-                title: Text(
-                  'Scan',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              body: Container(
-                margin: EdgeInsets.only(top: 15),
-                // width: 360,
-                // height: 155,
-                decoration: BoxDecoration(
-                  color: Color(0xfffafafa),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                appBar: AppBar(
+                  toolbarHeight: 70,
+                  leading: IconButton(
+                      onPressed: () {
+                        viewModel.userId != null?
+                        // Navigator.of(context).pop();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomePage())):
+                        Navigator.of(context).pop();
+                      },
+
+                      icon: viewModel.userId != null?Icon(
+                        Icons.keyboard_arrow_left_sharp,
+                        size: 40,
+                      ):Icon(Icons.close)),
+                  backgroundColor: Color(0xff2c98f0),
+                  elevation: 0.0,
+                  title: Text(
+                    'Scan',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        alignment: Alignment.center,
-                        width: sWidth,
-                        height: sWidth,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
-                        ),
-                        child: Stack(
+                body: Container(
+                  margin: EdgeInsets.only(top: 15),
+                  // width: 360,
+                  // height: 155,
+                  decoration: BoxDecoration(
+                    color: Color(0xfffafafa),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
                           alignment: Alignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.fromLTRB(41, 41, 41, 41),
-                              height: sWidth - 82,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Colors.blue, width: 1.5),
-                              ),
-                              alignment: Alignment.center,
-                              child: Container(),
-                            ),
-                            Container(
-                              height: sWidth - (82 + 53 + 53),
-                              width: sWidth,
-                              color: Colors.white,
-                            ),
-                            Container(
-                              width: sWidth - (82 + 53 + 53),
-                              height: sWidth,
-                              color: Colors.white,
-                            ),
-                            viewModel.isBusy
-                                ? Center(child: CircularProgressIndicator())
-                                : Container(
-                                    margin: EdgeInsets.all(41),
-                                    padding: EdgeInsets.all(20),
-                                    width: sWidth - 82,
-                                    height: sWidth - 82,
-                                    child: viewModel.croppedFile == null
-                                        ? Image.asset(
-                                            'assets/images/med.jpeg',
-                                            fit: BoxFit.contain)
-                                        : Image.file(viewModel.croppedFile),
-                                  )
-                          ],
-                        ),
-                      ),
-                      Container(
-                          // color: Colors.green,
-                          height: 185,
-                          // alignment: Alignment.bottomLeft,
-                          child: Column(
+                          width: sWidth,
+                          height: sWidth,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white,
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
                             children: [
-                              Row(
-                                // mainAxisAlignment: MainAxisAlignment.end,
-                                // crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    // margin: EdgeInsets.all(35),
-                                    child: FloatingActionButton(
-                                      elevation: 0.0,
-                                      onPressed: () {
-                                        viewModel.setBusy(true);
-                                        getImage(
-                                            ImageSource.gallery, viewModel);
-                                      },
-                                      child: Icon(
-                                        Icons.add_photo_alternate,
-                                        color: Color(0xff0066ff),
-                                      ),
-                                      backgroundColor: Color(0xffe8f1ff),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 90.0,
-                                    width: 100.0,
-                                    child: FittedBox(
+                              Container(
+                                margin: EdgeInsets.fromLTRB(41, 41, 41, 41),
+                                height: sWidth - 82,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Colors.blue, width: 1.5),
+                                ),
+                                alignment: Alignment.center,
+                                child: Container(),
+                              ),
+                              Container(
+                                height: sWidth - (82 + 53 + 53),
+                                width: sWidth,
+                                color: Colors.white,
+                              ),
+                              Container(
+                                width: sWidth - (82 + 53 + 53),
+                                height: sWidth,
+                                color: Colors.white,
+                              ),
+                              viewModel.isBusy
+                                  ? Center(child: CircularProgressIndicator())
+                                  : Container(
+                                      margin: EdgeInsets.all(41),
+                                      padding: EdgeInsets.all(20),
+                                      width: sWidth - 82,
+                                      height: sWidth - 82,
+                                      child: viewModel.croppedFile == null
+                                          ? Image.asset(
+                                              'assets/images/med.jpeg',
+                                              fit: BoxFit.contain)
+                                          : Image.file(viewModel.croppedFile),
+                                    )
+                            ],
+                          ),
+                        ),
+                        Container(
+                            // color: Colors.green,
+                            height: 185,
+                            // alignment: Alignment.bottomLeft,
+                            child: Column(
+                              children: [
+                                Row(
+                                  // mainAxisAlignment: MainAxisAlignment.end,
+                                  // crossAxisAlignment: CrossAxisAlignment.end,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Container(
+                                      // margin: EdgeInsets.all(35),
                                       child: FloatingActionButton(
-                                        child: Icon(
-                                            Icons.document_scanner_outlined),
+                                        elevation: 0.0,
                                         onPressed: () {
                                           viewModel.setBusy(true);
                                           getImage(
-                                              ImageSource.camera, viewModel);
+                                              ImageSource.gallery, viewModel);
                                         },
+                                        child: Icon(
+                                          Icons.add_photo_alternate,
+                                          color: Color(0xff0066ff),
+                                        ),
+                                        backgroundColor: Color(0xffe8f1ff),
                                       ),
                                     ),
-                                  ),
-                                  Container(
-                                    // margin: EdgeInsets.all(35),
-                                    child: FloatingActionButton(
-                                      elevation: 0.0,
-                                      onPressed: () {
-
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => AddManual(),
-                                          ),
-                                        );
-                                      },
-                                      child: Icon(Icons.add,
-                                          color: Color(0xff0066ff)),
-                                      backgroundColor: Color(0xffe8f1ff),
+                                    SizedBox(
+                                      height: 90.0,
+                                      width: 100.0,
+                                      child: FittedBox(
+                                        child: FloatingActionButton(
+                                          child: Icon(
+                                              Icons.document_scanner_outlined),
+                                          onPressed: () {
+                                            viewModel.setBusy(true);
+                                            getImage(
+                                                ImageSource.camera, viewModel);
+                                          },
+                                        ),
+                                      ),
                                     ),
-                                  )
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                      margin: EdgeInsets.only(left: 30),
-                                      child: Text(
-                                        'Gallery',
-                                      )),
-                                  // Text(''),
+                                    Container(
+                                      // margin: EdgeInsets.all(35),
+                                      child: FloatingActionButton(
+                                        elevation: 0.0,
+                                        onPressed: () {
 
-                                  Container(
-                                      margin: EdgeInsets.only(left: 130),
-                                      child: Text(
-                                        'Add Manually',
-                                        textAlign: TextAlign.center,
-                                      ))
-                                ],
-                              ),
-                            ],
-                          )),
-                    ]),
-              ));
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => AddManual(),
+                                            ),
+                                          );
+                                        },
+                                        child: Icon(Icons.add,
+                                            color: Color(0xff0066ff)),
+                                        backgroundColor: Color(0xffe8f1ff),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(left: 30),
+                                        child: Text(
+                                          'Gallery',
+                                        )),
+                                    // Text(''),
+
+                                    Container(
+                                        margin: EdgeInsets.only(left: 130),
+                                        child: Text(
+                                          'Add Manually',
+                                          textAlign: TextAlign.center,
+                                        ))
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ]),
+                )),
+          );
         },
         viewModelBuilder: () => AddManuallyViewModel());
   }
