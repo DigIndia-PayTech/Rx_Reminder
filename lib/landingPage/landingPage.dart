@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -61,6 +63,18 @@ class _LandingPageState extends State<LandingPage> {
       croppedFile = null;
     });
   }
+     @override
+     void initState(){
+    super.initState();
+
+     getuserId();
+     }
+     var userId;
+     getuserId()async{
+       SharedPreferences sp;
+       sp = await SharedPreferences.getInstance();
+       userId = sp.getInt('UserID').toString();
+     }
 
   getImage(imageSource, viewModel) async {
 
@@ -256,18 +270,17 @@ class _LandingPageState extends State<LandingPage> {
                   toolbarHeight: 70,
                   leading: IconButton(
                       onPressed: () {
-                        viewModel.userId != null?
-                        // Navigator.of(context).pop();
+                        userId != null?
+                        SystemNavigator.pop():
                         Navigator.push(
+                          // Navigator.of(context).pop();
                             context,
                             MaterialPageRoute(
-                                builder: (context) => HomePage())):
-                        Navigator.of(context).pop();
+                                builder: (context) => MainPage()));
                       },
-
-                      icon: viewModel.userId != null?Icon(
+                      icon: userId !=null?Icon(
                         Icons.keyboard_arrow_left_sharp,
-                        size: 40,
+                        size: 20,
                       ):Icon(Icons.close)),
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,

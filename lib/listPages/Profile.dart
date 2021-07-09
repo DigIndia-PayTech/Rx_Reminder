@@ -232,7 +232,7 @@ class _ProfileState extends State<Profile> {
                                           margin:
                                               EdgeInsets.fromLTRB(20, 5, 0, 0),
                                           child: Text(
-                                              '${viewModel.editProfile.mobile_no ?? 'Mobile'}, ${viewModel.editProfile.age ?? 'Age'}',
+                                              '${viewModel.editProfile.mobileNo ?? 'Mobile'}, ${viewModel.editProfile.age ?? 'Age'}',
                                               style: TextStyle(
                                                 fontFamily: 'Oxygen',
                                                 color: Color(0xffffffff),
@@ -648,7 +648,7 @@ showAlertDialogConfirm(BuildContext context, AddManuallyViewModel viewModel,
     tittle: 'Confirm',
     desc: 'Are you sure..?',
     btnCancelOnPress: () {
-      Navigator.pop(context);
+      // Navigator.pop(context);
     },
     btnCancelText: 'Cancel',
     btnCancelIcon: Icons.cancel,

@@ -333,8 +333,12 @@ class _SelectFamilyState extends State<SelectFamily> {
       AddManuallyViewModel viewModel, int index, BuildContext context) {
     bool last = false;
     bool today = false;
-    viewModel.famname.text = viewModel.membersList[index].membername;
-    viewModel.famPhn.text = viewModel.membersList[index].memberPhone;
+
+    TextEditingController famname = TextEditingController();
+    TextEditingController famPhn = TextEditingController();
+    TextEditingController fammsg = TextEditingController();
+    famname.text = viewModel.membersList[index].membername;
+    famPhn.text = viewModel.membersList[index].memberPhone;
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -396,7 +400,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                     child: TextField(
                       textInputAction: TextInputAction.next,
                       maxLines: 1,
-                      controller: viewModel.famname,
+                      controller: famname,
                       decoration: InputDecoration(border: InputBorder.none),
                     ),
                   ),
@@ -425,7 +429,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                       textInputAction: TextInputAction.next,
                       maxLines: 1,
                       keyboardType: TextInputType.number,
-                      controller: viewModel.famPhn,
+                      controller: famPhn,
                       maxLength: 10,
                       decoration: InputDecoration(
                           border: InputBorder.none, counterText: ""),
@@ -532,7 +536,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
-                        viewModel.editFamily(context);
+                        viewModel.editFamily(context,famname.text,famPhn.text);
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => SignUp()));
                       },

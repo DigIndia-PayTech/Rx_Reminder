@@ -14,7 +14,6 @@ import 'package:stacked/stacked.dart';
 class AddFamily extends StatefulWidget {
   Pill pill;
 
-
   AddFamily({this.pill});
 
   @override
@@ -332,10 +331,15 @@ class _AddFamilyState extends State<AddFamily> {
 
   void editMember(
       AddManuallyViewModel viewModel, int index, BuildContext context) {
+    TextEditingController famname = TextEditingController();
+    TextEditingController famPhn = TextEditingController();
+    TextEditingController fammsg = TextEditingController();
+    var gen;
+
     bool last = false;
     bool today = false;
-    viewModel.famname.text = viewModel.membersList[index].membername;
-    viewModel.famPhn.text = viewModel.membersList[index].memberPhone;
+    famname.text = viewModel.membersList[index].membername;
+    famPhn.text = viewModel.membersList[index].memberPhone;
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -397,7 +401,7 @@ class _AddFamilyState extends State<AddFamily> {
                     child: TextField(
                       textInputAction: TextInputAction.next,
                       maxLines: 1,
-                      controller: viewModel.famname,
+                      controller: famname,
                       decoration: InputDecoration(border: InputBorder.none),
                     ),
                   ),
@@ -426,7 +430,7 @@ class _AddFamilyState extends State<AddFamily> {
                       textInputAction: TextInputAction.next,
                       maxLines: 1,
                       keyboardType: TextInputType.number,
-                      controller: viewModel.famPhn,
+                      controller: famPhn,
                       maxLength: 10,
                       decoration: InputDecoration(
                           border: InputBorder.none, counterText: ""),
@@ -490,13 +494,13 @@ class _AddFamilyState extends State<AddFamily> {
                           InkWell(
                             onTap: () {
                               setState(() {
-                                viewModel.gen = "Female";
+                                gen = "Female";
                               });
                             },
                             child: Container(
                               decoration: BoxDecoration(
                                   border: Border.all(color: Colors.black12),
-                                  color: viewModel.gen == "Female"
+                                  color: gen == "Female"
                                       ? Color(0xff2c98f0)
                                       : Color(0xffffffff),
                                   borderRadius: BorderRadius.circular(10)),
@@ -533,7 +537,7 @@ class _AddFamilyState extends State<AddFamily> {
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
-                        viewModel.editFamily(context);
+                        viewModel.editFamily(context,famname.text,famPhn.text);
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => SignUp()));
                       },
@@ -659,8 +663,10 @@ class _AddFamilyState extends State<AddFamily> {
 
                   showAlertDialog(context, viewModel);
                   await Future<String>.delayed(const Duration(seconds: 2));
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => AddFamily(pill: pill)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddFamily(pill: pill)));
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => MyPills()));
                 },
@@ -793,176 +799,183 @@ class _AddFamilyState extends State<AddFamily> {
                               // Text('hhh'),
                               SizedBox(height: 20),
                               Expanded(
-                                child:  ListView.builder(
-                                        itemCount: viewModel.membersList.length,
-                                        itemBuilder: (context, index) {
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                // color: Colors.red,
-                                                child: Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          Container(
-                                                            margin: EdgeInsets
-                                                                .fromLTRB(20,
-                                                                    0, 0, 0),
-                                                            height: 50,
-                                                            width: 50,
-                                                            decoration: new BoxDecoration(
+                                child: ListView.builder(
+                                    itemCount: viewModel.membersList.length,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          Container(
+                                            // color: Colors.red,
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                20, 0, 0, 0),
+                                                        height: 50,
+                                                        width: 50,
+                                                        decoration:
+                                                            new BoxDecoration(
                                                                 color: Color(
                                                                     0xfffE8E8E8),
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
                                                                             30)),
-                                                            alignment:
-                                                                Alignment
-                                                                    .center,
-                                                            child: !viewModel
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: !viewModel
+                                                                .membersList[
+                                                                    index]
+                                                                .selected
+                                                            ? Text(
+                                                                '${viewModel.membersList[index].membername.substring(0, 1)}',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .blueGrey,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              )
+                                                            : Icon(Icons.done,
+                                                                color: Colors
+                                                                    .blueGrey),
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Container(
+                                                            margin: EdgeInsets
+                                                                .fromLTRB(20, 0,
+                                                                    0, 0),
+                                                            child: Text(
+                                                                viewModel
                                                                     .membersList[
                                                                         index]
-                                                                    .selected
-                                                                ? Text(
-                                                                    '${viewModel.membersList[index].membername.substring(0, 1)}',
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .blueGrey,
-                                                                        fontSize:
-                                                                            20,
-                                                                        fontWeight:
-                                                                            FontWeight.bold),
-                                                                  )
-                                                                : Icon(
-                                                                    Icons
-                                                                        .done,
-                                                                    color: Colors
-                                                                        .blueGrey),
+                                                                    .membername,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      'Oxygen',
+                                                                  color: Color(
+                                                                      0xff000000),
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  letterSpacing:
+                                                                      -0.408,
+                                                                )),
                                                           ),
-                                                          Column(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
+                                                          Row(
                                                             children: [
                                                               Container(
-                                                                margin: EdgeInsets
-                                                                    .fromLTRB(
-                                                                        20,
-                                                                        0,
-                                                                        0,
-                                                                        0),
-                                                                child: Text(
-                                                                    viewModel
-                                                                        .membersList[
-                                                                            index]
-                                                                        .membername,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontFamily:
-                                                                          'Oxygen',
-                                                                      color: Color(
-                                                                          0xff000000),
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight.w700,
-                                                                      fontStyle:
-                                                                          FontStyle.normal,
-                                                                      letterSpacing:
-                                                                          -0.408,
-                                                                    )),
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  Container(
-                                                                      margin: EdgeInsets.fromLTRB(
+                                                                  margin: EdgeInsets
+                                                                      .fromLTRB(
                                                                           20,
                                                                           5,
                                                                           0,
                                                                           0),
-                                                                      child: Text(
-                                                                          '${viewModel.membersList[index].memberPhone},',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily: 'Oxygen',
-                                                                            color: Color(0xff9c9b9f),
-                                                                            fontSize: 12,
-                                                                            fontWeight: FontWeight.w700,
-                                                                            fontStyle: FontStyle.normal,
-                                                                            letterSpacing: -0.408,
-                                                                          ))),
-                                                                  Container(
-                                                                      margin: EdgeInsets.fromLTRB(
+                                                                  child: Text(
+                                                                      '${viewModel.membersList[index].memberPhone},',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Oxygen',
+                                                                        color: Color(
+                                                                            0xff9c9b9f),
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        letterSpacing:
+                                                                            -0.408,
+                                                                      ))),
+                                                              Container(
+                                                                  margin: EdgeInsets
+                                                                      .fromLTRB(
                                                                           5,
                                                                           5,
                                                                           0,
                                                                           0),
-                                                                      child: Text(
-                                                                          '${viewModel.membersList[index].memberGender}',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontFamily: 'Oxygen',
-                                                                            color: Color(0xff9c9b9f),
-                                                                            fontSize: 12,
-                                                                            fontWeight: FontWeight.w700,
-                                                                            fontStyle: FontStyle.normal,
-                                                                            letterSpacing: -0.408,
-                                                                          ))),
-                                                                ],
-                                                              ),
+                                                                  child: Text(
+                                                                      '${viewModel.membersList[index].memberGender}',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            'Oxygen',
+                                                                        color: Color(
+                                                                            0xff9c9b9f),
+                                                                        fontSize:
+                                                                            12,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        fontStyle:
+                                                                            FontStyle.normal,
+                                                                        letterSpacing:
+                                                                            -0.408,
+                                                                      ))),
                                                             ],
                                                           ),
                                                         ],
                                                       ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                PopupMenuButton(
+                                                  onSelected: (result) {
+                                                    if (result == 'Edit') {
+                                                      editMember(viewModel,
+                                                          index, context);
+                                                    } else if (result ==
+                                                        'Delete') {
+                                                      viewModel.deleteFamily();
+                                                    }
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.more_vert,
+                                                    color: Colors.black,
+                                                    size: 18,
+                                                  ),
+                                                  itemBuilder: (BuildContext
+                                                          context) =>
+                                                      <PopupMenuEntry<dynamic>>[
+                                                    PopupMenuItem<dynamic>(
+                                                      value: 'Edit',
+                                                      child: Text('Edit'),
                                                     ),
-                                                    PopupMenuButton(
-                                                      onSelected: (result) {
-                                                        if (result == 'Edit') {
-                                                          editMember(viewModel,
-                                                              index, context);
-                                                        } else if (result ==
-                                                            'Delete') {
-                                                          viewModel
-                                                              .deleteFamily();
-                                                        }
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.more_vert,
-                                                        color: Colors.black,
-                                                        size: 18,
-                                                      ),
-                                                      itemBuilder: (BuildContext
-                                                              context) =>
-                                                          <PopupMenuEntry<
-                                                                  dynamic>>[
-                                                        PopupMenuItem<dynamic>(
-                                                          value: 'Edit',
-                                                          child: Text('Edit'),
-                                                        ),
-                                                        PopupMenuItem<dynamic>(
-                                                          value: 'Delete',
-                                                          child: Text('Delete'),
-                                                        ),
-                                                      ],
+                                                    PopupMenuItem<dynamic>(
+                                                      value: 'Delete',
+                                                      child: Text('Delete'),
                                                     ),
                                                   ],
                                                 ),
-                                              ),
-                                              Divider(),
-                                            ],
-                                          );
-                                        }),
+                                              ],
+                                            ),
+                                          ),
+                                          Divider(),
+                                        ],
+                                      );
+                                    }),
                               ),
                               // widget.pill != null
                               //     ? Padding(
@@ -1076,7 +1089,6 @@ class _AddFamilyState extends State<AddFamily> {
 showAlertDialog(BuildContext context, AddManuallyViewModel viewModel,
     {Pill pill}) {
   // set up the buttons
-
 
   // Widget submitButton = FlatButton(
   //   child: Text("No", style: TextStyle(color: Colors.red, fontSize: 20),),

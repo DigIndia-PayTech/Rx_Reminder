@@ -1,3 +1,7 @@
+import 'dart:io';
+
 class EditProfile{
- var user_id,name,lastname,mobile_no,email,password,dob,gender,age,city,photo;
+ String name,lastname,email,password,dob,gender,city;
+ File photo;
+ int userID,mobileNo,age;
 }

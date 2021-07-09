@@ -372,33 +372,25 @@ class _SignInState extends State<SignIn> {
                                       );
                                     },
                                     child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
 
                                         Container(
-                                            margin: EdgeInsets.fromLTRB(70, 10, 0, 10),
+                                            // margin: EdgeInsets.fromLTRB(70, 10, 0, 10),
                                             child: Text('Not an User?')),
                                         SizedBox(width: 5,),
                                         Container(
-                                          // height: 40,
-                                          // decoration: BoxDecoration(
-                                          //     border:
-                                          //     Border.all(color: Colors.black12),
-                                          //     color: Color(0xff2c98f0),
-                                          //     borderRadius:
-                                          //     BorderRadius.circular(10)),
-                                          child: Container(
-                                            // padding: EdgeInsets.all(6),
-                                            alignment: Alignment.center,
-                                            child: Text("SignUp",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  color: Colors.blue,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
+                                          // padding: EdgeInsets.all(6),
+                                          // alignment: Alignment.center,
+                                          child: Text("SignUp",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                color: Colors.blue,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                              )),
                                         ),
                                       ],
                                     ),

@@ -18,10 +18,13 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool userpasswrd = false;
+
   var _formKey = GlobalKey<FormState>();
   bool userconf = false;
+
   bool last = false;
   var validText = '';
+
   // final bool isValid ;
   bool today = false;
   bool isvalid = false;
@@ -60,12 +63,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    double sWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return ViewModelBuilder <AddManuallyViewModel
-    >.reactive(
+    double sWidth = MediaQuery.of(context).size.width;
+    return ViewModelBuilder<AddManuallyViewModel>.reactive(
         disposeViewModel: false,
         viewModelBuilder: () => AddManuallyViewModel(),
         builder: (context, viewModel, child) {
@@ -124,26 +123,23 @@ class _SignUpState extends State<SignUp> {
                         ),
                         child: SingleChildScrollView(
                           child: Container(
-                            height: MediaQuery
-                                .of(context)
-                                .size
-                                .height + 280,
+                            height: MediaQuery.of(context).size.height + 280,
                             child: Column(
                               children: [
                                 Row(
                                   children: [
                                     Expanded(
                                       child: Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            20, 10, 5, 0),
+                                        margin:
+                                            EdgeInsets.fromLTRB(20, 10, 5, 0),
                                         padding: EdgeInsets.all(5),
                                         height: 50,
                                         decoration: new BoxDecoration(
-                                            border:
-                                            Border.all(color: Colors.black12),
+                                            border: Border.all(
+                                                color: Colors.black12),
                                             color: Color(0xffffffff),
                                             borderRadius:
-                                            BorderRadius.circular(10)),
+                                                BorderRadius.circular(10)),
                                         child: Image.asset(
                                           'assets/images/google.png',
                                           height: 30,
@@ -152,16 +148,16 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     Expanded(
                                       child: Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            5, 10, 5, 0),
+                                        margin:
+                                            EdgeInsets.fromLTRB(5, 10, 5, 0),
                                         padding: EdgeInsets.all(5),
                                         height: 50,
                                         decoration: new BoxDecoration(
-                                            border:
-                                            Border.all(color: Colors.black12),
+                                            border: Border.all(
+                                                color: Colors.black12),
                                             color: Color(0xffffffff),
                                             borderRadius:
-                                            BorderRadius.circular(10)),
+                                                BorderRadius.circular(10)),
                                         child: Image.asset(
                                           'assets/images/fb.png',
                                           height: 30,
@@ -170,16 +166,16 @@ class _SignUpState extends State<SignUp> {
                                     ),
                                     Expanded(
                                       child: Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            5, 10, 20, 0),
+                                        margin:
+                                            EdgeInsets.fromLTRB(5, 10, 20, 0),
                                         padding: EdgeInsets.all(5),
                                         height: 50,
                                         decoration: new BoxDecoration(
-                                            border:
-                                            Border.all(color: Colors.black12),
+                                            border: Border.all(
+                                                color: Colors.black12),
                                             color: Color(0xffffffff),
                                             borderRadius:
-                                            BorderRadius.circular(10)),
+                                                BorderRadius.circular(10)),
                                         child: Image.asset(
                                           'assets/images/apple.png',
                                           height: 30,
@@ -191,8 +187,8 @@ class _SignUpState extends State<SignUp> {
                                 Row(
                                   children: [
                                     Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            40, 40, 0, 0),
+                                        margin:
+                                            EdgeInsets.fromLTRB(40, 40, 0, 0),
                                         width: 69,
                                         height: 1,
                                         decoration: new BoxDecoration(
@@ -210,8 +206,8 @@ class _SignUpState extends State<SignUp> {
                                           )),
                                     ),
                                     Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            5, 40, 0, 0),
+                                        margin:
+                                            EdgeInsets.fromLTRB(5, 40, 0, 0),
                                         width: 69,
                                         height: 1,
                                         decoration: new BoxDecoration(
@@ -244,8 +240,8 @@ class _SignUpState extends State<SignUp> {
                                     keyboardType: TextInputType.name,
                                     maxLines: 1,
                                     controller: viewModel.username,
-                                    decoration:
-                                    InputDecoration(border: InputBorder.none),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Container(
@@ -274,8 +270,7 @@ class _SignUpState extends State<SignUp> {
                                     keyboardType: TextInputType.name,
                                     maxLines: 1,
                                     controller: viewModel.lastname,
-                                    decoration:
-                                    InputDecoration(
+                                    decoration: InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 ),
@@ -346,8 +341,8 @@ class _SignUpState extends State<SignUp> {
                                     keyboardType: TextInputType.emailAddress,
                                     maxLines: 1,
                                     controller: viewModel.email,
-                                    decoration:
-                                    InputDecoration(border: InputBorder.none),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Container(
@@ -377,8 +372,7 @@ class _SignUpState extends State<SignUp> {
                                     maxLines: 1,
                                     maxLength: 2,
                                     controller: viewModel.age,
-                                    decoration:
-                                    InputDecoration(
+                                    decoration: InputDecoration(
                                         counterText: "",
                                         border: InputBorder.none),
                                   ),
@@ -409,8 +403,8 @@ class _SignUpState extends State<SignUp> {
                                     keyboardType: TextInputType.streetAddress,
                                     maxLines: 1,
                                     controller: viewModel.city,
-                                    decoration:
-                                    InputDecoration(border: InputBorder.none),
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
                                   ),
                                 ),
                                 Container(
@@ -435,11 +429,13 @@ class _SignUpState extends State<SignUp> {
                                       color: Color(0xffffffff),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextField(
+                                    maxLength: 6,
                                     textInputAction: TextInputAction.next,
                                     obscureText: !userpasswrd,
                                     maxLines: 1,
                                     controller: viewModel.password,
                                     decoration: InputDecoration(
+                                      counterText: "",
                                       border: InputBorder.none,
                                       suffixIcon: IconButton(
                                         icon: Icon(
@@ -489,6 +485,7 @@ class _SignUpState extends State<SignUp> {
                                       color: Color(0xffffffff),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
+                                    maxLength: 6,
                                     textInputAction: TextInputAction.next,
                                     validator: (validator) {
                                       if (validator.isEmpty) return 'Empty';
@@ -635,54 +632,64 @@ class _SignUpState extends State<SignUp> {
                                           '') {
                                         showAlertDialogName(context, viewModel);
                                       } else if (viewModel.phone.text
-                                          .toString() ==
+                                              .toString() ==
                                           '') {
                                         showAlertDialogMob(context, viewModel);
                                       } else if (viewModel.email.text
-                                          .toString() ==
-                                          '')
-
-                                      {
+                                              .toString() ==
+                                          '') {
                                         showAlertDialogEmail(
                                             context, viewModel);
-                                      }
-
-                                      else
-                                      if (viewModel.age.text.toString() ==
+                                      } else if (viewModel.age.text
+                                              .toString() ==
                                           '') {
                                         showAlertDialogAge(context, viewModel);
-                                      } else
-                                      if (viewModel.city.text.toString() ==
+                                      } else if (viewModel.city.text
+                                              .toString() ==
                                           '') {
                                         showAlertDialogCity(context, viewModel);
                                       } else if (viewModel.password.text
-                                          .toString() ==
+                                              .toString() ==
                                           '') {
                                         showAlertDialogPass(context, viewModel);
-                                      }
-                                      else if(viewModel.phone.text.length!= 10){
+                                      } else if (viewModel
+                                              .password.text.length !=
+                                          6) {
+                                        return Fluttertoast.showToast(
+                                            msg:
+                                                "Password must be 6 characters",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 2,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+                                      } else if (viewModel.phone.text.length !=
+                                          10) {
+                                        return Fluttertoast.showToast(
+                                            msg:
+                                                "Mobile Number must be 10 digits",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 2,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
 
-                                          return Fluttertoast.showToast(
-                                              msg: "Mobile Number must be 10 digits",
-                                              toastLength: Toast.LENGTH_SHORT,
-                                              gravity: ToastGravity.CENTER,
-                                              timeInSecForIosWeb: 2,
-                                              backgroundColor: Colors.red,
-                                              textColor: Colors.white,
-                                              fontSize: 16.0);
-
-                                        // viewModel.signUpPost(
+                                        // viewModel.^(?:[+0]9)?[0-9]{10}$(
                                         //     context, widget.pill);
                                         // _form.currentState.validate();
-                                      }else {
+                                      } else {
                                         // final isValid = _formKey.currentState.validate();
-                                        isvalid = EmailValidator.validate(viewModel.email.text);
+                                        isvalid = EmailValidator.validate(
+                                            viewModel.email.text);
 
                                         if (isvalid) {
-                                          viewModel.signUpPost(context, widget.pill);
-                                              //     context, widget.pill);
+                                          viewModel.signUpPost(
+                                              context, widget.pill);
+                                          //     context, widget.pill);
                                         } else {
-                                         return Fluttertoast.showToast(
+                                          return Fluttertoast.showToast(
                                               msg: "Please Enter a valid Email",
                                               toastLength: Toast.LENGTH_SHORT,
                                               gravity: ToastGravity.CENTER,
@@ -700,10 +707,10 @@ class _SignUpState extends State<SignUp> {
                                       height: 50,
                                       decoration: BoxDecoration(
                                           border:
-                                          Border.all(color: Colors.black12),
+                                              Border.all(color: Colors.black12),
                                           color: Color(0xff2c98f0),
                                           borderRadius:
-                                          BorderRadius.circular(10)),
+                                              BorderRadius.circular(10)),
                                       child: Container(
                                         padding: EdgeInsets.all(12),
                                         alignment: Alignment.center,
@@ -733,38 +740,35 @@ class _SignUpState extends State<SignUp> {
                                       );
                                     },
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-
                                         Container(
-                                            margin: EdgeInsets.fromLTRB(
-                                                70, 10, 0, 10),
+                                            // margin: EdgeInsets.fromLTRB(
+                                            //     70, 10, 0, 10),
                                             child: Text('Existing User?')),
-                                        SizedBox(width: 5,),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
                                         Container(
-                                          // height: 40,
-                                          // decoration: BoxDecoration(
-                                          //     border:
-                                          //     Border.all(color: Colors.black12),
-                                          //     color: Color(0xff2c98f0),
-                                          //     borderRadius:
-                                          //     BorderRadius.circular(10)),
-                                          child: Container(
-                                            // padding: EdgeInsets.all(6),
-                                            alignment: Alignment.center,
-                                            child: Text("SignIn",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  color: Colors.blue,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontStyle: FontStyle.normal,
-                                                )),
-                                          ),
+                                          // padding: EdgeInsets.all(6),
+                                          // alignment: Alignment.center,
+                                          child: Text("SignIn",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                color: Colors.blue,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                fontStyle: FontStyle.normal,
+                                              )),
                                         ),
                                       ],
                                     ),
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 10,
                                 )
                               ],
                             ),
@@ -1019,8 +1023,7 @@ showAlertDialogPass(BuildContext context, AddManuallyViewModel viewModel) {
   );
 }
 
-showAlertDialogConfPass(BuildContext context,
-    AddManuallyViewModel viewModel) {
+showAlertDialogConfPass(BuildContext context, AddManuallyViewModel viewModel) {
   // set up the buttons
 
   Widget submitButton = FlatButton(

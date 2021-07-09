@@ -23,10 +23,16 @@ class _editprofileState extends State<editprofile> {
   bool today = false;
   Color _colorContainer = Color(0xffffffff);
   Color _colorContainer1 = Color(0xffffffff);
+  TextEditingController editUserphone = TextEditingController();
+  TextEditingController editUserage = TextEditingController();
+  TextEditingController editUsercity = TextEditingController();
+  TextEditingController editUserpassword = TextEditingController();
+  TextEditingController editUseremail = TextEditingController();
+  TextEditingController editUsername = TextEditingController();
+  TextEditingController editLastname = TextEditingController();
 
   var _image;
-
-  Future getImage(ImgSource source) async {
+  Future getImage(ImgSource source, AddManuallyViewModel viewModel) async {
     var image = await ImagePickerGC.pickImage(
         enableCloseButton: true,
         closeIcon: Icon(
@@ -51,7 +57,7 @@ class _editprofileState extends State<editprofile> {
           style: TextStyle(color: Colors.blue),
         ));
     setState(() {
-      _image = image;
+      viewModel.userImage = image;
     });
   }
 
@@ -59,6 +65,11 @@ class _editprofileState extends State<editprofile> {
   void initState() {
     userpasswrd = false;
   }
+
+
+
+
+  var editUsergender;
 
   final _form = GlobalKey<FormState>();
 
@@ -69,16 +80,18 @@ class _editprofileState extends State<editprofile> {
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => AddManuallyViewModel(),
-      // onModelReady: (viewModel) => viewModel.initialise(widget.extractText),
+      fireOnModelReadyOnce: true,
+      onModelReady: (viewModel) {
+        editUsername.text = widget.editProfile.name;
+        editUserphone.text = widget.editProfile.mobileNo.toString();
+        editUseremail.text = widget.editProfile.email;
+        editUsergender = widget.editProfile.gender;
+        editUsercity.text = widget.editProfile.city;
+        editUserpassword.text = widget.editProfile.password;
+        editUserage.text = widget.editProfile.age.toString();
+      },
 
       builder: (context, viewModel, child) {
-        viewModel.editUsername.text = widget.editProfile.name;
-        viewModel.editUserphone.text = widget.editProfile.mobile_no;
-        viewModel.editUseremail.text = widget.editProfile.email;
-        viewModel.editUsergender = widget.editProfile.gender;
-        viewModel.editUsercity.text = widget.editProfile.city;
-        viewModel.editUserpassword.text = widget.editProfile.password;
-        viewModel.editUserage.text = widget.editProfile.age;
         return Scaffold(
           key: _form,
           backgroundColor: Color(0xff2c98f0),
@@ -137,10 +150,10 @@ class _editprofileState extends State<editprofile> {
                                   ),
                                   child: ClipRRect(
                                      borderRadius: BorderRadius.circular(70),
-                                    child: _image != null
+                                    child: viewModel.userImage!= null
                                         ? Image.file(
                                             File(
-                                              _image.path,
+                                              viewModel.userImage.path,
                                             ),
                                       fit: BoxFit.cover,
 
@@ -164,7 +177,7 @@ class _editprofileState extends State<editprofile> {
                                     child: InkWell(
                                       onTap: () {
                                         getImage(
-                                          ImgSource.Both,
+                                          ImgSource.Both,viewModel
                                         );
                                       },
                                       child: new Icon(
@@ -221,7 +234,7 @@ class _editprofileState extends State<editprofile> {
                         keyboardType: TextInputType.name,
                         maxLines: 1,
                         textInputAction: TextInputAction.next,
-                        controller: viewModel.editUsername,
+                        controller: editUsername,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -251,7 +264,7 @@ class _editprofileState extends State<editprofile> {
                         maxLength: 10,
                         maxLines: 1,
                         textInputAction: TextInputAction.next,
-                        controller: viewModel.editUserphone,
+                        controller: editUserphone,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           counterText: "",
@@ -283,7 +296,7 @@ class _editprofileState extends State<editprofile> {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         maxLines: 1,
-                        controller: viewModel.editUseremail,
+                        controller:editUseremail,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -312,7 +325,7 @@ class _editprofileState extends State<editprofile> {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.number,
                         maxLines: 1,
-                        controller: viewModel.editUserage,
+                        controller:editUserage,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -341,7 +354,7 @@ class _editprofileState extends State<editprofile> {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.streetAddress,
                         maxLines: 1,
-                        controller: viewModel.editUsercity,
+                        controller: editUsercity,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -370,7 +383,7 @@ class _editprofileState extends State<editprofile> {
                         textInputAction: TextInputAction.next,
                         obscureText: !userpasswrd,
                         maxLines: 1,
-                        controller: viewModel.editUserpassword,
+                        controller: editUserpassword,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           suffixIcon: IconButton(
@@ -497,34 +510,45 @@ class _editprofileState extends State<editprofile> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                       child: InkWell(
                         onTap: () {
-                          if (viewModel.editUsername.text.toString() ==
+                          if (editUsername.text.toString() ==
                               '') {
                             showAlertDialogName(context, viewModel);
-                          } else if (viewModel.editUserphone.text
+                          } else if (editUserphone.text
                               .toString() ==
                               '') {
                             showAlertDialogMob(context, viewModel);
-                          } else if (viewModel.editUseremail.text
+                          } else if (editUseremail.text
                               .toString() ==
                               '') {
                             showAlertDialogEmail(context, viewModel);
-                          } else if (viewModel.editUserage.text.toString() ==
+                          } else if (editUserage.text.toString() ==
                               '') {
                             showAlertDialogAge(context, viewModel);
-                          } else if (viewModel.editUsercity.text.toString() ==
+                          } else if (editUsercity.text.toString() ==
                               '') {
                             showAlertDialogCity(context, viewModel);
-                          } else if (viewModel.editUserpassword.text
+                          } else if (editUserpassword.text
                               .toString() ==
                               '') {
                             showAlertDialogPass(context, viewModel);
                           } else {
-                          viewModel.updateProfile();
+                            widget.editProfile.name=editUsername.text;
+                            widget.editProfile.mobileNo = int.parse(editUserphone.text.toString());
+                            widget.editProfile.email = editUseremail.text;
+                            // widget.editProfile.gender = editUsergender;
+                            widget.editProfile.age = int.parse(editUserage.text.toString());
+                            widget.editProfile.password = editUserpassword.text;
+                            widget.editProfile.city = editUsercity.text;
+
+                          viewModel.updateProfile(context,widget.editProfile);
+                          //print('image...${File(
+                            //  viewModel.userImage.path,
+                            //)},');
                           // _form.currentState.validate();
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Profile()));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => Profile()));
                           }
                         },
                         child: Container(

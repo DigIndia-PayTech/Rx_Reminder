@@ -1,6 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Medicine_Remainder/listPages/Profile.dart';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'package:http/http.dart' as http;
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
@@ -28,7 +32,7 @@ class AddManuallyViewModel extends BaseViewModel {
   List<Pill> pillList = [];
   List<FamilyMember> membersList = [];
   List<RxHistory> historyList = [];
-
+  var userImage;
   //List<Pill> familyMembersList = [];
   List<Pill> selectedPillList = [];
   List<Pill> onGoingPillList = [];
@@ -46,8 +50,8 @@ class AddManuallyViewModel extends BaseViewModel {
     hh = meridian == 'AM'
         ? hh
         : hh < 12
-            ? (hh + 12)
-            : hh;
+        ? (hh + 12)
+        : hh;
     mm = int.parse(data.substring(3, 5));
     Time time = Time(hh, mm, 0);
     print(time.hour);
@@ -107,20 +111,8 @@ class AddManuallyViewModel extends BaseViewModel {
   TextEditingController email_mob = TextEditingController();
   TextEditingController signinPass = TextEditingController();
 
-  TextEditingController editUsername = TextEditingController();
-  TextEditingController editLastname = TextEditingController();
 
-  TextEditingController editUserphone = TextEditingController();
-  TextEditingController editUserage = TextEditingController();
-  TextEditingController editUsercity = TextEditingController();
-  TextEditingController editUserpassword = TextEditingController();
-  TextEditingController editUseremail = TextEditingController();
 
-  var editUsergender;
-
-  TextEditingController famname = TextEditingController();
-  TextEditingController famPhn = TextEditingController();
-  TextEditingController fammsg = TextEditingController();
   var gen;
 
   TextEditingController editdateController1 = TextEditingController();
@@ -137,6 +129,8 @@ class AddManuallyViewModel extends BaseViewModel {
   var editdata;
   var editday;
 
+  var userPhn;
+
   // var user_id;
 
   initialise(text) async {
@@ -151,6 +145,7 @@ class AddManuallyViewModel extends BaseViewModel {
   sharedPreferences() async {
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
+    userPhn = sp.getInt('UserPhn').toString();
   }
 
   getMemberid() {
@@ -227,18 +222,36 @@ class AddManuallyViewModel extends BaseViewModel {
         print('phone exists');
         showAlertDialogSignInMobile(context, pill: pill);
       } else if (responseCode == "001") {
-        print('tyuii');
-
         showAlertDialogSucessSignUp(context, pill: pill);
-        // Timer(),
-        await Future<String>.delayed(const Duration(seconds: 5));
-
+        await Future<String>.delayed(const Duration(seconds: 2));
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => SignIn(
+                builder: (context) =>
+                    SignIn(
                       pill: pill,
                     )));
+        print('tyuii');
+
+        // showAlertDialogSucessSignUp(context, pill: pill);
+        // // Timer(),
+        // // await Future<String>.delayed(const Duration(seconds: 1));
+        //
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => SignIn(
+        //               pill: pill,
+        //             )));
+
+
+        // await Future<String>.delayed(const Duration(seconds: 2));
+        //
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => SignIn(
+        //   pill: pill,
+        // )));
+
         // userId = data[0]['user_id'].toString();
         // sp.setInt('UserID', int.parse(userId));
 
@@ -281,7 +294,9 @@ class AddManuallyViewModel extends BaseViewModel {
         } else if (responsecode == "001") {
           print('tyuii');
           userId = data[0]['user_id'].toString();
+          userPhn = data[0]['mobile_no'].toString();
           sp.setInt('UserID', int.parse(userId));
+          sp.setInt('UserPhn', int.parse(userPhn));
 
           showAlertDialogSucessSignIn(context, pill: pill);
           await Future<String>.delayed(const Duration(seconds: 2));
@@ -413,53 +428,62 @@ class AddManuallyViewModel extends BaseViewModel {
     var cron = Cron();
     print(time);
     cron.schedule(Schedule.parse('*/5 */${time.minute} */${time.hour} * * *'),
-        () async {
-      print('Cron running');
-      var telephony = Telephony.instance;
-      int i=0;
-      pill.familyMembers.forEach((member) {
-        i++;
-        print('Member Count: $i');
-        print('SMS sent to ${member.mobile}');
-        telephony.sendSms(
-            to: member.mobile,
-            message:
-                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
-      });
-      final NotificationManager notificationManager = NotificationManager();
-      notificationManager.initNotifications();
-      notificationManager.showNotification(
-        int.parse(rxID),
-        'Time to take your ${pill.rxTitle}',
-        'Take ${pill.whenInDay[0].count} pills',
-      );
-      var url = '${server.serverurl}add_rx_history';
-      print('fuiooo');
-      var data = {
-        "secretpass": "ADMIN",
-        "secretkey": "ADMIN",
-        "rx_id": rxID,
-        "track_date": pill.startDate,
-        "track_time": pill.whenInDay[0].time,
-        "status": 'Completed',
-        // "gender": famGender.toString(),
-      };
-      // var body = json.encode(data);
-      print('data notiii..$data');
-      var response = await http.post(Uri.parse(url), body: data);
-      if (response.statusCode == 200) {
-        print('success noti data ... posted');
-        print(response.body);
-        var parsed = json.decode('${response.body}');
-        // scheduleMessage(famPhone.text);
-        var trackId = parsed[0]['track_id'];
-        print('track id $trackId');
-        // sp.setInt('MemberID', trackId);
-      } else {
-        print('failed noti post..${response.statusCode}');
-      }
-      cron.close();
-    });
+            () async {
+          print('Cron running');
+          var telephony = Telephony.instance;
+          int i = 0;
+          print('user phn: $userPhn');
+          print('SMS sent to user ');
+          telephony.sendSms(
+              to: userPhn,
+              message:
+              'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0]
+                  .count} pills');
+
+          pill.familyMembers.forEach((member) {
+            i++;
+            print('Member Count: $i');
+            print('SMS sent to ${member.mobile}');
+            telephony.sendSms(
+                to: member.mobile,
+                message:
+                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0]
+                    .count} pills');
+          });
+          final NotificationManager notificationManager = NotificationManager();
+          notificationManager.initNotifications();
+          notificationManager.showNotification(
+            int.parse(rxID),
+            'Time to take your ${pill.rxTitle}',
+            'Take ${pill.whenInDay[0].count} pills',
+          );
+          var url = '${server.serverurl}add_rx_history';
+          print('fuiooo');
+          var data = {
+            "secretpass": "ADMIN",
+            "secretkey": "ADMIN",
+            "rx_id": rxID,
+            "track_date": pill.startDate,
+            "track_time": pill.whenInDay[0].time,
+            "status": 'Completed',
+            // "gender": famGender.toString(),
+          };
+          // var body = json.encode(data);
+          print('data notiii..$data');
+          var response = await http.post(Uri.parse(url), body: data);
+          if (response.statusCode == 200) {
+            print('success noti data ... posted');
+            print(response.body);
+            var parsed = json.decode('${response.body}');
+            // scheduleMessage(famPhone.text);
+            var trackId = parsed[0]['track_id'];
+            print('track id $trackId');
+            // sp.setInt('MemberID', trackId);
+          } else {
+            print('failed noti post..${response.statusCode}');
+          }
+          cron.close();
+        });
     //
     // final NotificationManager notificationManager = NotificationManager();
     // notificationManager.initNotifications();
@@ -505,10 +529,13 @@ class AddManuallyViewModel extends BaseViewModel {
   //------Family List get function----
   familyList() async {
     setBusy(true);
+    notifyListeners();
+
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
     Uri url = Uri.parse(
-        "${server.serverurl}members_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+        "${server
+            .serverurl}members_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
 
     var response = await http.get(url);
     data = jsonDecode(response.body)[0]["Data"];
@@ -529,7 +556,7 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-----EditFamily members---
-  editFamily(context) async {
+  editFamily(context,name,mobileNo) async {
     sp = await SharedPreferences.getInstance();
     memberId = sp.getInt('MemberID').toString();
     var url = '${server.serverurl}edit_member';
@@ -537,8 +564,8 @@ class AddManuallyViewModel extends BaseViewModel {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
       "member_id": memberId,
-      "member_name": famname.text,
-      "mobile_no": famPhn.text.toString(),
+      "member_name": name,
+      "mobile_no": mobileNo,
       "message": famMsg.text.toString(),
       "gender": gen.toString(),
     };
@@ -593,7 +620,8 @@ class AddManuallyViewModel extends BaseViewModel {
     userId = sp.getInt('UserID').toString();
     setBusy(true);
     Uri url = Uri.parse(
-        "${server.serverurl}rx_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+        "${server
+            .serverurl}rx_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
     var response = await http.get(url);
     data = jsonDecode(response.body)[0]['Data'];
     print('rxxxxx$userId');
@@ -613,9 +641,9 @@ class AddManuallyViewModel extends BaseViewModel {
       for (int j = 0; j < data[i]['family_members'].length; j++) {
         pillList.last.familyMembers.add(FamilyList());
         pillList.last.familyMembers.last.name =
-            data[i]['family_members'][j]['name'];
+        data[i]['family_members'][j]['name'];
         pillList.last.familyMembers.last.mobile =
-            data[i]['family_members'][j]['mobile'];
+        data[i]['family_members'][j]['mobile'];
       }
       for (int j = 0; j < data[i]['when_in_day'].length; j++) {
         pillList.last.timeData =
@@ -625,7 +653,7 @@ class AddManuallyViewModel extends BaseViewModel {
         }
         pillList.last.whenInDay.add(WhenInDay());
         pillList.last.whenInDay.last.attribute =
-            data[i]['when_in_day'][j]['attribute'];
+        data[i]['when_in_day'][j]['attribute'];
         pillList.last.whenInDay.last.count = data[i]['when_in_day'][j]['count'];
         pillList.last.whenInDay.last.time = data[i]['when_in_day'][j]['time'];
         pillList.last.whenInDay.last.when = data[i]['when_in_day'][j]['when'];
@@ -658,7 +686,8 @@ class AddManuallyViewModel extends BaseViewModel {
     userId = sp.getInt('UserID').toString();
     // selectedDate = sp.getString('selectedDate');
     Uri url = Uri.parse(
-        "${server.serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId&track_date=$selectedDate");
+        "${server
+            .serverurl}rx_history_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId&track_date=$selectedDate");
     var response = await http.get(url);
     print(url);
     data = jsonDecode(response.body)[0]["Data"];
@@ -678,7 +707,7 @@ class AddManuallyViewModel extends BaseViewModel {
       for (int j = 0; j < data[i]['when_in_day'].length; j++) {
         historyList.last.hiswhenInDay.add(HisWhenInDay());
         historyList.last.hiswhenInDay.last.count =
-            data[i]['when_in_day'][j]['count'];
+        data[i]['when_in_day'][j]['count'];
         // pillList.last.familyMembers.last.mobile =
         // data[i]['family_members'][j]['mobile'];
       }
@@ -687,7 +716,7 @@ class AddManuallyViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  updateHistory(trackId, status,selectedDate) async {
+  updateHistory(trackId, status, selectedDate) async {
     sp = await SharedPreferences.getInstance();
     memberId = sp.getInt('MemberID').toString();
     var url = '${server.serverurl}update_rx_history';
@@ -794,11 +823,24 @@ class AddManuallyViewModel extends BaseViewModel {
 
   //----view specific Rx details----
   viewRxDetails() async {}
-
+  // dii()async{
+  //   String encodedImagePath = base64Encode(await userImage.path.readAsBytes());
+  //   final resp = await http.post(
+  //     Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users')
+  //     ,
+  //     body: {
+  //       'photo':  encodedImagePath,
+  //     },
+  //   );
+  //   final responseJson = resp.body;
+  //   print(responseJson);
+  //   print(encodedImagePath);
+  // }
   //----editProfile----
-  updateProfile() async {
+  updateProfile(context, EditProfile profile) async {
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
+    profile.userID=int.parse(userId);
     var url = '${server.serverurl}update_profile';
     // var request = http.MultipartRequest('POST', Uri.parse(url));
     // request.files.add(await http.MultipartFile.fromPath('picture', file.path));
@@ -806,23 +848,46 @@ class AddManuallyViewModel extends BaseViewModel {
     var data = {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
-      "user_id": userId,
-      "first_name": editUsername.text,
-      "last_name": editLastname.text,
-      "mobile_no": editUserphone.text.toString(),
-      "email": editUseremail.text.toString(),
-      "age": editUserage.text.toString(),
-      "city": editUsercity.text.toString(),
-      "gender": editUsergender.toString(),
-      "password": editUserpassword.text.toString(),
-      // "photo": ,
+      "user_id": userId.toString(),
+      "first_name": profile.name.toString(),
+      "last_name": profile.lastname.toString(),
+      "mobile_no": profile.mobileNo.toString(),
+      "email": profile.email.toString(),
+      "age": profile.age.toString(),
+      "city": profile.city.toString(),
+      "gender": profile.gender.toString(),
+      "password": profile.password.toString(),
+     "photo": '',
     };
+    // var stream = new http.ByteStream(DelegatingStream.typed(userImage.openRead()));
+    // print('image...$userImage');
+    // var length = await userImage.length;
+    // print('image...$userImage');.le
+    // var uri = Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users');
+    //
+    // var request = new http.MultipartRequest("POST", uri);
+    // var multipartFile = new http.MultipartFile('file', stream, length,
+    //     filename: basename(userImage.path));
+    // //contentType: new MediaType('image', 'png'));
+    //
+    // request.files.add(multipartFile);
+    // var resp = await request.send();
+    // print(resp.statusCode);
+    // resp.stream.transform(utf8.decoder).listen((value) {
+    //   print(value);
+    // });
+
     // var body = json.encode(data);
     print('data family..$data');
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print('successfully updated members... posted');
       print(response.body);
+      viewProfile();
+      notifyListeners();
+      showAlertDialogSucessEditProfile(context);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Profile()));
       // var parsed = json.decode('${response.body}');
 
     } else {
@@ -833,10 +898,13 @@ class AddManuallyViewModel extends BaseViewModel {
   //----deleteProfile-----
   viewProfile() async {
     setBusy(true);
+    notifyListeners();
+
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
     Uri url = Uri.parse(
-        "${server.serverurl}view_profile?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
+        "${server
+            .serverurl}view_profile?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
     var response = await http.get(url);
     // var dat = jsonDecode(response.body)[0]['Data'];
     // print('dataaa${response.body}');
@@ -845,8 +913,8 @@ class AddManuallyViewModel extends BaseViewModel {
       print(parsed);
       editProfile.name = parsed[0]["first_name"];
       editProfile.lastname = parsed[0]["last_name"];
-      editProfile.mobile_no = parsed[0]['mobile_no'];
-      editProfile.age = parsed[0]['age'];
+      editProfile.mobileNo = int.parse(parsed[0]['mobile_no']);
+      editProfile.age = int.parse(parsed[0]['age']);
       // editProfile.gender = parsed[0]['gender'];
       editProfile.email = parsed[0]['email'];
       editProfile.city = parsed[0]['city'];
@@ -899,7 +967,6 @@ class AddManuallyViewModel extends BaseViewModel {
 //   addNewMedicine(index,{nameText,descriptionText})async{
 //   medList[index].rxName.add(TextEditingController(text: nameText??''));
 //   medList[index].description.add(TextEditingController());
-//   notifyListeners();
 //   }
 // removeMedicine(index) {
 //   print(index);
@@ -984,7 +1051,8 @@ showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
     },
     btnOkText: 'Try Again',
     // btnOkIcon: Icons.app_registration_rounded,
-  )..show();
+  )
+    ..show();
   // show the dialog
   // showDialog(
   //   context: context,
@@ -1058,7 +1126,8 @@ showAlertDialogSignInEmail(BuildContext context, {Pill pill}) {
     },
     btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,
-  )..show();
+  )
+    ..show();
   // show the dialog
   // showDialog(
   //   context: context,
@@ -1112,32 +1181,86 @@ showAlertDialogSignInMobile(BuildContext context, {Pill pill}) {
   //   // ],
   // );
   AwesomeDialog(
-    context: context,
-    dialogType: DialogType.ERROR,
-    animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Alert',
-    desc: 'Mobile Number Already Exists...!',
-    btnOkText: 'Okay',
-    btnOkOnPress: (){}
-  )..show();
+      context: context,
+      dialogType: DialogType.ERROR,
+      animType: AnimType.BOTTOMSLIDE,
+      tittle: 'Alert',
+      desc: 'Mobile Number Already Exists...!',
+      btnOkText: 'Okay',
+      btnOkOnPress: () {}
+  )
+    ..show();
 }
 
+// showAlertDialogSucessSignUp(BuildContext context, {Pill pill}) {
+//   // set up the AlertDialog
+//   AwesomeDialog(
+//     context: context,
+//     dialogType: DialogType.SUCCES,
+//
+//     animType: AnimType.BOTTOMSLIDE,
+//     tittle: 'Success',
+//     desc: 'User created Successfully..',
+//     btnOkOnPress: () {
+//       Navigator.push(context,
+//           MaterialPageRoute(builder: (context) => SignIn(pill: pill)));
+//     },
+//     btnOkText: 'Okay',);
+//     // btnOkIcon: Icon
+// }
 showAlertDialogSucessSignUp(BuildContext context, {Pill pill}) {
+  // Widget cancelButton = FlatButton(
+  //   child: Text(
+  //     "Try Again",
+  //     style: TextStyle(color: Colors.green, fontSize: 20),
+  //   ),
+  //   onPressed: () {
+  //     Navigator.pop(context);
+  //   },
+  // );
+
+  Widget submitButton = FlatButton(
+    child: Text(
+      "Ok",
+      style: TextStyle(color: Colors.red, fontSize: 20),
+    ),
+    onPressed: () {
+      // viewModel.setReminderPost();
+      // getImage(imageSource);
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (BuildContext context) => SignUp(pill:pill),
+      //   ),
+      // );
+      //---log out of app----
+      // _showMessage();
+    },
+  );
 
   // set up the AlertDialog
   AwesomeDialog(
     context: context,
     dialogType: DialogType.SUCCES,
-
     animType: AnimType.BOTTOMSLIDE,
     tittle: 'Success',
-    desc: 'User created Successfully..',
+    desc: 'User Created.....',
     btnOkOnPress: () {
-      // Navigator.push(context,
-      //     MaterialPageRoute(builder: (context) => AddManual(pill: pill)));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SignIn(pill: pill)));
     },
-    btnOkText: 'Okay',);
-    // btnOkIcon: Icon
+    btnOkText: 'Okay',
+    // btnOkIcon: Icons.app_registration_rounded,
+  )
+    ..show();
+  // show the dialog
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return alert;
+  //   },
+  // );
 }
 
 showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
@@ -1181,7 +1304,8 @@ showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
     btnOkOnPress: () {},
     // btnOkText: 'Okay',
     // btnOkIcon: Icons.app_registration_rounded,
-  )..show();
+  )
+    ..show();
   // show the dialog
   // showDialog(
   //   context: context,
@@ -1219,3 +1343,54 @@ showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
 //     });
 //   }
 // }
+showAlertDialogSucessEditProfile(BuildContext context, {Pill pill}) {
+  // Widget cancelButton = FlatButton(
+  //   child: Text(
+  //     "Try Again",
+  //     style: TextStyle(color: Colors.green, fontSize: 20),
+  //   ),
+  //   onPressed: () {
+  //     Navigator.pop(context);
+  //   },
+  // );
+
+  Widget submitButton = FlatButton(
+    child: Text(
+      "Ok",
+      style: TextStyle(color: Colors.red, fontSize: 20),
+    ),
+    onPressed: () {
+      // viewModel.setReminderPost();
+      // getImage(imageSource);
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (BuildContext context) => SignUp(pill:pill),
+      //   ),
+      // );
+      //---log out of app----
+      // _showMessage();
+    },
+  );
+
+  // set up the AlertDialog
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.SUCCES,
+    animType: AnimType.BOTTOMSLIDE,
+    tittle: 'Success',
+    desc: 'Edited Successfully..',
+    btnOkOnPress: () {},
+    // btnOkText: 'Okay',
+    // btnOkIcon: Icons.app_registration_rounded,
+  )
+    ..show();
+  // show the dialog
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return alert;
+  //   },
+  // );
+}

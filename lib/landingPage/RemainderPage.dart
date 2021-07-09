@@ -23,6 +23,15 @@ class RemainderPage extends StatefulWidget {
 }
 
 class _RemainderPageState extends State<RemainderPage> {
+  AnimationController _animationController;
+  @override
+  void initState(){
+    super.initState();
+
+
+  }
+
+
   final scaffoldState = GlobalKey<ScaffoldState>();
   String _hour, _minute, _time;
   String _setTime1, _setTime2, _setTime3, _setDate1, _setDate2;
@@ -56,6 +65,7 @@ class _RemainderPageState extends State<RemainderPage> {
 
               child: Image.asset('assets/images/addtab.png'),
             ),
+
             Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Text("Medicine Added \n   Successfully",
