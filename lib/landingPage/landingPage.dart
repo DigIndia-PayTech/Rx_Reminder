@@ -263,25 +263,30 @@ class _LandingPageState extends State<LandingPage> {
         },
         builder: (context, viewModel, child) {
           return WillPopScope(
-            onWillPop: () async => false,
+            onWillPop: () async{
+              if(userId!=null)
+                return Future.value(true);
+              else{
+                SystemNavigator.pop();
+                return Future.value(false);
+              }
+            },
             child: Scaffold(
                 backgroundColor: Color(0xff2c98f0),
                 appBar: AppBar(
                   toolbarHeight: 70,
-                  leading: IconButton(
+                  automaticallyImplyLeading: false,
+                  leading: userId != null?IconButton(
                       onPressed: () {
-                        userId != null?
-                        SystemNavigator.pop():
-                        Navigator.push(
-                          // Navigator.of(context).pop();
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
+                        //userId != null?
+                        SystemNavigator.pop();//:
+                        // Navigator.push(
+                        //   // Navigator.of(context).pop();
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => MainPage()));
                       },
-                      icon: userId !=null?Icon(
-                        Icons.keyboard_arrow_left_sharp,
-                        size: 20,
-                      ):Icon(Icons.close)),
+                      icon: Icon(Icons.close)):null,
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,
                   title: Text(

@@ -215,7 +215,7 @@ class _MyPillsState extends State<MyPills> {
                 ),
               ),
               appBar: AppBar(
-                leading: null,
+                automaticallyImplyLeading: false,
                 elevation: 0,
                 backgroundColor: blue,
                 title: // Title

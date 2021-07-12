@@ -435,108 +435,17 @@ class _SelectFamilyState extends State<SelectFamily> {
                           border: InputBorder.none, counterText: ""),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(22, 10, 0, 0),
-                    alignment: Alignment.centerLeft,
-                    child: Text("Gender",
-                        style: TextStyle(
-                          fontFamily: 'Oxygen',
-                          color: Color(0xff4b5567),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          letterSpacing: -0.408,
-                        )),
-                  ),
-                  Row(
-                    children: [
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                viewModel.gen = "Male";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black12),
-                                  color: viewModel.gen == "Male"
-                                      ? Color(0xff2c98f0)
-                                      : Color(0xffffffff),
-                                  borderRadius: BorderRadius.circular(10)),
-                              height: 50,
-                              width: 50,
-                              margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
-                              child: Icon(
-                                Icons.male_outlined,
-                                size: 35,
-                              ),
-                              // color: Colors.blue,
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.fromLTRB(20, 5, 0, 0),
-                              child: Text("Male",
-                                  style: TextStyle(
-                                    fontFamily: 'Oxygen',
-                                    color: Color(0xff9c9b9f),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing: -0.408,
-                                  ))),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                viewModel.gen = "Female";
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.black12),
-                                  color: viewModel.gen == "Female"
-                                      ? Color(0xff2c98f0)
-                                      : Color(0xffffffff),
-                                  borderRadius: BorderRadius.circular(10)),
-                              height: 50,
-                              width: 50,
-                              margin: EdgeInsets.fromLTRB(40, 10, 0, 0),
-                              child: Icon(
-                                Icons.female_outlined,
-                                size: 35,
-                              ),
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.fromLTRB(40, 5, 0, 0),
-                              child: Text("Female",
-                                  style: TextStyle(
-                                    fontFamily: 'Oxygen',
-                                    color: Color(0xff9c9b9f),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                    letterSpacing: -0.408,
-                                  ))),
-                        ],
-                      )
-                    ],
-                  ),
+
                   // Spacer(),
                   //Spacer(),
                   SizedBox(
-                    height: 20,
+                    height: MediaQuery.of(context).viewInsets.bottom==0?20:150,
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
-                        viewModel.editFamily(context,famname.text,famPhn.text);
+                        viewModel.editFamily(context,famname.text,famPhn.text,index);
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => SignUp()));
                       },
@@ -947,7 +856,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                                                         } else if (result ==
                                                             'Delete') {
                                                           viewModel
-                                                              .deleteFamily();
+                                                              .deleteFamily(index);
                                                         }
                                                       },
                                                       icon: Icon(

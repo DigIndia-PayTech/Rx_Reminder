@@ -630,6 +630,7 @@ class _HomePageState extends State<HomePage> {
                       height: 40,
                     ),
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(boxShadow: [
                           BoxShadow(
                               color: Colors.black.withOpacity(0.1),
@@ -684,7 +685,7 @@ class _HomePageState extends State<HomePage> {
                           decorations: [
                             DecorationItem(
                               decorationAlignment:
-                                  FractionalOffset.bottomCenter,
+                                  FractionalOffset.center,
                               date: DateTime.now(),
                               // decoration: Icon(
                               //   Icons.today,

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
@@ -58,6 +59,7 @@ class _editprofileState extends State<editprofile> {
         ));
     setState(() {
       viewModel.userImage = image;
+
     });
   }
 
