@@ -251,8 +251,7 @@ class _ProfileState extends State<Profile> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       editprofile(
-                                                    editProfile:
-                                                        viewModel.editProfile,
+                                                    editProfile: viewModel.editProfile,
                                                   ),
                                                 ),
                                               );

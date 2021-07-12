@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                     // width: 30,
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
                     child: Text(
-                        '${viewModel.historyList[index].hiswhenInDay[0].count}pills',
+                        '${viewModel.historyList[index].hiswhenInDay[0].count} pills',
                         style: TextStyle(
                           fontFamily: 'Oxygen',
                           color: Color(0xff343434),
@@ -159,11 +159,31 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Color(0xffe7e7e7)),
-                child: Image.asset(
+                child:
+                (viewModel.historyList[index].type=='Capsule')? Image.asset(
                   'assets/images/pillList.png',
+                  fit: BoxFit.cover,
                   height: 0.5,
                   color: Colors.grey,
+                ):(viewModel.historyList[index].type=='Tablet')? Image.asset(
+                  'assets/images/pilll.png',
+                  // fit: BoxFit.fill,
+                  height: 0.5,
+                  color: Colors.grey,
+                ):(viewModel.historyList[index].type=='Drops')? Image.asset(
+                  'assets/images/drops.png',
+                  height: 0.5,
+                  color: Colors.grey,
+                ): Image.asset(
+                  'assets/images/tonic.png',
+                  height: 0.5,
+                color: Colors.grey,
                 ),
+                // Image.asset(
+                //   'assets/images/pillList.png',
+                //   height: 0.5,
+                //   color: Colors.grey,
+                // ),
               ),
               Expanded(
                 child: Column(
@@ -629,15 +649,46 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       height: 40,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
+                            width: 6,
+                            height: 6,
+                            decoration: new BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.white)),
+                        Container(
+                          child: Center(
+                            child: Text(
+                              '${_controller.selectedDate.day}/${_controller
+                                  .selectedDate.month}/${_controller
+                                  .selectedDate.year}',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: 'Baloo_2',),
+                            ),
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                            width: 6,
+                            height: 6,
+                            decoration: new BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                color: Colors.white)),
+                      ],
+                    ),
                     Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5),
+                      margin: EdgeInsets.symmetric(horizontal: 2),
                         decoration: BoxDecoration(boxShadow: [
                           BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: Colors.blue,
                               blurRadius: 10,
                               spreadRadius: 0.5)
                         ]),
                         child: CalendarWeek(
+
                           todayDateStyle: TextStyle(
                             color: Colors.white,
                           ),

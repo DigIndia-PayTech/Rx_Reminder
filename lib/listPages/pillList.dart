@@ -1,6 +1,8 @@
+import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
 import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
+import 'package:Medicine_Remainder/listPages/editRxlist.dart';
 import 'package:cron/cron.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +17,16 @@ class MyPills extends StatefulWidget {
 class _MyPillsState extends State<MyPills> {
   String pageStatus = 'Ongoing';
   var selectedIndex;
+  Pill pill;
 
   Widget pillCards(
-      {String title, String endDate, String timeData, String rxStatus}) {
+      {String title,
+      String type,
+      String endDate,
+      String timeData,
+      String rxStatus,
+      AddManuallyViewModel viewModel,
+      int index}) {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       height: 120,
@@ -36,19 +45,37 @@ class _MyPillsState extends State<MyPills> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Rectangle 88
+
           Container(
             margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
+            padding: EdgeInsets.all(2),
             width: 40,
             height: 40,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
               color: Color(0xffe8f1fe),
             ),
-            child: Image.asset(
+            child:
+            (type=='Capsule')? Image.asset(
               'assets/images/pillList.png',
+              fit: BoxFit.cover,
               color: Colors.blue,
               height: 10,
+            ):(type=='Tablet')? Image.asset(
+              'assets/images/pilll.png',
+              // fit: BoxFit.fill,
+              // color: Colors.blue,
+              height: 6,
+            ):(type=='Drops')? Image.asset(
+              'assets/images/drops.png',
+              color: Colors.blue,
+              height: 10,
+            ): Image.asset(
+              'assets/images/tonic.png',
+              // color: Colors.blue,
+              height: 5,
             ),
+
           ),
           Expanded(
             child: Padding(
@@ -83,9 +110,20 @@ class _MyPillsState extends State<MyPills> {
                         ),
                         onSelected: (result) {
                           if (result == 'Edit') {
-                            // editMember(
-                            //     viewModel, index);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) =>
+                            //         EditManual(pill: pill,
+                            //
+                            //         ),
+                            //   ),
+                            // );
+                            // Member(
+                            //     vieditewModel, index);
                           } else if (result == 'Delete') {
+                            viewModel.deleteRx(index);
+
                             // viewModel.deleteLastRow(index);
                           }
                         },
@@ -186,6 +224,7 @@ class _MyPillsState extends State<MyPills> {
         disposeViewModel: false,
         onModelReady: (viewModel) {
           viewModel.sharedPreferences();
+          // viewModel.rxList(pageType);
           //viewModel.getUser();
         },
         builder: (context, viewModel, child) {
@@ -208,7 +247,6 @@ class _MyPillsState extends State<MyPills> {
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
-
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LandingPage()));
                   },
@@ -220,17 +258,17 @@ class _MyPillsState extends State<MyPills> {
                 backgroundColor: blue,
                 title: // Title
                     Container(
-                      padding: EdgeInsets.only(left: 10),
-                      alignment: Alignment.centerLeft,
-                      child: Text("Home",
-                          style: const TextStyle(
-                              color: const Color(0xffffffff),
-                              fontWeight: FontWeight.w700,
-                              fontFamily: "Oxygen",
-                              fontStyle: FontStyle.normal,
-                              fontSize: 20.0),
-                          textAlign: TextAlign.center),
-                    ),
+                  padding: EdgeInsets.only(left: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text("Home",
+                      style: const TextStyle(
+                          color: const Color(0xffffffff),
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Oxygen",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 20.0),
+                      textAlign: TextAlign.center),
+                ),
               ),
               body: ViewModelBuilder<AddManuallyViewModel>.reactive(
                   onModelReady: (viewModel) {
@@ -370,18 +408,22 @@ class _MyPillsState extends State<MyPills> {
                                               viewModel.selectedPillList.length,
                                           itemBuilder: (context, index) {
                                             return pillCards(
-                                                title: viewModel
-                                                    .selectedPillList[index]
-                                                    .rxTitle,
-                                                endDate: viewModel
-                                                    .selectedPillList[index]
-                                                    .endDate,
-                                                timeData: viewModel
-                                                    .selectedPillList[index]
-                                                    .timeData,
-                                                rxStatus: viewModel
-                                                    .selectedPillList[index]
-                                                    .rxStatus);
+                                              title: viewModel
+                                                  .selectedPillList[index]
+                                                  .rxTitle,
+                                              type: viewModel
+                                                  .selectedPillList[index].type,
+                                              endDate: viewModel
+                                                  .selectedPillList[index]
+                                                  .endDate,
+                                              timeData: viewModel
+                                                  .selectedPillList[index]
+                                                  .timeData,
+                                              rxStatus: viewModel
+                                                  .selectedPillList[index]
+                                                  .rxStatus,
+                                              index: index,
+                                            );
                                           },
                                         ),
                                 )

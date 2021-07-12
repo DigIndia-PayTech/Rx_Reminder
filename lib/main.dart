@@ -3,6 +3,7 @@ import 'package:Medicine_Remainder/OnBoardingScreens/onboarding.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
 import 'package:Medicine_Remainder/landingPage/notService.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
+import 'package:Medicine_Remainder/listPages/editRxlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home:
+        // EditManual()
         // HomePage()
         // StartPage()
         // LocalNotificationScreen(),

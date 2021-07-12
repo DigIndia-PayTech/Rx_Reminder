@@ -27,8 +27,6 @@ class _RemainderPageState extends State<RemainderPage> {
   @override
   void initState(){
     super.initState();
-
-
   }
 
 

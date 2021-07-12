@@ -814,7 +814,34 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-----Delete Rx details
-  deleteRx() async {}
+  deleteRx(int index) async {
+    setBusy(true);
+    pillList.clear();
+    // sp = await SharedPreferences.getInstance();
+    // memberId = sp.getInt('MemberID').toString();
+    var url = '${server.serverurl}delete_rx';
+    var data = {
+      "secretpass": "ADMIN",
+      "secretkey": "ADMIN",
+      "rx_id": pillList[index].rxId,
+      // "member_name": famMember.text,
+      // "mobile_no": famPhone.text.toString(),
+      // "message": famMsg.text.toString(),
+      // "gender": famGender.toString(),
+    };
+    // var body = json.encode(data);
+    print('data ..$data');
+    var response = await http.post(Uri.parse(url), body: data);
+    if (response.statusCode == 200) {
+      print('success rx ... deleted');
+      print(response.body);
+      // var parsed = json.decode('${response.body}');
+      familyList();
+    } else {
+      print('failed rx delete...${response.statusCode}');
+    }
+    setBusy(false);
+  }
 
   //----view specific Rx details----
   viewRxDetails() async {}
