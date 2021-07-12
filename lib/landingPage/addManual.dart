@@ -10,6 +10,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
@@ -502,7 +503,42 @@ class _AddManualState extends State<AddManual> {
                             int userID = sp.getInt('UserID');
                             if (userID == null) {
                               showAlertDialog(context, viewModel,pill: pill);
-                            } else {
+                            } else if (medNameController.text.toString()== '') {
+                              return Fluttertoast.showToast(
+                                  msg:
+                                  "Enter Rx Title",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                            else if (qtyController.text.toString()== '') {
+                              return Fluttertoast.showToast(
+                                  msg:
+                                  "Enter Quantity",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                            else if (pill.type== null) {
+                              return Fluttertoast.showToast(
+                                  msg:
+                                  "Select Pill type",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.CENTER,
+                                  timeInSecForIosWeb: 2,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                            else
+
+                              {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

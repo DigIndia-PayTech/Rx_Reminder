@@ -148,7 +148,6 @@ class _editprofileState extends State<editprofile> {
                                   decoration: BoxDecoration(
                                     color: Color(0xfffE5E5E5),
                                     shape: BoxShape.circle,
-
                                   ),
                                   child: ClipRRect(
                                      borderRadius: BorderRadius.circular(70),
@@ -541,7 +540,6 @@ class _editprofileState extends State<editprofile> {
                             widget.editProfile.age = int.parse(editUserage.text.toString());
                             widget.editProfile.password = editUserpassword.text;
                             widget.editProfile.city = editUsercity.text;
-
                           viewModel.updateProfile(context,widget.editProfile);
                           //print('image...${File(
                             //  viewModel.userImage.path,

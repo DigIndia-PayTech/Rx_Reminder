@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
@@ -112,6 +113,10 @@ class _AddFamilyState extends State<AddFamily> {
   final scaffoldState = GlobalKey<ScaffoldState>();
 
   void addMember(AddManuallyViewModel viewModel, BuildContext context) {
+    FamilyMember familyMember = FamilyMember();
+    TextEditingController famMember = TextEditingController();
+    TextEditingController famPhone = TextEditingController();
+    var gen;
     showModalBottomSheet(
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -162,7 +167,7 @@ class _AddFamilyState extends State<AddFamily> {
                       child: TextField(
                         textInputAction: TextInputAction.next,
                         maxLines: 1,
-                        controller: viewModel.famMember,
+                        controller: famMember,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -191,7 +196,7 @@ class _AddFamilyState extends State<AddFamily> {
                         textInputAction: TextInputAction.next,
                         maxLines: 1,
                         keyboardType: TextInputType.number,
-                        controller: viewModel.famPhone,
+                        controller: famPhone,
                         maxLength: 10,
                         decoration: InputDecoration(
                             border: InputBorder.none, counterText: ""),
@@ -217,13 +222,13 @@ class _AddFamilyState extends State<AddFamily> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  viewModel.famGender = "Male";
+                                  gen = "Male";
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: viewModel.famGender == "Male"
+                                    color: gen == "Male"
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -255,13 +260,13 @@ class _AddFamilyState extends State<AddFamily> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  viewModel.famGender = "Female";
+                                  gen = "Female";
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: viewModel.famGender == "Female"
+                                    color: gen == "Female"
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -296,7 +301,10 @@ class _AddFamilyState extends State<AddFamily> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                       child: InkWell(
                         onTap: () {
-                          _editMsg(viewModel);
+                          familyMember.membername=famMember.text;
+                          familyMember.memberPhone=famPhone.text;
+                          familyMember.memberGender = gen;
+                          _editMsg(viewModel,familyMember);
                           // Navigator.push(context,
                           //     MaterialPageRoute(builder: (context) => SignUp()));
                         },
@@ -573,7 +581,8 @@ class _AddFamilyState extends State<AddFamily> {
     );
   }
 
-  void _editMsg(AddManuallyViewModel viewModel) {
+  void _editMsg(AddManuallyViewModel viewModel,FamilyMember familyMember) {
+    TextEditingController famMsg = TextEditingController();
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -636,7 +645,7 @@ class _AddFamilyState extends State<AddFamily> {
                 maxLines: null,
 
                 // maxLines: 1,
-                controller: viewModel.famMsg,
+                controller: famMsg,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintMaxLines: 4,
@@ -657,16 +666,17 @@ class _AddFamilyState extends State<AddFamily> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: InkWell(
                 onTap: () async {
-                  viewModel.familyPost();
+                  familyMember.memberMsg=famMsg.text;
+                  viewModel.familyPost(context, pill,familyMember);
 
                   // await viewModel.familyList();
 
-                  showAlertDialog(context, viewModel);
-                  await Future<String>.delayed(const Duration(seconds: 2));
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddFamily(pill: pill)));
+                  // showAlertDialog(context, viewModel);
+                  // await Future<String>.delayed(const Duration(seconds: 2));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => AddFamily(pill: pill)));
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => MyPills()));
                 },
@@ -1067,7 +1077,7 @@ class _AddFamilyState extends State<AddFamily> {
                                   margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
                                   width: MediaQuery.of(context).size.width,
                                   child: new Text(
-                                      "Remained your loved ones about taking\n\t\t\t \t\t\t\t\t "
+                                      "Remind your loved ones about taking\n\t\t\t \t\t\t\t\t "
                                       " \t\t\t\t\t\t       \t\tmedication",
                                       style: TextStyle(
                                         fontFamily: 'Oxygen',

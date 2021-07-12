@@ -16,7 +16,7 @@
     bool permissionsGranted = await telephony.requestPhoneAndSmsPermissions;
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Rx_Remainder"
+        android:label="Rx_Reminder"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/ic_launcher">
         <activity

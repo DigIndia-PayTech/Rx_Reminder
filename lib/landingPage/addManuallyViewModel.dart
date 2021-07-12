@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
 import 'package:Medicine_Remainder/listPages/Profile.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
@@ -17,6 +19,7 @@ import 'package:cron/cron.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:telephony/telephony.dart';
@@ -109,7 +112,6 @@ class AddManuallyViewModel extends BaseViewModel {
   TextEditingController signinPass = TextEditingController();
 
   var gen;
-
   TextEditingController editdateController1 = TextEditingController();
   TextEditingController editdateController2 = TextEditingController();
   TextEditingController edittimeController1 = TextEditingController();
@@ -485,7 +487,7 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-------Add Family members post function-----
-  familyPost() async {
+  familyPost(context, Pill pill,FamilyMember familyMember) async {
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
     var url = '${server.serverurl}add_member';
@@ -493,10 +495,10 @@ class AddManuallyViewModel extends BaseViewModel {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
       "user_id": userId,
-      "member_name": famMember.text,
-      "mobile_no": famPhone.text.toString(),
-      "message": famMsg.text.toString(),
-      "gender": famGender.toString(),
+      "member_name": familyMember.membername,
+      "mobile_no": familyMember.memberPhone,
+      "message": familyMember.memberMsg,
+      "gender": familyMember.memberGender,
     };
     // var body = json.encode(data);
     print('data family..$data');
@@ -506,8 +508,16 @@ class AddManuallyViewModel extends BaseViewModel {
       print(response.body);
       var parsed = json.decode('${response.body}');
       // scheduleMessage(famPhone.text);
-
       var memberId = parsed[0]['member_id'];
+      var status = parsed[0]['status'];
+      String respCode = parsed[0]['response_code'].toString();
+      if (respCode == "000")
+        {
+          showAlertDialogFamFailure(context, status);
+        }
+      else{
+        showAlertDialogFamSucess(context, pill: pill);
+      }
       print('member id $memberId');
       sp.setInt('MemberID', memberId);
       // familyList();
@@ -515,7 +525,6 @@ class AddManuallyViewModel extends BaseViewModel {
       print('failed fam members...${response.statusCode}');
     }
   }
-
   //------Family List get function----
   familyList() async {
     setBusy(true);
@@ -547,6 +556,7 @@ class AddManuallyViewModel extends BaseViewModel {
   //-----EditFamily members---
   editFamily(context, name, mobileNo,int index) async {
     var url = '${server.serverurl}edit_member';
+
     var data = {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
@@ -828,12 +838,10 @@ class AddManuallyViewModel extends BaseViewModel {
     userId = sp.getInt('UserID').toString();
     profile.userID = int.parse(userId);
     var url = '${server.serverurl}update_profile';
-    print('imagee....${userImage.path}');
-    var pickedFile = File(userImage.path);
-    final baseImage = base64Encode(pickedFile.readAsBytesSync());
-    print('baseimage is..$baseImage');
-
-
+    // print('imagee....${userImage.path}');
+    // var pickedFile = File(userImage.path);
+    // final baseImage = base64Encode(pickedFile.readAsBytesSync());
+    // print('baseimage is..$baseImage');
     // var request = http.MultipartRequest('POST', Uri.parse(url));
     // request.files.add(await http.MultipartFile.fromPath('picture', file.path));
     // var res = await request.send();
@@ -938,12 +946,12 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       print('successfully updated members... posted');
       print(response.body);
-     var  data1 ={
-        'photo': baseImage
-      };
-      var uri1 = Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users');
-      var respo = await http.post(uri1, body: (data1));
-      print('success image${respo.body}');
+     // var  data1 ={
+     //    'photo': baseImage
+     //  };
+     //  var uri1 = Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users');
+     //  var respo = await http.post(uri1, body: (data1));
+     //  print('success image${respo.body}');
       viewProfile();
       notifyListeners();
       showAlertDialogSucessEditProfile(context);
@@ -954,10 +962,6 @@ class AddManuallyViewModel extends BaseViewModel {
       print('failed to update members...${response.statusCode}');
     }
   }
- imagePost() async{
-
-
-}
   //----deleteProfile-----
   viewProfile() async {
     setBusy(true);
@@ -1034,6 +1038,105 @@ class AddManuallyViewModel extends BaseViewModel {
 //   medList.removeAt(index);
 //   notifyListeners();
 // }
+  showAlertDialogFamSucess(BuildContext context, {Pill pill}) {
+    // set up the buttons
+    // Widget cancelButton = FlatButton(
+    //   // shape: ShapeBorder.lerp(, 6, t),
+    //   // color: Colors.redAccent,
+    //   child: Text(
+    //     "OK",
+    //     style: TextStyle(color: Colors.black, fontSize: 20),
+    //   ),
+    //   onPressed: () {
+    //     Navigator.push(
+    //         context, MaterialPageRoute(builder: (context) => MainPage()));
+    //   },
+    // );
+
+    // Widget submitButton = FlatButton(
+    //   child: Text("No", style: TextStyle(color: Colors.red, fontSize: 20),),
+    //   onPressed: () {
+    //
+    //     // viewModel.setReminderPost();
+    //     viewModel.getTitle();
+    //     // getImage(imageSource);
+    //     Navigator.pop(context);
+    //     _showMessage();
+    //
+    //
+    //   },
+    // );
+
+    // set up the AlertDialog
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      tittle: 'Success',
+      desc: 'Family member added successfully..!',
+      btnOkOnPress: () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        familyList();
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => SelectFamily(pill: pill)));
+      },
+      btnOkText: 'Okay',
+      // btnOkIcon: Icons.app_registration_rounded,
+    )..show();
+
+    // show the dialog
+  }
+  showAlertDialogSucessEditProfile(BuildContext context, {Pill pill}) {
+    // Widget cancelButton = FlatButton(
+    //   child: Text(
+    //     "Try Again",
+    //     style: TextStyle(color: Colors.green, fontSize: 20),
+    //   ),
+    //   onPressed: () {
+    //     Navigator.pop(context);
+    //   },
+    // );
+
+    Widget submitButton = FlatButton(
+      child: Text(
+        "Ok",
+        style: TextStyle(color: Colors.red, fontSize: 20),
+      ),
+      onPressed: () {
+        // viewModel.setReminderPost();
+        // getImage(imageSource);
+
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (BuildContext context) => SignUp(pill:pill),
+        //   ),
+        // );
+        //---log out of app----
+        // _showMessage();
+      },
+    );
+
+    // set up the AlertDialog
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      tittle: 'Success',
+      desc: 'Edited Successfully..',
+      btnOkOnPress: () {},
+      // btnOkText: 'Okay',
+      // btnOkIcon: Icons.app_registration_rounded,
+    )..show();
+    // show the dialog
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return alert;
+    //   },
+    // );
+  }
 }
 
 class Medicine {
@@ -1041,7 +1144,76 @@ class Medicine {
 // List<TextEditingController> description = [];
 
 }
+showAlertDialogFamFailure(BuildContext context,status, {Pill pill}) {
+  // Widget cancelButton = FlatButton(
+  //   child: Text(
+  //     "Try Again",
+  //     style: TextStyle(color: Colors.green, fontSize: 20),
+  //   ),
+  //   onPressed: () {
+  //     Navigator.pop(context);
+  //
+  //   },
+  // );
 
+  // Widget submitButton = FlatButton(
+  //   child: Text(
+  //     "SignUp",
+  //     style: TextStyle(color: Colors.red, fontSize: 20),
+  //   ),
+  //   onPressed: () {
+  //     // viewModel.setReminderPost();
+  //     // getImage(imageSource);
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) => SignUp(pill:pill),
+  //       ),
+  //     );
+  //     //---log out of app----
+  //     // _showMessage();
+  //   },
+  // );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("AlertDialog"),
+    content: Text(
+      "Invalid login credentials..!!!",
+      style: TextStyle(color: Colors.red),
+    ),
+    // actions: [
+    //   submitButton,
+    //   cancelButton
+    // ],
+  );
+  AwesomeDialog(
+    context: context,
+    dialogType: DialogType.ERROR,
+    animType: AnimType.BOTTOMSLIDE,
+    tittle: 'Alert',
+    desc: status,
+    // btnCancelIcon: Icons.login,
+    btnOkOnPress: () {
+      Navigator.of(context).pop();
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (BuildContext context) => SignIn(pill: pill),
+      //   ),
+      // );
+    },
+    btnOkText: 'Okay',
+    // btnOkIcon: Icons.app_registration_rounded,
+  )..show();
+  // show the dialog
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return alert;
+  //   },
+  // );
+}
 showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
   // Widget cancelButton = FlatButton(
   //   child: Text(
@@ -1121,6 +1293,7 @@ showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
   //   },
   // );
 }
+
 
 showAlertDialogSignInEmail(BuildContext context, {Pill pill}) {
   // Widget cancelButton = FlatButton(

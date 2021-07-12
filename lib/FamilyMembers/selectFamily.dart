@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
@@ -112,6 +113,10 @@ class _SelectFamilyState extends State<SelectFamily> {
   final scaffoldState = GlobalKey<ScaffoldState>();
 
   void addMember(AddManuallyViewModel viewModel, BuildContext context) {
+    FamilyMember familyMember = FamilyMember();
+    TextEditingController famMember = TextEditingController();
+    TextEditingController famPhone = TextEditingController();
+    var gen;
     showModalBottomSheet(
         isScrollControlled: true,
         shape: RoundedRectangleBorder(
@@ -162,7 +167,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                       child: TextField(
                         textInputAction: TextInputAction.next,
                         maxLines: 1,
-                        controller: viewModel.famMember,
+                        controller: famMember,
                         decoration: InputDecoration(border: InputBorder.none),
                       ),
                     ),
@@ -191,7 +196,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                         textInputAction: TextInputAction.next,
                         maxLines: 1,
                         keyboardType: TextInputType.number,
-                        controller: viewModel.famPhone,
+                        controller: famPhone,
                         maxLength: 10,
                         decoration: InputDecoration(
                             border: InputBorder.none, counterText: ""),
@@ -217,13 +222,13 @@ class _SelectFamilyState extends State<SelectFamily> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  viewModel.famGender = "Male";
+                                  gen = "Male";
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: viewModel.famGender == "Male"
+                                    color: gen == "Male"
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -255,13 +260,13 @@ class _SelectFamilyState extends State<SelectFamily> {
                             InkWell(
                               onTap: () {
                                 setState(() {
-                                  viewModel.famGender = "Female";
+                                  gen = "Female";
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: viewModel.famGender == "Female"
+                                    color:gen == "Female"
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -296,9 +301,10 @@ class _SelectFamilyState extends State<SelectFamily> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                       child: InkWell(
                         onTap: () {
-                          _editMsg(viewModel);
-                          // Navigator.push(context,
-                          //     MaterialPageRoute(builder: (context) => SignUp()));
+                          familyMember.membername=famMember.text;
+                          familyMember.memberPhone=famPhone.text;
+                          familyMember.memberGender = gen;
+                          _editMsg(viewModel,familyMember);
                         },
                         child: Container(
                           height: 50,
@@ -445,7 +451,9 @@ class _SelectFamilyState extends State<SelectFamily> {
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
-                        viewModel.editFamily(context,famname.text,famPhn.text,index);
+
+                          viewModel.editFamily(context,famname.text,famPhn.text,index);
+
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => SignUp()));
                       },
@@ -481,7 +489,8 @@ class _SelectFamilyState extends State<SelectFamily> {
     );
   }
 
-  void _editMsg(AddManuallyViewModel viewModel) {
+  void _editMsg(AddManuallyViewModel viewModel,FamilyMember familyMember) {
+    TextEditingController famMsg = TextEditingController();
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
@@ -544,7 +553,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                 maxLines: null,
 
                 // maxLines: 1,
-                controller: viewModel.famMsg,
+                controller: famMsg,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintMaxLines: 4,
@@ -565,11 +574,11 @@ class _SelectFamilyState extends State<SelectFamily> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: InkWell(
                 onTap: () async {
-                  viewModel.familyPost();
-
+                  familyMember.memberMsg=famMsg.text;
+                  viewModel.familyPost(context, pill,familyMember);
                   // await viewModel.familyList();
 
-                  showAlertDialog(context, viewModel);
+                  // showAlertDialog(context, viewModel);
                   // Navigator.push(context,
                   //     MaterialPageRoute(builder: (context) => MyPills()));
                 },
@@ -989,51 +998,4 @@ class _SelectFamilyState extends State<SelectFamily> {
   }
 }
 
-showAlertDialog(BuildContext context, AddManuallyViewModel viewModel,
-    {Pill pill}) {
-  // set up the buttons
-  Widget cancelButton = FlatButton(
-    // shape: ShapeBorder.lerp(, 6, t),
-    // color: Colors.redAccent,
-    child: Text(
-      "OK",
-      style: TextStyle(color: Colors.black, fontSize: 20),
-    ),
-    onPressed: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
-    },
-  );
 
-  // Widget submitButton = FlatButton(
-  //   child: Text("No", style: TextStyle(color: Colors.red, fontSize: 20),),
-  //   onPressed: () {
-  //
-  //     // viewModel.setReminderPost();
-  //     viewModel.getTitle();
-  //     // getImage(imageSource);
-  //     Navigator.pop(context);
-  //     _showMessage();
-  //
-  //
-  //   },
-  // );
-
-  // set up the AlertDialog
-  AwesomeDialog(
-    context: context,
-    dialogType: DialogType.SUCCES,
-    animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Success',
-    desc: 'Family member added successfully..!',
-    btnOkOnPress: () {
-      viewModel.familyList();
-      Navigator.pop(context);
-      Navigator.pop(context);
-    },
-    btnOkText: 'Okay',
-    // btnOkIcon: Icons.app_registration_rounded,
-  )..show();
-
-  // show the dialog
-}
