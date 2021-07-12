@@ -896,7 +896,6 @@ class _SelectFamilyState extends State<SelectFamily> {
                                           );
                                         }),
                               ),
-
                               Padding(
                                 padding: EdgeInsets.fromLTRB(40, 0, 40, 20),
                                 child: Container(
@@ -941,7 +940,9 @@ class _SelectFamilyState extends State<SelectFamily> {
                             ],
                           ),
                         )
-                      : Container(
+                      :
+
+              Container(
                           // padding: EdgeInsets.only(top: 10),
                           decoration: BoxDecoration(
                             color: Color(0xfffafafa),

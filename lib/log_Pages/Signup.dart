@@ -429,7 +429,7 @@ class _SignUpState extends State<SignUp> {
                                       color: Color(0xffffffff),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextField(
-                                    maxLength: 6,
+                                    // maxLength: 6,
                                     textInputAction: TextInputAction.next,
                                     obscureText: !userpasswrd,
                                     maxLines: 1,
@@ -679,7 +679,23 @@ class _SignUpState extends State<SignUp> {
                                         // viewModel.^(?:[+0]9)?[0-9]{10}$(
                                         //     context, widget.pill);
                                         // _form.currentState.validate();
-                                      } else {
+                                      }
+                                      else if (viewModel.confPassword.text != viewModel.password.text) {
+                                        return Fluttertoast.showToast(
+                                            msg:
+                                            "Password and Confirm Password does not Match..!",
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.CENTER,
+                                            timeInSecForIosWeb: 2,
+                                            backgroundColor: Colors.red,
+                                            textColor: Colors.white,
+                                            fontSize: 16.0);
+
+                                        // viewModel.^(?:[+0]9)?[0-9]{10}$(
+                                        //     context, widget.pill);
+                                        // _form.currentState.validate();
+                                      }
+                                      else {
                                         // final isValid = _formKey.currentState.validate();
                                         isvalid = EmailValidator.validate(
                                             viewModel.email.text);

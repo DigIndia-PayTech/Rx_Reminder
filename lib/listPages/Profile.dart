@@ -219,7 +219,7 @@ class _ProfileState extends State<Profile> {
                                       Container(
                                           margin: EdgeInsets.only(left: 20),
                                           child: Text(
-                                              '${viewModel.editProfile.name ?? 'User Name'}${viewModel.editProfile.lastname ?? ''}',
+                                              '${viewModel.editProfile.name ?? 'User Name'} ${viewModel.editProfile.lastname ?? ''}',
                                               style: TextStyle(
                                                 fontFamily: 'Oxygen',
                                                 color: Color(0xffffffff),
