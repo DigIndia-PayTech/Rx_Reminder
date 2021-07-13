@@ -19,14 +19,7 @@ class _MyPillsState extends State<MyPills> {
   var selectedIndex;
   Pill pill;
 
-  Widget pillCards(
-      {String title,
-      String type,
-      String endDate,
-      String timeData,
-      String rxStatus,
-      AddManuallyViewModel viewModel,
-      int index}) {
+  Widget pillCards(Pill pill, AddManuallyViewModel model, int index) {
     return Container(
       margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
       height: 120,
@@ -55,27 +48,31 @@ class _MyPillsState extends State<MyPills> {
               borderRadius: BorderRadius.all(Radius.circular(5)),
               color: Color(0xffe8f1fe),
             ),
-            child:
-            (type=='Capsule')? Image.asset(
-              'assets/images/pillList.png',
-              fit: BoxFit.cover,
-              color: Colors.blue,
-              height: 10,
-            ):(type=='Tablet')? Image.asset(
-              'assets/images/pilll.png',
-              // fit: BoxFit.fill,
-              // color: Colors.blue,
-              height: 6,
-            ):(type=='Drops')? Image.asset(
-              'assets/images/drops.png',
-              color: Colors.blue,
-              height: 10,
-            ): Image.asset(
-              'assets/images/tonic.png',
-              // color: Colors.blue,
-              height: 5,
-            ),
-
+            child: (pill.type == 'Capsule')
+                ? Image.asset(
+                    'assets/images/pillList.png',
+                    fit: BoxFit.cover,
+                    color: Colors.blue,
+                    height: 10,
+                  )
+                : (pill.type == 'Tablet')
+                    ? Image.asset(
+                        'assets/images/pilll.png',
+                        // fit: BoxFit.fill,
+                        // color: Colors.blue,
+                        height: 6,
+                      )
+                    : (pill.type == 'Drops')
+                        ? Image.asset(
+                            'assets/images/drops.png',
+                            color: Colors.blue,
+                            height: 10,
+                          )
+                        : Image.asset(
+                            'assets/images/tonic.png',
+                            // color: Colors.blue,
+                            height: 5,
+                          ),
           ),
           Expanded(
             child: Padding(
@@ -91,7 +88,7 @@ class _MyPillsState extends State<MyPills> {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            child: Text(title ?? "",
+                            child: Text(pill.rxTitle ?? "",
                                 style: TextStyle(
                                     color: Color(0xff000000),
                                     fontWeight: FontWeight.w700,
@@ -110,19 +107,16 @@ class _MyPillsState extends State<MyPills> {
                         ),
                         onSelected: (result) {
                           if (result == 'Edit') {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) =>
-                            //         EditManual(pill: pill,
-                            //
-                            //         ),
-                            //   ),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditManual(pill: pill),
+                              ),
+                            );
                             // Member(
                             //     vieditewModel, index);
                           } else if (result == 'Delete') {
-                            viewModel.deleteRx(index);
+                            model.deleteRx(pill.rxId);
 
                             // viewModel.deleteLastRow(index);
                           }
@@ -143,7 +137,7 @@ class _MyPillsState extends State<MyPills> {
                   ),
                   Container(
                     child: // Daily/ 8:00 Am - 12:00 Pm - 9:00Pm
-                        Text("Daily: ${timeData ?? ''} ",
+                        Text("Daily: ${pill.timeData ?? ''} ",
                             style: TextStyle(
                                 color: Color(0xff9c9b9f),
                                 fontWeight: FontWeight.w700,
@@ -155,7 +149,7 @@ class _MyPillsState extends State<MyPills> {
                   Container(
                     child: // Daily/ 8:00 Am - 12:00 Pm - 9:00Pm
                         // Until/6-12-2021
-                        Text("Until: ${endDate ?? ''}",
+                        Text("Until: ${pill.endDate ?? ''}",
                             style: const TextStyle(
                                 color: const Color(0xff9c9b9f),
                                 fontWeight: FontWeight.w700,
@@ -166,9 +160,9 @@ class _MyPillsState extends State<MyPills> {
                   ),
                   Container(
                     alignment: Alignment.centerRight,
-                    child: Text(rxStatus ?? '',
+                    child: Text(pill.rxStatus ?? '',
                         style: TextStyle(
-                            color: rxStatus != 'Ongoing'
+                            color: pill.rxStatus != 'Ongoing'
                                 ? Colors.red
                                 : Color(0xffb9b8bd),
                             fontWeight: FontWeight.w700,
@@ -224,6 +218,8 @@ class _MyPillsState extends State<MyPills> {
         disposeViewModel: false,
         onModelReady: (viewModel) {
           viewModel.sharedPreferences();
+          viewModel.rxList('onGoing');
+          pageStatus = 'onGoing';
           // viewModel.rxList(pageType);
           //viewModel.getUser();
         },
@@ -270,170 +266,137 @@ class _MyPillsState extends State<MyPills> {
                       textAlign: TextAlign.center),
                 ),
               ),
-              body: ViewModelBuilder<AddManuallyViewModel>.reactive(
-                  onModelReady: (viewModel) {
-                    viewModel.rxList('onGoing');
-                    pageStatus = 'onGoing';
-                  },
-                  viewModelBuilder: () => AddManuallyViewModel(),
-                  disposeViewModel: false,
-                  builder: (context, viewModel, child) {
-                    return Column(
-                      children: [
+              body: Column(
+                children: [
+                  Container(
+                    height: 150 - AppBar().preferredSize.height - 30,
+                    child: // Rectangle 90
                         Container(
-                          height: 150 - AppBar().preferredSize.height - 30,
-                          child: // Rectangle 90
-                              Container(
-                            margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
-                            height: 40,
+                      margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Color(0x4dc4c4c4),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            width: 24,
+                            height: 24,
+                            child: Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Oxygen",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14.0),
+                              decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(bottom: 10),
+                                  hintText: 'Search',
+                                  hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Oxygen",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14.0),
+                                  border: InputBorder.none),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xfffafafa),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(15, 25, 15, 0),
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: Color(0x4dc4c4c4),
+                                  BorderRadius.all(Radius.circular(25)),
+                              color: Color(0xfff5f5f5),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  width: 24,
-                                  height: 24,
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.white,
-                                  ),
+                                InkWell(
+                                  onTap: () {
+                                    viewModel.updatePillListPageType('onGoing');
+
+                                    setState(() {
+                                      pageStatus = 'onGoing';
+                                    });
+                                  },
+                                  child: typeCard('onGoing',
+                                      pageStatus == 'onGoing' ? true : false),
                                 ),
-                                Expanded(
-                                  child: TextField(
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Oxygen",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
-                                    decoration: InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(bottom: 10),
-                                        hintText: 'Search',
-                                        hintStyle: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Oxygen",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 14.0),
-                                        border: InputBorder.none),
-                                  ),
-                                )
+                                InkWell(
+                                  onTap: () {
+                                    viewModel
+                                        .updatePillListPageType('expiringSoon');
+
+                                    setState(() {
+                                      pageStatus = 'Expiring soon';
+                                    });
+                                  },
+                                  child: typeCard(
+                                      'Expiring soon',
+                                      pageStatus == 'Expiring soon'
+                                          ? true
+                                          : false),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    viewModel.updatePillListPageType('expired');
+
+                                    setState(() {
+                                      pageStatus = 'Expired';
+                                    });
+                                  },
+                                  child: typeCard('Expired',
+                                      pageStatus == 'Expired' ? true : false),
+                                ),
                               ],
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xfffafafa),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(15, 25, 15, 0),
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(25)),
-                                    color: Color(0xfff5f5f5),
+                          Expanded(
+                            child: viewModel.isBusy
+                                ? Center(
+                                    child: CircularProgressIndicator(),
+                                  )
+                                : ListView.builder(
+                                    itemCount:
+                                        viewModel.selectedPillList.length,
+                                    itemBuilder: (context, index) {
+                                      return pillCards(
+                                          viewModel.selectedPillList[index],
+                                          viewModel,
+                                          index);
+                                    },
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          viewModel.updatePillListPageType(
-                                              'onGoing');
-
-                                          setState(() {
-                                            pageStatus = 'onGoing';
-                                          });
-                                        },
-                                        child: typeCard(
-                                            'onGoing',
-                                            pageStatus == 'onGoing'
-                                                ? true
-                                                : false),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          viewModel.updatePillListPageType(
-                                              'expiringSoon');
-
-                                          setState(() {
-                                            pageStatus = 'Expiring soon';
-                                          });
-                                        },
-                                        child: typeCard(
-                                            'Expiring soon',
-                                            pageStatus == 'Expiring soon'
-                                                ? true
-                                                : false),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          viewModel.updatePillListPageType(
-                                              'expired');
-
-                                          setState(() {
-                                            pageStatus = 'Expired';
-                                          });
-                                        },
-                                        child: typeCard(
-                                            'Expired',
-                                            pageStatus == 'Expired'
-                                                ? true
-                                                : false),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  child: viewModel.isBusy
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : ListView.builder(
-                                          itemCount:
-                                              viewModel.selectedPillList.length,
-                                          itemBuilder: (context, index) {
-                                            return pillCards(
-                                              title: viewModel
-                                                  .selectedPillList[index]
-                                                  .rxTitle,
-                                              type: viewModel
-                                                  .selectedPillList[index].type,
-                                              endDate: viewModel
-                                                  .selectedPillList[index]
-                                                  .endDate,
-                                              timeData: viewModel
-                                                  .selectedPillList[index]
-                                                  .timeData,
-                                              rxStatus: viewModel
-                                                  .selectedPillList[index]
-                                                  .rxStatus,
-                                              index: index,
-                                            );
-                                          },
-                                        ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }));
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ));
         });
   }
 }

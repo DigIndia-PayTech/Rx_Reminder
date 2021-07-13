@@ -1,5 +1,6 @@
 
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
+import 'package:Medicine_Remainder/Core/toastPage.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
 import 'package:Medicine_Remainder/landingPage/AddManuallyViewModel.dart';
@@ -39,9 +40,9 @@ class _EditManualState extends State<EditManual> {
   TextEditingController timeController1 = TextEditingController();
   TextEditingController timeController2 = TextEditingController();
   TextEditingController timeController3 = TextEditingController();
-  var count = 0;
+  double count = 0;
   var chosenvalue;
-  var when;
+  String when;
   // setText(viewModel) async{
   //
   //   viewModel.rxTitle = medNameController.text.toString();
@@ -137,20 +138,16 @@ class _EditManualState extends State<EditManual> {
       ),
     );
   }
-  bool mrng = false;
-  bool noon = false;
-  bool night = false;
-  bool bfood = false;
-  bool afood = false;
+
   String dateTime;
 
-  List<String> list = [
-    '1/2',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
+  List<double> list = [
+    1/2,
+    1,
+    2,
+    3,
+    4,
+    5,
   ];
   DateTime selectedDate = DateTime.now();
 
@@ -262,12 +259,11 @@ class _EditManualState extends State<EditManual> {
       });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    int index;
-    double sHeight = MediaQuery.of(context).size.height;
-    double sWidth = MediaQuery.of(context).size.width;
+    int index = widget.index;
+    //double sHeight = MediaQuery.of(context).size.height;
+   // double sWidth = MediaQuery.of(context).size.width;
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => AddManuallyViewModel(),
@@ -275,22 +271,18 @@ class _EditManualState extends State<EditManual> {
 
         pill=widget.pill??Pill();
         // medNameController.text=widget.extractText??pill.rxTitle;
-        medNameController.text = viewModel.pillList[index].rxTitle;
-        medForm= viewModel.pillList[index].type;
-        qtyController.text = viewModel.pillList[index].totalTablets;
-        timeController1.text = viewModel.pillList[index].whenInDay[0].time;
-        timeController2.text = viewModel.pillList[index].whenInDay[1].time;
-        timeController3.text = viewModel.pillList[index].whenInDay[2].time;
-        when= viewModel.pillList[index].whenInDay[0].when;
-        count=int.parse(viewModel.pillList[index].whenInDay[0].count);
-        dateController1.text = viewModel.pillList[index].startDate;
-        dateController2.text = viewModel.pillList[index].endDate;
-
-
+        medNameController.text = pill.rxTitle;
+        medForm= pill.type;
+        qtyController.text = pill.totalTablets;
+        timeController1.text = pill.whenInDay[0].time;
+        timeController2.text = pill.whenInDay[1].time;
+        timeController3.text = pill.whenInDay[2].time;
+        when= pill.whenInDay[0].when;
+        count=double.parse(pill.whenInDay[0].count);
+        dateController1.text = pill.startDate;
+        dateController2.text = pill.endDate;
         // qtyController.text=pill.totalTablets;
         // medNameController.text=widget.extractText??pill.rxTitle;
-
-
       },
       builder: (context, viewModel, child) {
         return WillPopScope(
@@ -635,7 +627,6 @@ class _EditManualState extends State<EditManual> {
                             child: InkWell(
                               onTap: () {
                                 _selectTime1(context, viewModel );
-                                mrng = !mrng;
                                 viewModel.day = 'Morning';
                               },
                               child: Container(
@@ -673,7 +664,7 @@ class _EditManualState extends State<EditManual> {
                             child: InkWell(
                               onTap: () {
                                 _selectTime2(context,viewModel);
-                                noon = !noon;
+
                                 viewModel.day = 'Afternoon';
                               },
                               child: Container(
@@ -714,7 +705,7 @@ class _EditManualState extends State<EditManual> {
                           InkWell(
                             onTap: () {
                               _selectTime3(context,viewModel);
-                              night = !night;
+
                               viewModel.day = 'Night';
                             },
                             child: Container(
@@ -773,8 +764,6 @@ class _EditManualState extends State<EditManual> {
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  bfood = !bfood;
-                                  afood = false;
                                   when = 'before food';
                                 });
                               },
@@ -783,7 +772,7 @@ class _EditManualState extends State<EditManual> {
                                 height: 70,
                                 decoration: new BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: bfood
+                                    color: when == 'before food'
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -794,7 +783,7 @@ class _EditManualState extends State<EditManual> {
                                     Image.asset(
                                       'assets/images/bfre.png',
                                       height: 30,
-                                      color: bfood
+                                      color: when == 'before food'
                                           ? Color(0xffffffff)
                                           : Colors.black,
                                     ),
@@ -803,7 +792,7 @@ class _EditManualState extends State<EditManual> {
                                         child: Text("Before Food",
                                             style: TextStyle(
                                               fontFamily: 'Oxygen',
-                                              color: bfood
+                                              color: when == 'before food'
                                                   ? Color(0xffffffff)
                                                   : Color(0xff9c9b9f),
                                               fontSize: 14,
@@ -820,8 +809,7 @@ class _EditManualState extends State<EditManual> {
                             child: InkWell(
                               onTap: () {
                                 setState(() {
-                                  afood = !afood;
-                                  bfood = false;
+
                                   when = 'After food';
                                 });
                               },
@@ -830,7 +818,7 @@ class _EditManualState extends State<EditManual> {
                                 height: 70,
                                 decoration: new BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color: afood
+                                    color:  when == 'After food'
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -840,7 +828,7 @@ class _EditManualState extends State<EditManual> {
                                   children: [
                                     Image.asset(
                                       'assets/images/aftr.png',
-                                      color: afood
+                                      color:  when == 'After food'
                                           ? Color(0xffffffff)
                                           : Colors.black,
                                       height: 30,
@@ -850,7 +838,7 @@ class _EditManualState extends State<EditManual> {
                                         child: Text("After Food",
                                             style: TextStyle(
                                               fontFamily: 'Oxygen',
-                                              color: afood
+                                              color:  when == 'After food'
                                                   ? Color(0xffffffff)
                                                   : Color(0xff9c9b9f),
                                               fontSize: 14,
@@ -888,15 +876,15 @@ class _EditManualState extends State<EditManual> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: DropdownButtonHideUnderline(
                               // to hide the default underline of the dropdown button
-                              child: DropdownButton<String>(
+                              child: DropdownButton<double>(
                                 icon: Icon(
                                   Icons.arrow_drop_down,
                                   size: 35,
                                   color: Colors.black,
                                 ),
                                 // icon color of the dropdown button
-                                items: list.map((String value) {
-                                  return DropdownMenuItem<String>(
+                                items: list.map((double value) {
+                                  return DropdownMenuItem<double>(
                                     value: value,
                                     child: Text(
                                       '\t\t\t$value',
@@ -904,13 +892,12 @@ class _EditManualState extends State<EditManual> {
                                     ),
                                   );
                                 }).toList(),
-                                onChanged: (String value) {
+                                onChanged: (value) {
                                   setState(() {
-                                    count = int.parse(value);
-
+                                    count = value;
                                   });
                                 },
-                                value: viewModel.chosenvalue,
+                                value: count,//viewModel.chosenvalue,
 
                                 // displaying the selected value
                               ),
@@ -1019,9 +1006,6 @@ class _EditManualState extends State<EditManual> {
                           ),
                         ],
                       ),
-
-
-
                       Spacer(),
                       Padding(
                         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -1031,19 +1015,9 @@ class _EditManualState extends State<EditManual> {
                             pill.totalTablets=qtyController.text;
                             SharedPreferences sp =
                             await SharedPreferences.getInstance();
-                            int userID = sp.getInt('UserID');
-                            if (userID == null) {
-                              showAlertDialog(context, viewModel,pill: pill);
-                            } else if (medNameController.text.toString()== '') {
-                              return Fluttertoast.showToast(
-                                  msg:
-                                  "Enter Rx Title",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.CENTER,
-                                  timeInSecForIosWeb: 2,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                            // int userID = sp.getInt('UserID');
+                         if (medNameController.text.toString()== '') {
+                              showToast('Enter Rx Title');
                             }
                             else if (qtyController.text.toString()== '') {
                               return Fluttertoast.showToast(
@@ -1070,13 +1044,7 @@ class _EditManualState extends State<EditManual> {
                             else
 
                             {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      RemainderPage(pill:pill),
-                                ),
-                              );
+                              viewModel.editRx(pill,context);
                             }
 
                             // var route = new MaterialPageRoute(

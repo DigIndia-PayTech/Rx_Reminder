@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
+import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/listPages/Profile.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -487,7 +488,7 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-------Add Family members post function-----
-  familyPost(context, Pill pill,FamilyMember familyMember) async {
+  familyPost(context, Pill pill, FamilyMember familyMember) async {
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
     var url = '${server.serverurl}add_member';
@@ -511,11 +512,9 @@ class AddManuallyViewModel extends BaseViewModel {
       var memberId = parsed[0]['member_id'];
       var status = parsed[0]['status'];
       String respCode = parsed[0]['response_code'].toString();
-      if (respCode == "000")
-        {
-          showAlertDialogFamFailure(context, status);
-        }
-      else{
+      if (respCode == "000") {
+        showAlertDialogFamFailure(context, status);
+      } else {
         showAlertDialogFamSucess(context, pill: pill);
       }
       print('member id $memberId');
@@ -525,6 +524,7 @@ class AddManuallyViewModel extends BaseViewModel {
       print('failed fam members...${response.statusCode}');
     }
   }
+
   //------Family List get function----
   familyList() async {
     setBusy(true);
@@ -554,7 +554,7 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-----EditFamily members---
-  editFamily(context, name, mobileNo,int index) async {
+  editFamily(context, name, mobileNo, int index) async {
     var url = '${server.serverurl}edit_member';
 
     var data = {
@@ -613,9 +613,14 @@ class AddManuallyViewModel extends BaseViewModel {
 
   //------Rx list get function------
   rxList(String pageType) async {
+    setBusy(true);
+    onGoingPillList.clear();
+    expiredPillList.clear();
+    expiringList.clear();
+    pillList.clear();
+    selectedPillList.clear();
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
-    setBusy(true);
     Uri url = Uri.parse(
         "${server.serverurl}rx_list?secretkey=ADMIN&secretpass=ADMIN&user_id=$userId");
     var response = await http.get(url);
@@ -761,60 +766,63 @@ class AddManuallyViewModel extends BaseViewModel {
   }
 
   //-----Edit Rx details-----
-  editRx() async {
+  editRx(Pill pill, context) async {
+    var familyMembers = [];
+    pill.familyMembers.forEach((member) {
+      familyMembers.add({"name": member.name, "value": '${member.mobile}'});
+    });
     sp = await SharedPreferences.getInstance();
     userId = sp.getInt('UserID').toString();
-    var url = '${server.serverurl}edit_member';
+    var url = '${server.serverurl}edit_rx_details';
     var data = {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
       "user_id": userId,
       // medForm.toString(),
-      "type": rxtype,
-      "rx_title": rxname,
-      "total_tablets": qty,
-      "start_date": dateController1.text.toString(),
-      "end_date": dateController2.text.toString(),
+      "rx_id": pill.rxId,
+      "type": pill.type,
+      "rx_title": pill.rxTitle,
+      "total_tablets": pill.totalTablets,
+      "start_date": pill.startDate,
+      "end_date": pill.endDate,
       "when_in_day": json.encode([
         {
           "attribute": day,
-          "time": timeController1.text.toString(),
-          "count": chosenvalue,
-          "food": when
+          "time": pill.whenInDay[0].time,
+          "count": pill.whenInDay[0].count,
+          "food": pill.whenInDay[0].when
         },
         {
           "attribute": day,
-          "time": timeController2.text.toString(),
-          "count": chosenvalue,
-          "food": when
+          "time": pill.whenInDay[1].time,
+          "count": pill.whenInDay[0].count,
+          "food": pill.whenInDay[0].when
         },
         {
           "attribute": day,
-          "time": timeController3.text.toString(),
-          "count": chosenvalue,
-          "food": when
+          "time": pill.whenInDay[2].time,
+          "count": pill.whenInDay[0].count,
+          "food": pill.whenInDay[0].when
         }
       ]),
-      "family_members": json.encode(
-        [
-          {"name": "divva", "value": '9089089070'},
-          {"name": "yooo", "value": '9090909090'},
-        ],
-      ),
+      "family_members": json.encode(familyMembers.toList()),
     };
     // var body = json.encode(data);
     print('data..rxpost...$userId $data');
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
-      print('success...rxpost posted....$userId');
+      print('success...rxpost updated....$userId');
+
       print(response.body);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     } else {
       print('failed...${response.statusCode}');
     }
   }
 
   //-----Delete Rx details
-  deleteRx(int index) async {
+  deleteRx(String rxId) async {
     setBusy(true);
     pillList.clear();
     // sp = await SharedPreferences.getInstance();
@@ -823,7 +831,7 @@ class AddManuallyViewModel extends BaseViewModel {
     var data = {
       "secretpass": "ADMIN",
       "secretkey": "ADMIN",
-      "rx_id": pillList[index].rxId,
+      "rx_id": rxId,
       // "member_name": famMember.text,
       // "mobile_no": famPhone.text.toString(),
       // "message": famMsg.text.toString(),
@@ -836,7 +844,7 @@ class AddManuallyViewModel extends BaseViewModel {
       print('success rx ... deleted');
       print(response.body);
       // var parsed = json.decode('${response.body}');
-      familyList();
+      rxList('onGoing');
     } else {
       print('failed rx delete...${response.statusCode}');
     }
@@ -898,9 +906,6 @@ class AddManuallyViewModel extends BaseViewModel {
     //   });
     // }
 
-
-
-
     // var stream = new http.ByteStream(DelegatingStream.typed(userImage.openRead()));
     // print('image...$userImage');
     // var length = await userImage.length;
@@ -952,8 +957,6 @@ class AddManuallyViewModel extends BaseViewModel {
     //   }
     // }
 
-
-
     //
     // var request = new http.MultipartRequest("POST", uri);
     // var multipartFile = new http.MultipartFile('file', stream, length,
@@ -973,12 +976,12 @@ class AddManuallyViewModel extends BaseViewModel {
     if (response.statusCode == 200) {
       print('successfully updated members... posted');
       print(response.body);
-     // var  data1 ={
-     //    'photo': baseImage
-     //  };
-     //  var uri1 = Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users');
-     //  var respo = await http.post(uri1, body: (data1));
-     //  print('success image${respo.body}');
+      // var  data1 ={
+      //    'photo': baseImage
+      //  };
+      //  var uri1 = Uri.parse('https://cr.digindiapaytech.in/admin_assets/images/users');
+      //  var respo = await http.post(uri1, body: (data1));
+      //  print('success image${respo.body}');
       viewProfile();
       notifyListeners();
       showAlertDialogSucessEditProfile(context);
@@ -989,6 +992,7 @@ class AddManuallyViewModel extends BaseViewModel {
       print('failed to update members...${response.statusCode}');
     }
   }
+
   //----deleteProfile-----
   viewProfile() async {
     setBusy(true);
@@ -1114,6 +1118,7 @@ class AddManuallyViewModel extends BaseViewModel {
 
     // show the dialog
   }
+
   showAlertDialogSucessEditProfile(BuildContext context, {Pill pill}) {
     // Widget cancelButton = FlatButton(
     //   child: Text(
@@ -1171,7 +1176,8 @@ class Medicine {
 // List<TextEditingController> description = [];
 
 }
-showAlertDialogFamFailure(BuildContext context,status, {Pill pill}) {
+
+showAlertDialogFamFailure(BuildContext context, status, {Pill pill}) {
   // Widget cancelButton = FlatButton(
   //   child: Text(
   //     "Try Again",
@@ -1241,6 +1247,7 @@ showAlertDialogFamFailure(BuildContext context,status, {Pill pill}) {
   //   },
   // );
 }
+
 showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
   // Widget cancelButton = FlatButton(
   //   child: Text(
@@ -1320,7 +1327,6 @@ showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
   //   },
   // );
 }
-
 
 showAlertDialogSignInEmail(BuildContext context, {Pill pill}) {
   // Widget cancelButton = FlatButton(

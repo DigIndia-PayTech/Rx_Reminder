@@ -266,7 +266,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black12),
-                                    color:gen == "Female"
+                                    color: gen == "Female"
                                         ? Color(0xff2c98f0)
                                         : Color(0xffffffff),
                                     borderRadius: BorderRadius.circular(10)),
@@ -301,10 +301,10 @@ class _SelectFamilyState extends State<SelectFamily> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                       child: InkWell(
                         onTap: () {
-                          familyMember.membername=famMember.text;
-                          familyMember.memberPhone=famPhone.text;
+                          familyMember.membername = famMember.text;
+                          familyMember.memberPhone = famPhone.text;
                           familyMember.memberGender = gen;
-                          _editMsg(viewModel,familyMember);
+                          _editMsg(viewModel, familyMember);
                         },
                         child: Container(
                           height: 50,
@@ -445,14 +445,16 @@ class _SelectFamilyState extends State<SelectFamily> {
                   // Spacer(),
                   //Spacer(),
                   SizedBox(
-                    height: MediaQuery.of(context).viewInsets.bottom==0?20:150,
+                    height: MediaQuery.of(context).viewInsets.bottom == 0
+                        ? 20
+                        : 150,
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
-
-                          viewModel.editFamily(context,famname.text,famPhn.text,index);
+                        viewModel.editFamily(
+                            context, famname.text, famPhn.text, index);
 
                         // Navigator.push(context,
                         //     MaterialPageRoute(builder: (context) => SignUp()));
@@ -489,7 +491,7 @@ class _SelectFamilyState extends State<SelectFamily> {
     );
   }
 
-  void _editMsg(AddManuallyViewModel viewModel,FamilyMember familyMember) {
+  void _editMsg(AddManuallyViewModel viewModel, FamilyMember familyMember) {
     TextEditingController famMsg = TextEditingController();
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -574,8 +576,8 @@ class _SelectFamilyState extends State<SelectFamily> {
               padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: InkWell(
                 onTap: () async {
-                  familyMember.memberMsg=famMsg.text;
-                  viewModel.familyPost(context, pill,familyMember);
+                  familyMember.memberMsg = famMsg.text;
+                  viewModel.familyPost(context, pill, familyMember);
                   // await viewModel.familyList();
 
                   // showAlertDialog(context, viewModel);
@@ -623,326 +625,275 @@ class _SelectFamilyState extends State<SelectFamily> {
         return WillPopScope(
           onWillPop: () async => false,
           child: Scaffold(
-              key: scaffoldState,
+            key: scaffoldState,
+            backgroundColor: Color(0xff2c98f0),
+            appBar: AppBar(
               backgroundColor: Color(0xff2c98f0),
-              appBar: AppBar(
-                backgroundColor: Color(0xff2c98f0),
-                toolbarHeight: 90,
-                leading: IconButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => MainPage()));
-                    },
-                    icon: Icon(
-                      Icons.keyboard_arrow_left_sharp,
-                      size: 40,
-                    )),
-                elevation: 0.0,
-                title: Text(
-                  'Select member',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
+              toolbarHeight: 90,
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MainPage()));
+                  },
+                  icon: Icon(
+                    Icons.keyboard_arrow_left_sharp,
+                    size: 40,
+                  )),
+              elevation: 0.0,
+              title: Text(
+                'Select member',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
               ),
-              floatingActionButton:
-                  MediaQuery.of(context).viewInsets.bottom == 0
-                      ? Container(
-                          margin: EdgeInsets.fromLTRB(
-                              0, 0, 20, widget.pill != null ? 80 : 20),
-                          child: FloatingActionButton(
-                            child: Icon(
-                              Icons.add,
-                              size: 35,
-                            ),
-                            // label: Text(
-                            //    '' ,
-                            //   style: TextStyle(fontSize: 17),
-                            // ),
-                            onPressed: () {
-                              addMember(viewModel, context);
-                              // if (widget.pill == null) {
-                              //
-                              // }
-                              // else {
-                              //   viewModel.membersList.forEach(
-                              //     (element) {
-                              //       if (element.selected) {
-                              //         widget.pill.familyMembers.add(FamilyList());
-                              //         widget.pill.familyMembers.last.name =
-                              //             element.membername;
-                              //         widget.pill.familyMembers.last.mobile =
-                              //             element.memberPhone;
-                              //       }
-                              //     },
-                              //   );
-                              //   viewModel.setReminderPost(widget.pill);
-                              //   _showMessage();// Navigator.push(
-                              //   //   context,
-                              //   //   MaterialPageRoute(
-                              //   //     builder: (context) =>
-                              //   //         RemainderPage(pill: widget.pill),
-                              //   //   ),
-                              //   // );
-                              // }
-                            },
-                          ),
-                        )
-                      : Container(),
-              body: viewModel.isBusy
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
+            ),
+            floatingActionButton: MediaQuery.of(context).viewInsets.bottom == 0
+                ? Container(
+                    margin: EdgeInsets.fromLTRB(
+                        0, 0, 20, widget.pill != null ? 80 : 20),
+                    child: FloatingActionButton(
+                      child: Icon(
+                        Icons.add,
+                        size: 35,
                       ),
-                    )
-                  : viewModel.membersList.length != 0
-                      ? Container(
-                          // padding: EdgeInsets.only(top: 10),
-                          decoration: BoxDecoration(
-                            color: Color(0xfffafafa),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            ),
-                          ),
-                          child: Column(
-                            children: [
-                              // Text('hhh'),
-                              SizedBox(height: 20),
-                              Expanded(
-                                child: viewModel.isBusy
-                                    ? Center(child: CircularProgressIndicator())
-                                    : ListView.builder(
-                                        itemCount: viewModel.membersList.length,
-                                        itemBuilder: (context, index) {
-                                          return Column(
-                                            children: [
-                                              Container(
-                                                // color: Colors.red,
+                      // label: Text(
+                      //    '' ,
+                      //   style: TextStyle(fontSize: 17),
+                      // ),
+                      onPressed: () {
+                        addMember(viewModel, context);
+                        // if (widget.pill == null) {
+                        //
+                        // }
+                        // else {
+                        //   viewModel.membersList.forEach(
+                        //     (element) {
+                        //       if (element.selected) {
+                        //         widget.pill.familyMembers.add(FamilyList());
+                        //         widget.pill.familyMembers.last.name =
+                        //             element.membername;
+                        //         widget.pill.familyMembers.last.mobile =
+                        //             element.memberPhone;
+                        //       }
+                        //     },
+                        //   );
+                        //   viewModel.setReminderPost(widget.pill);
+                        //   _showMessage();// Navigator.push(
+                        //   //   context,
+                        //   //   MaterialPageRoute(
+                        //   //     builder: (context) =>
+                        //   //         RemainderPage(pill: widget.pill),
+                        //   //   ),
+                        //   // );
+                        // }
+                      },
+                    ),
+                  )
+                : Container(),
+            body: viewModel.isBusy
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                  )
+                : Container(
+                  // padding: EdgeInsets.only(top: 10),
+                  decoration: BoxDecoration(
+                    color: Color(0xfffafafa),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      // Text('hhh'),
+                      SizedBox(height: 20),
+                      Expanded(
+                        child: viewModel.membersList.length!=0?ListView.builder(
+                                itemCount: viewModel.membersList.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      Container(
+                                        // color: Colors.red,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: InkWell(
+                                                onTap: () {
+                                                  viewModel
+                                                          .membersList[
+                                                              index]
+                                                          .selected =
+                                                      !viewModel
+                                                          .membersList[
+                                                              index]
+                                                          .selected;
+                                                  setState(() {});
+                                                },
                                                 child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .start,
                                                   children: [
-                                                    Expanded(
-                                                      child: InkWell(
-                                                        onTap: () {
-                                                          viewModel
+                                                    Container(
+                                                      margin: EdgeInsets
+                                                          .fromLTRB(20,
+                                                              0, 0, 0),
+                                                      height: 50,
+                                                      width: 50,
+                                                      decoration: new BoxDecoration(
+                                                          color: Color(
+                                                              0xfffE8E8E8),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      30)),
+                                                      alignment:
+                                                          Alignment
+                                                              .center,
+                                                      child: !viewModel
+                                                              .membersList[
+                                                                  index]
+                                                              .selected
+                                                          ? Text(
+                                                              '${viewModel.membersList[index].membername.substring(0, 1)}',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .blueGrey,
+                                                                  fontSize:
+                                                                      20,
+                                                                  fontWeight:
+                                                                      FontWeight.bold),
+                                                            )
+                                                          : Icon(
+                                                              Icons
+                                                                  .done,
+                                                              color: Colors
+                                                                  .blueGrey),
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize
+                                                              .min,
+                                                      children: [
+                                                        Container(
+                                                          margin: EdgeInsets
+                                                              .fromLTRB(
+                                                                  20,
+                                                                  0,
+                                                                  0,
+                                                                  0),
+                                                          child: Text(
+                                                              viewModel
                                                                   .membersList[
                                                                       index]
-                                                                  .selected =
-                                                              !viewModel
-                                                                  .membersList[
-                                                                      index]
-                                                                  .selected;
-                                                          setState(() {});
-                                                        },
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                                  .membername,
+                                                              style:
+                                                                  TextStyle(
+                                                                fontFamily:
+                                                                    'Oxygen',
+                                                                color: Color(
+                                                                    0xff000000),
+                                                                fontSize:
+                                                                    16,
+                                                                fontWeight:
+                                                                    FontWeight.w700,
+                                                                fontStyle:
+                                                                    FontStyle.normal,
+                                                                letterSpacing:
+                                                                    -0.408,
+                                                              )),
+                                                        ),
+                                                        Row(
                                                           children: [
                                                             Container(
-                                                              margin: EdgeInsets
-                                                                  .fromLTRB(20,
-                                                                      0, 0, 0),
-                                                              height: 50,
-                                                              width: 50,
-                                                              decoration: new BoxDecoration(
-                                                                  color: Color(
-                                                                      0xfffE8E8E8),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              30)),
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child: !viewModel
-                                                                      .membersList[
-                                                                          index]
-                                                                      .selected
-                                                                  ? Text(
-                                                                      '${viewModel.membersList[index].membername.substring(0, 1)}',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: TextStyle(
-                                                                          color: Colors
-                                                                              .blueGrey,
-                                                                          fontSize:
-                                                                              20,
-                                                                          fontWeight:
-                                                                              FontWeight.bold),
-                                                                    )
-                                                                  : Icon(
-                                                                      Icons
-                                                                          .done,
-                                                                      color: Colors
-                                                                          .blueGrey),
-                                                            ),
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Container(
-                                                                  margin: EdgeInsets
-                                                                      .fromLTRB(
-                                                                          20,
-                                                                          0,
-                                                                          0,
-                                                                          0),
-                                                                  child: Text(
-                                                                      viewModel
-                                                                          .membersList[
-                                                                              index]
-                                                                          .membername,
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontFamily:
-                                                                            'Oxygen',
-                                                                        color: Color(
-                                                                            0xff000000),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontWeight:
-                                                                            FontWeight.w700,
-                                                                        fontStyle:
-                                                                            FontStyle.normal,
-                                                                        letterSpacing:
-                                                                            -0.408,
-                                                                      )),
-                                                                ),
-                                                                Row(
-                                                                  children: [
-                                                                    Container(
-                                                                        margin: EdgeInsets.fromLTRB(
-                                                                            20,
-                                                                            5,
-                                                                            0,
-                                                                            0),
-                                                                        child: Text(
-                                                                            '${viewModel.membersList[index].memberPhone},',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontFamily: 'Oxygen',
-                                                                              color: Color(0xff9c9b9f),
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w700,
-                                                                              fontStyle: FontStyle.normal,
-                                                                              letterSpacing: -0.408,
-                                                                            ))),
-                                                                    Container(
-                                                                        margin: EdgeInsets.fromLTRB(
-                                                                            5,
-                                                                            5,
-                                                                            0,
-                                                                            0),
-                                                                        child: Text(
-                                                                            '${viewModel.membersList[index].memberGender}',
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontFamily: 'Oxygen',
-                                                                              color: Color(0xff9c9b9f),
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w700,
-                                                                              fontStyle: FontStyle.normal,
-                                                                              letterSpacing: -0.408,
-                                                                            ))),
-                                                                  ],
-                                                                ),
-                                                              ],
-                                                            ),
+                                                                margin: EdgeInsets.fromLTRB(
+                                                                    20,
+                                                                    5,
+                                                                    0,
+                                                                    0),
+                                                                child: Text(
+                                                                    '${viewModel.membersList[index].memberPhone},',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily: 'Oxygen',
+                                                                      color: Color(0xff9c9b9f),
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w700,
+                                                                      fontStyle: FontStyle.normal,
+                                                                      letterSpacing: -0.408,
+                                                                    ))),
+                                                            Container(
+                                                                margin: EdgeInsets.fromLTRB(
+                                                                    5,
+                                                                    5,
+                                                                    0,
+                                                                    0),
+                                                                child: Text(
+                                                                    '${viewModel.membersList[index].memberGender}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily: 'Oxygen',
+                                                                      color: Color(0xff9c9b9f),
+                                                                      fontSize: 12,
+                                                                      fontWeight: FontWeight.w700,
+                                                                      fontStyle: FontStyle.normal,
+                                                                      letterSpacing: -0.408,
+                                                                    ))),
                                                           ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    PopupMenuButton(
-                                                      onSelected: (result) {
-                                                        if (result == 'Edit') {
-                                                          editMember(viewModel,
-                                                              index, context);
-                                                        } else if (result ==
-                                                            'Delete') {
-                                                          viewModel
-                                                              .deleteFamily(index);
-                                                        }
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.more_vert,
-                                                        color: Colors.black,
-                                                        size: 18,
-                                                      ),
-                                                      itemBuilder: (BuildContext
-                                                              context) =>
-                                                          <
-                                                              PopupMenuEntry<
-                                                                  dynamic>>[
-                                                        PopupMenuItem<dynamic>(
-                                                          value: 'Edit',
-                                                          child: Text('Edit'),
-                                                        ),
-                                                        PopupMenuItem<dynamic>(
-                                                          value: 'Delete',
-                                                          child: Text('Delete'),
                                                         ),
                                                       ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              Divider(),
-                                            ],
-                                          );
-                                        }),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.fromLTRB(40, 0, 40, 20),
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black12),
-                                      color: Color(0xff2c98f0),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: InkWell(
-                                    onTap: () {
-                                      viewModel.membersList.forEach(
-                                        (element) {
-                                          if (element.selected) {
-                                            widget.pill.familyMembers
-                                                .add(FamilyList());
-                                            widget.pill.familyMembers.last
-                                                .name = element.membername;
-                                            widget.pill.familyMembers.last
-                                                .mobile = element.memberPhone;
-                                          }
-                                        },
-                                      );
-                                      viewModel.setReminderPost(widget.pill);
-                                      _showMessage(viewModel);
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.all(12),
-                                      alignment: Alignment.center,
-                                      child: Text("Continue",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: Color(0xffffffff),
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            fontStyle: FontStyle.normal,
-                                          )),
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      :
-
-              Container(
+                                            ),
+                                            PopupMenuButton(
+                                              onSelected: (result) {
+                                                if (result == 'Edit') {
+                                                  editMember(viewModel,
+                                                      index, context);
+                                                } else if (result ==
+                                                    'Delete') {
+                                                  viewModel
+                                                      .deleteFamily(
+                                                          index);
+                                                }
+                                              },
+                                              icon: Icon(
+                                                Icons.more_vert,
+                                                color: Colors.black,
+                                                size: 18,
+                                              ),
+                                              itemBuilder: (BuildContext
+                                                      context) =>
+                                                  <
+                                                      PopupMenuEntry<
+                                                          dynamic>>[
+                                                PopupMenuItem<dynamic>(
+                                                  value: 'Edit',
+                                                  child: Text('Edit'),
+                                                ),
+                                                PopupMenuItem<dynamic>(
+                                                  value: 'Delete',
+                                                  child: Text('Delete'),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Divider(),
+                                    ],
+                                  );
+                                }):Container(
                           // padding: EdgeInsets.only(top: 10),
                           decoration: BoxDecoration(
                             color: Color(0xfffafafa),
@@ -976,27 +927,73 @@ class _SelectFamilyState extends State<SelectFamily> {
                                     height: 90,
                                   )),
                               Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                                  width: MediaQuery.of(context).size.width,
-                                  child: new Text(
-                                      "Remained your loved ones about taking\n\t\t\t \t\t\t\t\t "
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                                width: MediaQuery.of(context).size.width,
+                                child: new Text(
+                                  "Remained your loved ones about taking\n\t\t\t \t\t\t\t\t "
                                       " \t\t\t\t\t\t       \t\tmedication",
-                                      style: TextStyle(
-                                        fontFamily: 'Oxygen',
-                                        color: Color(0xff9c9b9f),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        letterSpacing: -0.408,
-                                      ))),
+                                  style: TextStyle(
+                                    fontFamily: 'Oxygen',
+                                    color: Color(0xff9c9b9f),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                    letterSpacing: -0.408,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
-                        )),
+                        )
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(40, 0, 40, 20),
+                        child: Container(
+                          height: 50,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black12),
+                              color: Color(0xff2c98f0),
+                              borderRadius: BorderRadius.circular(10)),
+                          child: InkWell(
+                            onTap: () {
+                              viewModel.membersList.forEach(
+                                (element) {
+                                  if (element.selected) {
+                                    widget.pill.familyMembers
+                                        .add(FamilyList());
+                                    widget.pill.familyMembers.last
+                                        .name = element.membername;
+                                    widget.pill.familyMembers.last
+                                        .mobile = element.memberPhone;
+                                  }
+                                },
+                              );
+                              viewModel.setReminderPost(widget.pill);
+                              _showMessage(viewModel);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(12),
+                              alignment: Alignment.center,
+                              child: Text("Continue",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Color(0xffffffff),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+          ),
         );
       },
     );
   }
 }
-
-
