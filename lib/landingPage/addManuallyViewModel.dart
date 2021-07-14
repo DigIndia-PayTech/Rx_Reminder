@@ -395,11 +395,13 @@ class AddManuallyViewModel extends BaseViewModel {
       var parsed = json.decode('${response.body}');
       String rxID = parsed[0]['rx_id'].toString();
       print('Pill when in day length:${pill.whenInDay.length}');
-      pill.whenInDay.forEach((time) {
-        if (time.toString().toString() != '') {
-          scheduleNotifications(pill, rxID, translateTime(time.time));
-        }
-      });
+      pill.whenInDay.forEach(
+        (element) {
+          if (element.time.toString().trim() != '') {
+            scheduleNotifications(pill, rxID, translateTime(element.time));
+          }
+        },
+      );
       // scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
       // pill.familyMembers.forEach((familyMember) {
       //   pill.whenInDay.forEach((whenInDay) {});
@@ -429,6 +431,13 @@ class AddManuallyViewModel extends BaseViewModel {
       int i = 0;
       print('user phn: $userPhn');
       print('SMS sent to user ');
+      final NotificationManager notificationManager = NotificationManager();
+      notificationManager.initNotifications();
+      notificationManager.showNotification(
+        int.parse(rxID),
+        'Time to take your ${pill.rxTitle}',
+        'Take ${pill.whenInDay[0].count} pills',
+      );
       telephony.sendSms(
           to: userPhn,
           message:
@@ -443,13 +452,7 @@ class AddManuallyViewModel extends BaseViewModel {
             message:
                 'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
       });
-      final NotificationManager notificationManager = NotificationManager();
-      notificationManager.initNotifications();
-      notificationManager.showNotification(
-        int.parse(rxID),
-        'Time to take your ${pill.rxTitle}',
-        'Take ${pill.whenInDay[0].count} pills',
-      );
+
       var url = '${server.serverurl}add_rx_history';
       print('fuiooo');
       var data = {
