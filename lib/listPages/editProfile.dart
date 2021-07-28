@@ -7,6 +7,7 @@ import 'package:Medicine_Remainder/listPages/Profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
 
 class editprofile extends StatefulWidget {
@@ -31,7 +32,7 @@ class _editprofileState extends State<editprofile> {
   TextEditingController editUseremail = TextEditingController();
   TextEditingController editUsername = TextEditingController();
   TextEditingController editLastname = TextEditingController();
-
+ var mob;
   var _image;
   Future getImage(ImgSource source, AddManuallyViewModel viewModel) async {
     var image = await ImagePickerGC.pickImage(
@@ -260,16 +261,26 @@ class _editprofileState extends State<editprofile> {
                           border: Border.all(color: Colors.black12),
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        maxLength: 10,
-                        maxLines: 1,
+                      child: IntlPhoneField(
+                        autoValidate: false,
                         textInputAction: TextInputAction.next,
+                        // maxLines: 1,
+                        keyboardType: TextInputType.number,
                         controller: editUserphone,
+                        // maxLength: 10,
                         decoration: InputDecoration(
-                          border: InputBorder.none,
-                          counterText: "",
-                        ),
+                            border: InputBorder.none, counterText: ""),
+                        onChanged: (phn) {
+                          print(phn.completeNumber);
+                          // viewModel.phone.text = phn.completeNumber;
+                          print(viewModel.phone.text);
+                          mob = phn.completeNumber;
+                          print(mob);
+                          // viewModel.phone.text = pp;
+                        },
+                        onCountryChanged: (phn) {
+                          print('Country code changed to: ' + phn.countryCode);
+                        },
                       ),
                     ),
                     Container(
@@ -533,6 +544,8 @@ class _editprofileState extends State<editprofile> {
                               '') {
                             showAlertDialogPass(context, viewModel);
                           } else {
+                            editUserphone.text= mob;
+                            print(editUserphone.text);
                             widget.editProfile.name=editUsername.text;
                             widget.editProfile.mobileNo = int.parse(editUserphone.text.toString());
                             widget.editProfile.email = editUseremail.text;

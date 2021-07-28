@@ -219,7 +219,7 @@ class _ProfileState extends State<Profile> {
                                       Container(
                                           margin: EdgeInsets.only(left: 20),
                                           child: Text(
-                                              '${viewModel.editProfile.name ?? 'User Name'} q${viewModel.editProfile.lastname ?? ''}',
+                                              '${viewModel.editProfile.name ?? 'User Name'} ${viewModel.editProfile.lastname ?? ''}',
                                               style: TextStyle(
                                                 fontFamily: 'Oxygen',
                                                 color: Color(0xffffffff),
@@ -232,7 +232,7 @@ class _ProfileState extends State<Profile> {
                                           margin:
                                               EdgeInsets.fromLTRB(20, 5, 0, 0),
                                           child: Text(
-                                              '${viewModel.editProfile.mobileNo ?? 'Mobile'}, ${viewModel.editProfile.age ?? 'Age'}',
+                                              '+${viewModel.editProfile.mobileNo ?? 'Mobile'}, ${viewModel.editProfile.age ?? 'Age'}',
                                               style: TextStyle(
                                                 fontFamily: 'Oxygen',
                                                 color: Color(0xffffffff),
@@ -592,7 +592,7 @@ showAlertDialogLogout(BuildContext context, AddManuallyViewModel viewModel,
     dialogType: DialogType.SUCCES,
 
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Success',
+    title: 'Success',
     desc: 'Logged Out',
     btnOkOnPress: () {},
     btnOkText: 'Okay',
@@ -644,7 +644,7 @@ showAlertDialogConfirm(BuildContext context, AddManuallyViewModel viewModel,
     context: context,
     dialogType: DialogType.WARNING,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Confirm',
+    title: 'Confirm',
     desc: 'Are you sure..?',
     btnCancelOnPress: () {
       // Navigator.pop(context);

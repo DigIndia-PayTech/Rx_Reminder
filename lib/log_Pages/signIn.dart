@@ -6,6 +6,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
 
 class SignIn extends StatefulWidget {
@@ -20,8 +21,12 @@ class _SignInState extends State<SignIn> {
   bool last = false;
   bool today = false;
   bool isvalid = false;
+  var selectedValue = 1;
   Color _colorContainer = Color(0xffffffff);
   Color _colorContainer1 = Color(0xffffffff);
+  bool phnVisible = false;
+  bool mailVisible = true;
+  var pp;
 
   @override
   void initState() {
@@ -201,37 +206,138 @@ class _SignInState extends State<SignIn> {
                                             color: Color(0xff9c9b9f))),
                                   ],
                                 ),
+                                // Container(
+                                //   margin: EdgeInsets.fromLTRB(20, 40, 0, 0),
+                                //   alignment: Alignment.centerLeft,
+                                //   child: Text("E-Mail/Mobile No.",
+                                //       style: TextStyle(
+                                //         fontFamily: 'Oxygen',
+                                //         color: Color(0xff4b5567),
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w700,
+                                //         fontStyle: FontStyle.normal,
+                                //         letterSpacing: -0.408,
+                                //       )),
+                                // ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(10, 40, 0, 0),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        child: Radio(
+                                          value: 1,
+                                          groupValue: selectedValue,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedValue = value;
+                                              mailVisible= true;
+                                              phnVisible = false;
+                                              viewModel.email_mob.clear();
+                                              // colr = true;
+                                              // colr1 = false;
+                                              // plans = false;
+                                              // smeText = true;
+                                            });
+                                          },
+                                          activeColor: Colors.blue,
+                                        ),
+                                      ),
+                                      Text("E-Mail",
+                                          style: TextStyle(
+                                            fontFamily: 'Oxygen',
+                                            color: Color(0xff4b5567),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing: -0.408,
+                                          )),
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        child: Radio(
+                                          value: 2,
+                                          groupValue: selectedValue,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedValue = value;
+                                              phnVisible= true;
+                                              mailVisible = false;
+                                              viewModel.email_mob.clear();
+                                              // colr = true;
+                                              // colr1 = false;
+                                              // plans = false;
+                                              // smeText = true;
+                                            });
+                                          },
+                                          activeColor: Colors.blue,
+                                        ),
+                                      ),
+                                      Text("Mobile No.",
+                                          style: TextStyle(
+                                            fontFamily: 'Oxygen',
+                                            color: Color(0xff4b5567),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            fontStyle: FontStyle.normal,
+                                            letterSpacing: -0.408,
+                                          )),
 
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(20, 40, 0, 0),
-                                  alignment: Alignment.centerLeft,
-                                  child: Text("E-Mail/Mobile No.",
-                                      style: TextStyle(
-                                        fontFamily: 'Oxygen',
-                                        color: Color(0xff4b5567),
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                        letterSpacing: -0.408,
-                                      )),
+                                    ],
+                                  ),
+
                                 ),
-                                Container(
-                                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.black12),
-                                      color: Color(0xffffffff),
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
-                                    textInputAction: TextInputAction.next,
-                                    maxLines: 1,
-                                    controller: viewModel.email_mob,
-                                    decoration:
-                                        InputDecoration(border: InputBorder.none),
+                                Visibility(
+                                  visible: mailVisible,
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black12),
+                                        color: Color(0xffffffff),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: TextField(
+                                      textInputAction: TextInputAction.next,
+                                      maxLines: 1,
+                                      controller: viewModel.email_mob,
+                                      decoration:
+                                          InputDecoration(border: InputBorder.none),
+                                    ),
                                   ),
                                 ),
-
+                                Visibility(
+                                  visible: phnVisible,
+                                  child: Container(
+                                    margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                                    padding: EdgeInsets.symmetric(horizontal: 10),
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.black12),
+                                        color: Color(0xffffffff),
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: IntlPhoneField(
+                                      // initialCountryCode: '+91',
+                                      autoValidate: false,
+                                      textInputAction: TextInputAction.next,
+                                      // maxLines: 1,
+                                      controller: viewModel.email_mob,
+                                      decoration:
+                                      InputDecoration(border: InputBorder.none,
+                                      counterText: ""),
+                                      onChanged: (phn) {
+                                        print(phn.completeNumber);
+                                        // viewModel.phone.text = phn.completeNumber;
+                                        // print(viewModel.phone.text);
+                                        pp = phn.completeNumber;
+                                        print(pp);// viewModel.phone.text = pp;
+                                      },
+                                      onCountryChanged: (phn) {
+                                        print('Country code changed to: '+ phn.countryCode);
+                                        var kk = phn.countryCode + viewModel.email_mob.text;
+                                        print('kk$kk');
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(20, 10, 0, 0),
                                   alignment: Alignment.centerLeft,
@@ -311,6 +417,10 @@ class _SignInState extends State<SignIn> {
                                         showAlertDialogPass(context, viewModel);
                                       }
                                       else {
+                                        viewModel.email_mob.text = pp;
+                                        print(viewModel.email_mob.text);
+
+
                                       // final isValid = _formKey.currentState.validate();
                                       // isvalid = EmailValidator.validate(viewModel.email.text);
                                       // if (isvalid) {

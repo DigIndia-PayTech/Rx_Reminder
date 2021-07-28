@@ -12,7 +12,7 @@ class NotificationManager {
     return flutterLocalNotificationsPlugin;
   }
 
-  void initNotifications() {
+  void initNotifications() async{
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -22,7 +22,7 @@ class NotificationManager {
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
-    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+   await  flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: onSelectNotification);
   }
 
@@ -40,14 +40,18 @@ class NotificationManager {
   ) async {
     await flutterLocalNotificationsPlugin.show(
         id, title, body, getPlatformChannelSpecfics());
+
+    print('notification');
   }
 
   void showNotificationDaily(
-      int id, String title, String body, Time time) async {
+      int id, String title, String body, Time time, DateTime dateTime) async {
     // Time time = new Time(hour, minute, 0);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
         id, title, body, time, getPlatformChannelSpecfics());
-    print('Notification Succesfully Scheduled at ${time.hour}:${time.minute}');
+    print('Notification Succesfully Scheduled at ${time.hour}:${time.minute}, ${dateTime.month}, ${dateTime.day}');
+    // flutterLocalNotificationsPlugin.schedule(1, "Times Uppp", task,
+    //     scheduledTime, generalNotificationDetails);
   }
 
   getPlatformChannelSpecfics() {

@@ -1,16 +1,18 @@
 import 'dart:io';
-
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tesseract_ocr/flutter_tesseract_ocr.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+// import 'package:learning_input_image/learning_input_image.dart';
+// import 'package:learning_text_recognition/learning_text_recognition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
-import 'package:tesseract_ocr/tesseract_ocr.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   // const LandingPage({Key? key}) : super(key: key);
@@ -21,6 +23,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   List<File> attachmentList = [];
+
   // https://cr.digindiapaytech.in/
   bool _scanning = false;
   bool _debugLocked = false;
@@ -28,7 +31,16 @@ class _LandingPageState extends State<LandingPage> {
   File _pickedImage;
   File croppedFile;
   final picker = ImagePicker();
-
+  // Future<void> _startRecognition(InputImage image) async {
+  //   TextRecognitionState state = Provider.of(context, listen: false);
+  //
+  //   if (state.isNotProcessing) {
+  //     state.startProcessing();
+  //     state.image = image;
+  //     state.data = await _textRecognition?.process(image);
+  //     state.stopProcessing();
+  //   }
+  // }
   Future<int> deleteFile() async {
     try {
       final file = croppedFile;
@@ -38,7 +50,7 @@ class _LandingPageState extends State<LandingPage> {
       return 0;
     }
   }
-
+  // TextRecognition _textRecognition = TextRecognition();
   imageEmpty() async {
     return showDialog(
         context: context,
@@ -63,24 +75,23 @@ class _LandingPageState extends State<LandingPage> {
       croppedFile = null;
     });
   }
-     @override
-     void initState(){
+
+  @override
+  void initState() {
     super.initState();
 
-     getuserId();
-     }
-     var userId;
-     getuserId()async{
-       SharedPreferences sp;
-       sp = await SharedPreferences.getInstance();
-       userId = sp.getInt('UserID').toString();
-     }
+    getuserId();
+  }
+
+  var userId;
+
+  getuserId() async {
+    SharedPreferences sp;
+    sp = await SharedPreferences.getInstance();
+    userId = sp.getInt('UserID').toString();
+  }
 
   getImage(imageSource, viewModel) async {
-
-
-
-
     print("Getting Image");
     final _pickedImage = await picker.getImage(source: imageSource);
     File temp = File(_pickedImage.path);
@@ -96,10 +107,10 @@ class _LandingPageState extends State<LandingPage> {
         sourcePath: pickedImage.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Edit image',
@@ -117,7 +128,7 @@ class _LandingPageState extends State<LandingPage> {
 
   extractText(file, viewModel) async {
     print("Extracting Text");
-    _extractText = await TesseractOcr.extractText(file.path);
+    _extractText = await FlutterTesseractOcr.extractText(file.path);
     print('gyuuu');
     setState(() {
       _scanning = false;
@@ -263,10 +274,10 @@ class _LandingPageState extends State<LandingPage> {
         },
         builder: (context, viewModel, child) {
           return WillPopScope(
-            onWillPop: () async{
-              if(userId!=null)
+            onWillPop: () async {
+              if (userId != null)
                 return Future.value(true);
-              else{
+              else {
                 SystemNavigator.pop();
                 return Future.value(false);
               }
@@ -276,17 +287,19 @@ class _LandingPageState extends State<LandingPage> {
                 appBar: AppBar(
                   toolbarHeight: 70,
                   automaticallyImplyLeading: false,
-                  leading: userId != null?IconButton(
-                      onPressed: () {
-                        //userId != null?
-                        SystemNavigator.pop();//:
-                        // Navigator.push(
-                        //   // Navigator.of(context).pop();
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => MainPage()));
-                      },
-                      icon: Icon(Icons.close)):null,
+                  leading: userId != null
+                      ? IconButton(
+                          onPressed: () {
+                            //userId != null?
+                            SystemNavigator.pop(); //:
+                            // Navigator.push(
+                            //   // Navigator.of(context).pop();
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => MainPage()));
+                          },
+                          icon: Icon(Icons.close))
+                      : null,
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,
                   title: Text(
@@ -374,16 +387,14 @@ class _LandingPageState extends State<LandingPage> {
                                         elevation: 0.0,
                                         onPressed: () {
                                           viewModel.setBusy(true);
-                                          getImage(
-                                              ImageSource.gallery, viewModel);
-                                        },
-                                        child: Icon(
+                                          getImage(ImageSource.gallery, viewModel);
+                                              },
+                                       child: Icon(
                                           Icons.add_photo_alternate,
                                           color: Color(0xff0066ff),
                                         ),
                                         backgroundColor: Color(0xffe8f1ff),
-                                      ),
-                                    ),
+                                      )),
                                     SizedBox(
                                       height: 90.0,
                                       width: 100.0,
@@ -404,8 +415,6 @@ class _LandingPageState extends State<LandingPage> {
                                       child: FloatingActionButton(
                                         elevation: 0.0,
                                         onPressed: () {
-
-
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -448,3 +457,34 @@ class _LandingPageState extends State<LandingPage> {
         viewModelBuilder: () => AddManuallyViewModel());
   }
 }
+// class TextRecognitionState extends ChangeNotifier {
+//   InputImage _image;
+//   RecognizedText _data;
+//   bool _isProcessing = false;
+//
+//   InputImage get image => _image;
+//   RecognizedText get data => _data;
+//   String get text => _data.text;
+//   bool get isNotProcessing => !_isProcessing;
+//   bool get isNotEmpty => _data != null && text.isNotEmpty;
+//
+//   void startProcessing() {
+//     _isProcessing = true;
+//     notifyListeners();
+//   }
+//
+//   void stopProcessing() {
+//     _isProcessing = false;
+//     notifyListeners();
+//   }
+//
+//   set image(InputImage image) {
+//     _image = image;
+//     notifyListeners();
+//   }
+//
+//   set data(RecognizedText data) {
+//     _data = data;
+//     notifyListeners();
+//   }
+// }

@@ -170,10 +170,9 @@ class _RemainderPageState extends State<RemainderPage> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        viewModel.dateController1.text = DateFormat.yMd().format(selectedDate);
+        viewModel.dateController1.text = DateFormat("MM/dd/yyyy").format(selectedDate);
       });
   }
-
   Future<Null> _selectDate2(BuildContext context,
       AddManuallyViewModel viewModel) async {
     final DateTime picked = await showDatePicker(
@@ -185,7 +184,7 @@ class _RemainderPageState extends State<RemainderPage> {
     if (picked != null)
       setState(() {
         selectedDate = picked;
-        viewModel.dateController2.text = DateFormat.yMd().format(selectedDate);
+        viewModel.dateController2.text = DateFormat("MM/dd/yyyy").format(selectedDate);
       });
   }
 
@@ -880,7 +879,7 @@ class _RemainderPageState extends State<RemainderPage> {
       dialogType: DialogType.INFO,
 
       animType: AnimType.BOTTOMSLIDE,
-      tittle: 'Alert',
+      title: 'Alert',
       desc: 'Do You want to remind your family members..?',
       btnCancelOnPress: () {
         viewModel.setReminderPost(widget.pill);

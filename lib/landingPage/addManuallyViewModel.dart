@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/listPages/Profile.dart';
+import 'package:flutter_background/flutter_background.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
@@ -31,6 +33,8 @@ class AddManuallyViewModel extends BaseViewModel {
   bool siPassword = false;
   Server server = new Server();
   List<Pill> pillList = [];
+  List<Pill> scheduleList = [];
+
   List<FamilyMember> membersList = [];
   List<RxHistory> historyList = [];
   var userImage;
@@ -168,6 +172,28 @@ class AddManuallyViewModel extends BaseViewModel {
       List<String> date = data.split('-');
       return date[1] + '/' + date[2] + '/' + date[0];
     }
+  }
+
+  startBackgroundService() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    FlutterBackground.initialize();
+    await FlutterBackgroundService.initialize(onStart);
+  }
+
+  onStart() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final service = FlutterBackgroundService();
+    service.setForegroundMode(true);
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      if (!(await service.isServiceRunning())) timer.cancel();
+      service.setNotificationInfo(
+        title: "My App Service",
+        content: "Updated at ${DateTime.now()}",
+      );
+      service.sendData(
+        {"current_date": DateTime.now().toIso8601String()},
+      );
+    });
   }
 
   // getUserId() async {
@@ -395,13 +421,19 @@ class AddManuallyViewModel extends BaseViewModel {
       var parsed = json.decode('${response.body}');
       String rxID = parsed[0]['rx_id'].toString();
       print('Pill when in day length:${pill.whenInDay.length}');
-      pill.whenInDay.forEach(
-        (element) {
-          if (element.time.toString().trim() != '') {
-            scheduleNotifications(pill, rxID, translateTime(element.time));
-          }
-        },
-      );
+      // pill.whenInDay.forEach(
+      //   (element) {
+      //     if (element.time.toString().trim() != '') {
+      //       WidgetsFlutterBinding.ensureInitialized();
+      //       scheduleNotifications(pill, rxID, translateTime(element.time));
+      //     }
+      //   },
+      // );
+      // WidgetsFlutterBinding.ensureInitialized();
+      // // Firebase.initializeApp();
+      // FlutterBackgroundService.initialize(onStart);
+      // FlutterBackground.initialize();
+
       // scheduleMessage(8618178237, DateTime.parse('2021-07-05 19:15:00'));
       // pill.familyMembers.forEach((familyMember) {
       //   pill.whenInDay.forEach((whenInDay) {});
@@ -421,10 +453,60 @@ class AddManuallyViewModel extends BaseViewModel {
     setBusy(false);
   }
 
-  scheduleNotifications(Pill pill, rxID, Time time) {
+  // void ff() {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   final service = FlutterBackgroundService();
+  //   service.onDataReceived.listen((event) {
+  //     if (event["action"] == "setAsForeground") {
+  //       service.setForegroundMode(true);
+  //       return;
+  //     }
+  //     if (event["action"] == "setAsBackground") {
+  //       service.setForegroundMode(false);
+  //     }
+  //     if (event["action"] == "stopService") {
+  //       service.stopBackgroundService();
+  //     }
+  //   });
+  //   // bring to foreground
+  //   service.setForegroundMode(true);
+  //
+  //   // if (!(await service.isServiceRunning())) timer.cancel();
+  //   var cron = Cron();
+  //   cron.schedule(
+  //       Schedule.parse(
+  //           '*/5 */13 */12 * * *'),
+  //           () async {
+  //         print('Cron running');
+  //         var telephony = Telephony.instance;
+  //         int i = 0;
+  //         // print('user phn: $userPhn');
+  //         print('SMS sent to user ');
+  //         final NotificationManager notificationManager = NotificationManager();
+  //         notificationManager.initNotifications();
+  //         notificationManager.showNotification(
+  //           99,
+  //           'Time to take your ',
+  //           'Take 2 pills',
+  //         );
+  //         telephony.sendSms(
+  //             to: '8618178237', message: 'Time to take your  Take 6 pills');
+  //         cron.close();
+  //       });
+  //   // var telephony = Telephony.instance;
+  //   // telephony.sendSms(
+  //   //     to: '8884499678',
+  //   //     message:
+  //   //     'Time to take your  pills');
+  //   // });
+  // }
+
+  scheduleNotifications(Pill pill, rxID, Time time, DateTime day) {
     var cron = Cron();
     print(time);
-    cron.schedule(Schedule.parse('*/5 */${time.minute} */${time.hour} * * *'),
+    cron.schedule(
+        Schedule.parse(
+            '*/5 */${time.minute} */${time.hour} */${day.day} */${day.month} *'),
         () async {
       print('Cron running');
       var telephony = Telephony.instance;
@@ -663,6 +745,57 @@ class AddManuallyViewModel extends BaseViewModel {
         pillList.last.whenInDay.last.when = data[i]['when_in_day'][j]['when'];
       }
     }
+    List<String> scheduledIDs = [];
+    scheduledIDs = sp.getStringList('scheduledIDs');
+    print(scheduledIDs);
+    List<DateTime> days = [];
+
+    // for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+    //   days.add(startDate.add(Duration(days: i)));
+    // }
+
+    if (scheduledIDs == null) {
+      scheduledIDs=[];
+      pillList.forEach((pill) {
+        for (int i = 0;
+            i <=
+                DateTime.parse(pill.endDate)
+                    .difference(DateTime.parse(pill.startDate))
+                    .inDays;
+            i++) {
+          days.add(DateTime.parse(pill.startDate).add(Duration(days: i)));
+        }
+        days.forEach((day) {
+          pill.whenInDay.forEach((whenDay) {
+            if (whenDay.time.trim() != '')
+              Time xyz = translateTime(whenDay.time);
+            // int x=xyz.hour;
+              scheduleNotifications(
+                  pill, pill.rxId, translateTime(whenDay.time), day);
+            scheduledIDs.add(pill.rxId.toString());
+          });
+        });
+      });
+      sp.setStringList('scheduledIDs', scheduledIDs);
+    } else {
+      pillList.forEach((pill) {
+        bool exists = false;
+        scheduledIDs.forEach((rxId) {
+          if (int.parse(rxId) == int.parse(pill.rxId)) {
+            exists = true;
+          }
+        });
+        if (!exists) {
+          scheduleNotifications(
+              pill, pill.rxId, translateTime(pill.timeData), day);
+          scheduledIDs.add(pill.rxId.toString());
+          sp.setStringList('scheduledIDs', []);
+          sp.setStringList('scheduledIDs', scheduledIDs);
+        }
+      });
+    }
+
+    // if(){}
     for (int k = 0; k < pillList.length; k++) {
       switch (pillList[k].rxStatus) {
         case 'Ongoing':
@@ -1106,7 +1239,7 @@ class AddManuallyViewModel extends BaseViewModel {
       context: context,
       dialogType: DialogType.SUCCES,
       animType: AnimType.BOTTOMSLIDE,
-      tittle: 'Success',
+      title: 'Success',
       desc: 'Family member added successfully..!',
       btnOkOnPress: () {
         Navigator.pop(context);
@@ -1158,7 +1291,7 @@ class AddManuallyViewModel extends BaseViewModel {
       context: context,
       dialogType: DialogType.SUCCES,
       animType: AnimType.BOTTOMSLIDE,
-      tittle: 'Success',
+      title: 'Success',
       desc: 'Edited Successfully..',
       btnOkOnPress: () {},
       // btnOkText: 'Okay',
@@ -1227,7 +1360,7 @@ showAlertDialogFamFailure(BuildContext context, status, {Pill pill}) {
     context: context,
     dialogType: DialogType.ERROR,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Alert',
+    title: 'Alert',
     desc: status,
     // btnCancelIcon: Icons.login,
     btnOkOnPress: () {
@@ -1298,7 +1431,7 @@ showAlertDialogSignInInvalid(BuildContext context, {Pill pill}) {
     context: context,
     dialogType: DialogType.ERROR,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Alert',
+    title: 'Alert',
     desc: 'Invalid Login Credentials...!',
     btnCancelOnPress: () {
       Navigator.push(
@@ -1378,7 +1511,7 @@ showAlertDialogSignInEmail(BuildContext context, {Pill pill}) {
     context: context,
     dialogType: DialogType.ERROR,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Alert',
+    title: 'Alert',
     desc: 'Email Already Exists..!',
     // btnCancelOnPress: () {
     //   Navigator.push(
@@ -1452,7 +1585,7 @@ showAlertDialogSignInMobile(BuildContext context, {Pill pill}) {
       context: context,
       dialogType: DialogType.ERROR,
       animType: AnimType.BOTTOMSLIDE,
-      tittle: 'Alert',
+      title: 'Alert',
       desc: 'Mobile Number Already Exists...!',
       btnOkText: 'Okay',
       btnOkOnPress: () {})
@@ -1511,7 +1644,7 @@ showAlertDialogSucessSignUp(BuildContext context, {Pill pill}) {
     context: context,
     dialogType: DialogType.SUCCES,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Success',
+    title: 'Success',
     desc: 'User Created.....',
     btnOkOnPress: () {
       Navigator.push(
@@ -1565,7 +1698,7 @@ showAlertDialogSucessSignIn(BuildContext context, {Pill pill}) {
     context: context,
     dialogType: DialogType.SUCCES,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Success',
+    title: 'Success',
     desc: 'Login Successfull..',
     btnOkOnPress: () {},
     // btnOkText: 'Okay',
@@ -1645,7 +1778,7 @@ showAlertDialogSucessEditProfile(BuildContext context, {Pill pill}) {
     context: context,
     dialogType: DialogType.SUCCES,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Success',
+    title: 'Success',
     desc: 'Edited Successfully..',
     btnOkOnPress: () {},
     // btnOkText: 'Okay',

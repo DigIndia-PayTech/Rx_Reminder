@@ -626,7 +626,7 @@ showAlertDialog(BuildContext context,AddManuallyViewModel viewModel,{Pill pill})
     context: context,
     dialogType: DialogType.ERROR,
     animType: AnimType.BOTTOMSLIDE,
-    tittle: 'Alert',
+    title: 'Alert',
     desc: 'You have not logged in...!',
     btnCancelOnPress: () {
       Navigator.push(

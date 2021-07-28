@@ -9,6 +9,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
 
 class SelectFamily extends StatefulWidget {
@@ -116,6 +117,7 @@ class _SelectFamilyState extends State<SelectFamily> {
     FamilyMember familyMember = FamilyMember();
     TextEditingController famMember = TextEditingController();
     TextEditingController famPhone = TextEditingController();
+    var pp;
     var gen;
     showModalBottomSheet(
         isScrollControlled: true,
@@ -192,14 +194,26 @@ class _SelectFamilyState extends State<SelectFamily> {
                           border: Border.all(color: Colors.black12),
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10)),
-                      child: TextField(
+                      child: IntlPhoneField(
+                        autoValidate: false,
                         textInputAction: TextInputAction.next,
-                        maxLines: 1,
+                        // maxLines: 1,
                         keyboardType: TextInputType.number,
                         controller: famPhone,
-                        maxLength: 10,
+                        // maxLength: 10,
                         decoration: InputDecoration(
                             border: InputBorder.none, counterText: ""),
+                        onChanged: (phn) {
+                          print(phn.completeNumber);
+                          // viewModel.phone.text = phn.completeNumber;
+                          print(viewModel.phone.text);
+                          pp = phn.completeNumber;
+                          print(pp);
+                          // viewModel.phone.text = pp;
+                        },
+                        onCountryChanged: (phn) {
+                          print('Country code changed to: ' + phn.countryCode);
+                        },
                       ),
                     ),
                     Container(
@@ -301,6 +315,8 @@ class _SelectFamilyState extends State<SelectFamily> {
                       padding: EdgeInsets.fromLTRB(20, 0, 20, 30),
                       child: InkWell(
                         onTap: () {
+                          famPhone.text= pp;
+                          print(famPhone.text);
                           familyMember.membername = famMember.text;
                           familyMember.memberPhone = famPhone.text;
                           familyMember.memberGender = gen;
@@ -339,6 +355,7 @@ class _SelectFamilyState extends State<SelectFamily> {
       AddManuallyViewModel viewModel, int index, BuildContext context) {
     bool last = false;
     bool today = false;
+    var mob;
 
     TextEditingController famname = TextEditingController();
     TextEditingController famPhn = TextEditingController();
@@ -354,8 +371,9 @@ class _SelectFamilyState extends State<SelectFamily> {
       context: context,
       builder: (ctx) => StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
-          return SingleChildScrollView(
-            child: Container(
+          return ListView(
+            shrinkWrap: true,
+            children:[ Container(
               //height: MediaQuery.of(context).size.height * 0.55,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -431,14 +449,26 @@ class _SelectFamilyState extends State<SelectFamily> {
                         border: Border.all(color: Colors.black12),
                         color: Color(0xffffffff),
                         borderRadius: BorderRadius.circular(10)),
-                    child: TextField(
+                    child: IntlPhoneField(
+                      autoValidate: false,
                       textInputAction: TextInputAction.next,
-                      maxLines: 1,
+                      // maxLines: 1,
                       keyboardType: TextInputType.number,
                       controller: famPhn,
-                      maxLength: 10,
+                      // maxLength: 10,
                       decoration: InputDecoration(
                           border: InputBorder.none, counterText: ""),
+                      onChanged: (phn) {
+                        print(phn.completeNumber);
+                        // viewModel.phone.text = phn.completeNumber;
+                        print(viewModel.phone.text);
+                        mob = phn.completeNumber;
+                        print(mob);
+                        // viewModel.phone.text = pp;
+                      },
+                      onCountryChanged: (phn) {
+                        print('Country code changed to: ' + phn.countryCode);
+                      },
                     ),
                   ),
 
@@ -453,6 +483,8 @@ class _SelectFamilyState extends State<SelectFamily> {
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: InkWell(
                       onTap: () {
+                        famPhn.text= mob;
+                        print(famPhn.text);
                         viewModel.editFamily(
                             context, famname.text, famPhn.text, index);
 
@@ -484,7 +516,7 @@ class _SelectFamilyState extends State<SelectFamily> {
                   // Spacer(),
                 ],
               ),
-            ),
+            ),]
           );
         },
       ),

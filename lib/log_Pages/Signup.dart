@@ -5,10 +5,12 @@ import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
 
 class SignUp extends StatefulWidget {
   Pill pill;
+
 
   SignUp({this.pill});
 
@@ -29,7 +31,10 @@ class _SignUpState extends State<SignUp> {
   bool today = false;
   bool isvalid = false;
   Color _colorContainer = Color(0xffffffff);
+  String initialCountry = 'NG';
+  // PhoneNumber number = PhoneNumber(isoCode: 'NG');
   Color _colorContainer1 = Color(0xffffffff);
+  var pp;
 
   @override
   void initState() {
@@ -295,18 +300,34 @@ class _SignUpState extends State<SignUp> {
                                       border: Border.all(color: Colors.black12),
                                       color: Color(0xffffffff),
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: TextField(
+                                  child: IntlPhoneField(
+                                    autoValidate: false,
                                     textInputAction: TextInputAction.next,
                                     keyboardType: TextInputType.phone,
-                                    maxLength: 10,
-                                    maxLines: 1,
+                                    // maxLength: 10,
+                                    // maxLines: 1,
                                     controller: viewModel.phone,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       counterText: "",
                                     ),
+                                    onChanged: (phn) {
+                                      print(phn.completeNumber);
+                                      // viewModel.phone.text = phn.completeNumber;
+                                      print(viewModel.phone.text);
+                                       pp = phn.completeNumber;
+                                      print(pp);
+                                      // viewModel.phone.text = pp;
+                                    },
+                                    onCountryChanged: (phn) {
+                                      print('Country code changed to: ' + phn.countryCode);
+                                    },
                                   ),
+
                                 ),
+
+
+
                                 Container(
                                   margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
                                   alignment: Alignment.centerLeft,
@@ -377,6 +398,15 @@ class _SignUpState extends State<SignUp> {
                                         border: InputBorder.none),
                                   ),
                                 ),
+                                // IntlPhoneField(
+                                //   decoration: InputDecoration(
+                                //     labelText: 'Phone Number',
+                                //     border: OutlineInputBorder(
+                                //       borderSide: BorderSide(),
+                                //     ),
+                                //   ),
+                                //
+                                // ),
                                 Container(
                                   margin: EdgeInsets.fromLTRB(20, 20, 0, 0),
                                   alignment: Alignment.centerLeft,
@@ -628,6 +658,8 @@ class _SignUpState extends State<SignUp> {
                                   padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                                   child: InkWell(
                                     onTap: () {
+                                      viewModel.phone.text = pp;
+                                      print(viewModel.phone.text);
                                       if (viewModel.username.text.toString() ==
                                           '') {
                                         showAlertDialogName(context, viewModel);
@@ -664,22 +696,23 @@ class _SignUpState extends State<SignUp> {
                                             backgroundColor: Colors.red,
                                             textColor: Colors.white,
                                             fontSize: 16.0);
-                                      } else if (viewModel.phone.text.length !=
-                                          10) {
-                                        return Fluttertoast.showToast(
-                                            msg:
-                                                "Mobile Number must be 10 digits",
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.CENTER,
-                                            timeInSecForIosWeb: 2,
-                                            backgroundColor: Colors.red,
-                                            textColor: Colors.white,
-                                            fontSize: 16.0);
-
-                                        // viewModel.^(?:[+0]9)?[0-9]{10}$(
-                                        //     context, widget.pill);
-                                        // _form.currentState.validate();
                                       }
+                                      // else if (viewModel.phone.text.length !=
+                                      //     10) {
+                                      //   return Fluttertoast.showToast(
+                                      //       msg:
+                                      //           "Mobile Number must be 10 digits",
+                                      //       toastLength: Toast.LENGTH_SHORT,
+                                      //       gravity: ToastGravity.CENTER,
+                                      //       timeInSecForIosWeb: 2,
+                                      //       backgroundColor: Colors.red,
+                                      //       textColor: Colors.white,
+                                      //       fontSize: 16.0);
+                                      //
+                                      //   // viewModel.^(?:[+0]9)?[0-9]{10}$(
+                                      //   //     context, widget.pill);
+                                      //   // _form.currentState.validate();
+                                      // }
                                       else if (viewModel.confPassword.text != viewModel.password.text) {
                                         return Fluttertoast.showToast(
                                             msg:

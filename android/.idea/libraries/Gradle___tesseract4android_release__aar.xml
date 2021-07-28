@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: :tesseract4android-release:@aar">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f0c63fe1ec73952620ee15d47a863d40/tesseract4android-release/annotations.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f0c63fe1ec73952620ee15d47a863d40/tesseract4android-release/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f0c63fe1ec73952620ee15d47a863d40/tesseract4android-release/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/f0c63fe1ec73952620ee15d47a863d40/tesseract4android-release/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
