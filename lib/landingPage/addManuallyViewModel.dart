@@ -501,67 +501,80 @@ class AddManuallyViewModel extends BaseViewModel {
   //   // });
   // }
 
-  scheduleNotifications(Pill pill, rxID, Time time, DateTime day) {
+  doubleDigit(int num){
+    if(num==0){
+      return '00';
+    }
+    else{
+      return '$num';
+    }
+  }
+
+  scheduleNotifications(Pill pill, rxID, DateTime day) {
     var cron = Cron();
-    print(time);
-    cron.schedule(
-        Schedule.parse(
-            '*/5 */${time.minute} */${time.hour} */${day.day} */${day.month} *'),
-        () async {
-      print('Cron running');
-      var telephony = Telephony.instance;
-      int i = 0;
-      print('user phn: $userPhn');
-      print('SMS sent to user ');
-      final NotificationManager notificationManager = NotificationManager();
-      notificationManager.initNotifications();
-      notificationManager.showNotification(
-        int.parse(rxID),
-        'Time to take your ${pill.rxTitle}',
-        'Take ${pill.whenInDay[0].count} pills',
-      );
-      telephony.sendSms(
-          to: userPhn,
-          message:
-              'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
-
-      pill.familyMembers.forEach((member) {
-        i++;
-        print('Member Count: $i');
-        print('SMS sent to ${member.mobile}');
-        telephony.sendSms(
-            to: member.mobile,
-            message:
-                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
-      });
-
-      var url = '${server.serverurl}add_rx_history';
-      print('fuiooo');
-      var data = {
-        "secretpass": "ADMIN",
-        "secretkey": "ADMIN",
-        "rx_id": rxID,
-        "track_date": pill.startDate,
-        "track_time": pill.whenInDay[0].time,
-        "status": 'Completed',
-        // "gender": famGender.toString(),
-      };
-      // var body = json.encode(data);
-      print('data notiii..$data');
-      var response = await http.post(Uri.parse(url), body: data);
-      if (response.statusCode == 200) {
-        print('success noti data ... posted');
-        print(response.body);
-        var parsed = json.decode('${response.body}');
-        // scheduleMessage(famPhone.text);
-        var trackId = parsed[0]['track_id'];
-        print('track id $trackId');
-        // sp.setInt('MemberID', trackId);
-      } else {
-        print('failed noti post..${response.statusCode}');
+    Duration duration = day.difference(DateTime.now());
+    if (duration.inSeconds > 1&&!(day.minute==0||day.hour==0||day.month==0)) {
+      if(day.minute==0||day.hour==0||day.month==0){
+        print('Failure');
       }
-      cron.close();
-    });
+      cron.schedule(
+          Schedule.parse(
+              '*/5 */${day.minute} */${day.hour} */${day.day} */${day.month} *'),
+          () async {
+        print('Cron running');
+        var telephony = Telephony.instance;
+        int i = 0;
+        print('user phn: $userPhn');
+        print('SMS sent to user ');
+        final NotificationManager notificationManager = NotificationManager();
+        notificationManager.initNotifications();
+        notificationManager.showNotification(
+          int.parse(rxID),
+          'Time to take your ${pill.rxTitle}',
+          'Take ${pill.whenInDay[0].count} pills',
+        );
+        // telephony.sendSms(
+        //     to: userPhn,
+        //     message:
+        //         'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        // pill.familyMembers.forEach((member) {
+        //   i++;
+        //   print('Member Count: $i');
+        //   print('SMS sent to ${member.mobile}');
+        //   telephony.sendSms(
+        //       to: member.mobile,
+        //       message:
+        //           'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        // });
+
+        var url = '${server.serverurl}add_rx_history';
+        print('fuiooo');
+        var data = {
+          "secretpass": "ADMIN",
+          "secretkey": "ADMIN",
+          "rx_id": rxID,
+          "track_date": pill.startDate,
+          "track_time": pill.whenInDay[0].time,
+          "status": 'Completed',
+          // "gender": famGender.toString(),
+        };
+        // var body = json.encode(data);
+        print('data notiii..$data');
+        var response = await http.post(Uri.parse(url), body: data);
+        if (response.statusCode == 200) {
+          print('success noti data ... posted');
+          print(response.body);
+          var parsed = json.decode('${response.body}');
+          // scheduleMessage(famPhone.text);
+          var trackId = parsed[0]['track_id'];
+          print('track id $trackId');
+          // sp.setInt('MemberID', trackId);
+        } else {
+          print('failed noti post..${response.statusCode}');
+        }
+        cron.close();
+      });
+    }
     //
     // final NotificationManager notificationManager = NotificationManager();
     // notificationManager.initNotifications();
@@ -755,7 +768,7 @@ class AddManuallyViewModel extends BaseViewModel {
     // }
 
     if (scheduledIDs == null) {
-      scheduledIDs=[];
+      scheduledIDs = [];
       pillList.forEach((pill) {
         for (int i = 0;
             i <=
@@ -763,18 +776,28 @@ class AddManuallyViewModel extends BaseViewModel {
                     .difference(DateTime.parse(pill.startDate))
                     .inDays;
             i++) {
-          days.add(DateTime.parse(pill.startDate).add(Duration(days: i)));
+          DateTime day = DateTime.parse(pill.startDate).add(Duration(days: i));
+          Duration duration = DateTime.now().difference(day);
+          if (duration.inDays > -1) {
+            days.add(day);
+          }
         }
         days.forEach((day) {
           pill.whenInDay.forEach((whenDay) {
             if (whenDay.time.trim() != '')
-              Time xyz = translateTime(whenDay.time);
-            // int x=xyz.hour;
               scheduleNotifications(
-                  pill, pill.rxId, translateTime(whenDay.time), day);
-            scheduledIDs.add(pill.rxId.toString());
+                  pill,
+                  pill.rxId,
+                  DateTime(
+                      day.year,
+                      day.month,
+                      day.day,
+                      translateTime(whenDay.time).hour,
+                      translateTime(whenDay.time).minute,
+                      5));
           });
         });
+        scheduledIDs.add(pill.rxId.toString());
       });
       sp.setStringList('scheduledIDs', scheduledIDs);
     } else {
@@ -786,11 +809,30 @@ class AddManuallyViewModel extends BaseViewModel {
           }
         });
         if (!exists) {
-          scheduleNotifications(
-              pill, pill.rxId, translateTime(pill.timeData), day);
+          for (int i = 0;
+              i <=
+                  DateTime.parse(pill.endDate)
+                      .difference(DateTime.parse(pill.startDate))
+                      .inDays;
+              i++) {
+            days.add(DateTime.parse(pill.startDate).add(Duration(days: i)));
+          }
+          days.forEach((day) {
+            pill.whenInDay.forEach((whenDay) {
+              if (whenDay.time.trim() != '')
+                scheduleNotifications(
+                    pill,
+                    pill.rxId,
+                    DateTime(
+                        day.year,
+                        day.month,
+                        day.day,
+                        translateTime(whenDay.time).hour,
+                        translateTime(whenDay.time).minute,
+                        5));
+            });
+          });
           scheduledIDs.add(pill.rxId.toString());
-          sp.setStringList('scheduledIDs', []);
-          sp.setStringList('scheduledIDs', scheduledIDs);
         }
       });
     }
