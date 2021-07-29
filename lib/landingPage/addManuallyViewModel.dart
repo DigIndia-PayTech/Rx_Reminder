@@ -533,19 +533,19 @@ class AddManuallyViewModel extends BaseViewModel {
           'Time to take your ${pill.rxTitle}',
           'Take ${pill.whenInDay[0].count} pills',
         );
-        // telephony.sendSms(
-        //     to: userPhn,
-        //     message:
-        //         'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
-        // pill.familyMembers.forEach((member) {
-        //   i++;
-        //   print('Member Count: $i');
-        //   print('SMS sent to ${member.mobile}');
-        //   telephony.sendSms(
-        //       to: member.mobile,
-        //       message:
-        //           'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
-        // });
+        telephony.sendSms(
+            to: userPhn,
+            message:
+                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        pill.familyMembers.forEach((member) {
+          i++;
+          print('Member Count: $i');
+          print('SMS sent to ${member.mobile}');
+          telephony.sendSms(
+              to: member.mobile,
+              message:
+                  'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        });
 
         var url = '${server.serverurl}add_rx_history';
         print('fuiooo');

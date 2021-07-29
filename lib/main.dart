@@ -8,6 +8,7 @@ import 'package:Medicine_Remainder/landingPage/notService.dart';
 import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/listPages/editRxlist.dart';
+import 'package:Medicine_Remainder/models/backGroundService.dart';
 import 'package:cron/cron.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -20,12 +21,17 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:telephony/telephony.dart';
 
+
 SharedPreferences sp;
 // final Telephony telephony = Telephony.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Firebase.initializeApp();
+  // BackgroundService backgroundService = new BackgroundService();
+  // void foo(){
+  //   backgroundService.start();
+  // }
   FlutterBackgroundService.initialize(onStart);
   FlutterBackground.initialize();
   sp = await SharedPreferences.getInstance();
@@ -35,6 +41,10 @@ void main() async {
   //   statusBarColor: Colors.blue[600],
   // ));
 }
+
+
+
+
 void onStart() {
   AddManuallyViewModel viewModel = AddManuallyViewModel();
   WidgetsFlutterBinding.ensureInitialized();
