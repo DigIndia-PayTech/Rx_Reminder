@@ -23,31 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b7a2944-0f0f-4f12-9436-28d7afa47a00" name="Default Changelist" comment="ios implementation of scanner">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Rx_Reminder.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Rx_Reminder.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/5.6.2/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/android/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/AddUser.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/AddUser.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/UI/addmanually.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/UI/addmanually.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/divyaNoti/LocalNotificationScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/divyaNoti/LocalNotificationScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/divyaNoti/NotificationPlugin.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/divyaNoti/NotificationPlugin.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/divyaNoti/NotificationScreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/divyaNoti/NotificationScreen.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/landingPage/addManual.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/addManual.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/addManuallyViewModel.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/landingPage/landingPage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/landingPage/landingPage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lib 2/Landing.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lib 2/Landing.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/lib 2/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/lib 2/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/intro_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/intro_page.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/models/step_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/models/step_model.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/scanner/Wigets.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/scanner/Wigets.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/scanner/animation.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/scanner/animation.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/scanner/fadeAnimation.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/scanner/fadeAnimation.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/scanner/ocrscreens.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/scanner/ocrscreens.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -138,7 +114,14 @@
       <option name="project" value="LOCAL" />
       <updated>1628061373173</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="ios implementation of scanner">
+      <created>1628064114911</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1628064114911</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -291,11 +274,12 @@
       <screen x="0" y="0" width="1280" height="800" />
     </state>
     <state x="394" y="88" key="VCS.ChangeListViewerDialog/0.0.1280.800@0.0.1280.800" timestamp="1625640620858" />
-    <state x="240" y="148" key="Vcs.Push.Dialog.v2" timestamp="1625487335563">
-      <screen x="0" y="23" width="1280" height="716" />
+    <state x="336" y="201" key="Vcs.Push.Dialog.v2" timestamp="1628064119631">
+      <screen x="0" y="25" width="1792" height="1010" />
     </state>
     <state x="240" y="140" key="Vcs.Push.Dialog.v2/0.0.1280.800@0.0.1280.800" timestamp="1625486708017" />
     <state x="240" y="148" key="Vcs.Push.Dialog.v2/0.23.1280.716@0.23.1280.716" timestamp="1625487335563" />
+    <state x="336" y="201" key="Vcs.Push.Dialog.v2/0.25.1792.1010@0.25.1792.1010" timestamp="1628064119631" />
     <state x="171" y="114" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1627492768872">
       <screen x="0" y="23" width="1280" height="723" />
     </state>

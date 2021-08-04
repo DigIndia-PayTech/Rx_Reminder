@@ -309,6 +309,7 @@ class _LandingPageState extends State<LandingPage> {
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,
                   title: Text(
+
                     'Scan',
                     style: TextStyle(color: Colors.white),
                   ),
