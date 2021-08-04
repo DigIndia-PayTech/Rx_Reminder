@@ -515,7 +515,6 @@ class _SignUpState extends State<SignUp> {
                                       color: Color(0xffffffff),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
-
                                     textInputAction: TextInputAction.next,
                                     validator: (validator) {
                                       if (validator.isEmpty) return 'Empty';
@@ -732,7 +731,6 @@ class _SignUpState extends State<SignUp> {
                                         // final isValid = _formKey.currentState.validate();
                                         isvalid = EmailValidator.validate(
                                             viewModel.email.text);
-
                                         if (isvalid) {
                                           viewModel.signUpPost(
                                               context, widget.pill);

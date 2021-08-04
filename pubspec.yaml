@@ -31,6 +31,7 @@ dependencies:
 #  learning_input_image: ^0.0.5
   provider:
   telephony:
+#  image_picker:
   image_picker:
   image_cropper:
   shared_preferences:
@@ -48,16 +49,15 @@ dependencies:
   path: ^1.8.0
   simple_animations: ^3.1.1
   stacked:
-  flutter_tesseract_ocr: ^0.4.3
+  flutter_tesseract_ocr: ^0.4.4
+  simple_ocr_plugin: ^0.1.1
   ff_navigation_bar:
   dotted_decoration: ^2.0.0
   flutter_local_notifications: ^6.1.0
   android_alarm_manager: ^2.0.2
-  firebase_messaging:
+#  firebase_messaging:
   flutter_background_service: ^0.1.5
   flutter_background: ^1.0.1
-  firebase_core :
-#  firebase_core:
   intl_phone_field: ^2.0.1
 dev_dependencies:
   flutter_test:

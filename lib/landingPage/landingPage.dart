@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
@@ -11,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 // import 'package:learning_input_image/learning_input_image.dart';
 // import 'package:learning_text_recognition/learning_text_recognition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_ocr_plugin/simple_ocr_plugin.dart';
 import 'package:stacked/stacked.dart';
 import 'package:provider/provider.dart';
 
@@ -28,6 +30,7 @@ class _LandingPageState extends State<LandingPage> {
   bool _scanning = false;
   bool _debugLocked = false;
   String _extractText = '\n \n Your Extracted text appears here \n \n';
+  String finalText;
   File _pickedImage;
   File croppedFile;
   final picker = ImagePicker();
@@ -128,12 +131,15 @@ class _LandingPageState extends State<LandingPage> {
 
   extractText(file, viewModel) async {
     print("Extracting Text");
-    _extractText = await FlutterTesseractOcr.extractText(file.path);
+    _extractText = await SimpleOcrPlugin.performOCR(file.path);
+    var data = json.decode(_extractText);
+   finalText = data['text'];
+    print('extracted text is : $finalText');
     print('gyuuu');
     setState(() {
       _scanning = false;
       print("End");
-      if (_extractText != null) {
+      if (finalText != null) {
         setText(viewModel);
       } else {
         showAlertDialog(BuildContext context) {
@@ -172,12 +178,12 @@ class _LandingPageState extends State<LandingPage> {
       }
     });
 
-    print(_extractText);
-    return _extractText;
+    print(finalText);
+    return finalText;
   }
 
   setText(AddManuallyViewModel viewModel) async {
-    viewModel.text = _extractText.toString();
+    viewModel.text = finalText.toString();
     SharedPreferences.setMockInitialValues({});
     SharedPreferences sp = await SharedPreferences.getInstance();
     viewModel.setBusy(false);
@@ -193,7 +199,7 @@ class _LandingPageState extends State<LandingPage> {
     // });
 
     print('herrruuuuu');
-    sp.setString('_extractText', _extractText.toString());
+    sp.setString('_extractText', finalText.toString());
   }
 
   showAlertDialog(BuildContext context) {
@@ -205,12 +211,12 @@ class _LandingPageState extends State<LandingPage> {
       ),
       onPressed: () {
         String temp = '';
-        for (int i = 0; i < _extractText.length; i++) {
-          if (_extractText[i] != '\n') {
-            temp = temp + _extractText[i];
+        for (int i = 0; i < finalText.length; i++) {
+          if (finalText[i] != '\n') {
+            temp = temp + finalText[i];
           }
         }
-        _extractText = temp;
+        finalText = temp;
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -237,12 +243,12 @@ class _LandingPageState extends State<LandingPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Name: ',
+            'RX TITLE : ',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
           ),
           Expanded(
             child: Text(
-              _extractText,
+              finalText,
               style: TextStyle(color: Colors.blue, fontSize: 14),
             ),
           )
@@ -299,7 +305,17 @@ class _LandingPageState extends State<LandingPage> {
                             //         builder: (context) => MainPage()));
                           },
                           icon: Icon(Icons.close))
-                      : null,
+                      : IconButton(
+                      onPressed: () {
+                        //userId != null?
+                        // SystemNavigator.pop(); //:
+                        Navigator.push(
+                          // Navigator.of(context).pop();
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MainPage()));
+                      },
+                      icon: Icon(Icons.arrow_back)),
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,
                   title: Text(

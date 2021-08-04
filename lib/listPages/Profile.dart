@@ -13,10 +13,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
+import '../main.dart';
 
 class Profile extends StatefulWidget {
   String extractText;
-
   Profile({
     this.extractText,
   });
@@ -29,7 +29,6 @@ class _ProfileState extends State<Profile> {
   final scaffoldState = GlobalKey<ScaffoldState>();
 
   // TextEditingController medNameController = TextEditingController();
-
   bool capsule = false;
   bool tablet = false;
   bool tonic = false;
@@ -658,7 +657,7 @@ showAlertDialogConfirm(BuildContext context, AddManuallyViewModel viewModel,
       showAlertDialogLogout(context, viewModel);
       await Future<String>.delayed(const Duration(seconds: 2));
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LandingPage()));
+          context, MaterialPageRoute(builder: (context) => MyApp()));
     },
     btnOkText: 'Yes',
     btnOkIcon: Icons.arrow_forward_outlined,

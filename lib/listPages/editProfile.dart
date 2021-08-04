@@ -36,12 +36,12 @@ class _editprofileState extends State<editprofile> {
   var _image;
   Future getImage(ImgSource source, AddManuallyViewModel viewModel) async {
     var image = await ImagePickerGC.pickImage(
-        enableCloseButton: true,
-        closeIcon: Icon(
-          Icons.close,
-          color: Colors.red,
-          size: 20,
-        ),
+        // enableCloseButton: true,
+        // closeIcon: Icon(
+        //   Icons.close,
+        //   color: Colors.red,
+        //   size: 20,
+        // ),20
         context: context,
         source: source,
         barrierDismissible: true,

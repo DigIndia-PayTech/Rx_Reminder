@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -20,7 +20,7 @@ class LocalNotificationService {
     });
   }
 
-  static void display(RemoteMessage message) async {
+  static void display( message) async {
 
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/1000;

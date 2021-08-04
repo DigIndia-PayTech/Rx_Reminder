@@ -3,6 +3,7 @@ import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
+import 'package:Medicine_Remainder/landingPage/landingPage.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/log_Pages/Signup.dart';
 import 'package:Medicine_Remainder/log_Pages/signIn.dart';
@@ -26,7 +27,13 @@ class AddManual extends StatefulWidget {
   @override
   _AddManualState createState() => _AddManualState();
 }
+var userId;
 
+getuserId() async {
+  SharedPreferences sp;
+  sp = await SharedPreferences.getInstance();
+  userId = sp.getInt('UserID').toString();
+}
 class _AddManualState extends State<AddManual> {
   TextEditingController medNameController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
@@ -173,22 +180,43 @@ class _AddManualState extends State<AddManual> {
       },
       builder: (context, viewModel, child) {
         return WillPopScope(
-          onWillPop: () async => false,
+          onWillPop: () async  {
+          if (userId != null)
+            return Future.value(true);
+          else {
+            SystemNavigator.pop();
+            return Future.value(false);
+          }
+        },
           child: Scaffold(
             key: scaffoldState,
             backgroundColor: Color(0xff2c98f0),
             appBar: AppBar(
               backgroundColor: Color(0xff2c98f0),
               toolbarHeight: 70,
-              leading: IconButton(
+              leading: userId != null
+                  ? IconButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MainPage()));
+                    //userId != null?
+                    // SystemNavigator.pop(); //:
+                    Navigator.push(
+                      // Navigator.of(context).pop();
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MainPage()));
                   },
-                  icon: Icon(
-                    Icons.keyboard_arrow_left_sharp,
-                    size: 40,
-                  )),
+                  icon: Icon(Icons.arrow_back))
+                  : IconButton(
+                  onPressed: () {
+                    //userId != null?
+                    // SystemNavigator.pop(); //:
+                    Navigator.push(
+                      // Navigator.of(context).pop();
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LandingPage()));
+                  },
+                  icon: Icon(Icons.close)),
               elevation: 0.0,
               title: Text(
                 'Add Pill',
@@ -537,7 +565,6 @@ class _AddManualState extends State<AddManual> {
                                   fontSize: 16.0);
                             }
                             else
-
                               {
                               Navigator.push(
                                 context,
@@ -586,7 +613,8 @@ class _AddManualState extends State<AddManual> {
                             ),
                           ),
                         ),
-                      )
+                      ),
+                      SizedBox(height: 30,)
                     ],
                   ),
                 ),

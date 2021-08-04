@@ -156,7 +156,6 @@ class _LandingState extends State<Landing> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-
       child: Stack(
         fit: StackFit.expand,
         children: [

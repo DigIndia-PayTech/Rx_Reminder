@@ -9,9 +9,10 @@ import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
 import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/listPages/editRxlist.dart';
 import 'package:Medicine_Remainder/models/backGroundService.dart';
+import 'package:Medicine_Remainder/simpleOCR.dart';
 import 'package:cron/cron.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
@@ -33,7 +34,7 @@ void main() async {
   //   backgroundService.start();
   // }
   FlutterBackgroundService.initialize(onStart);
-  FlutterBackground.initialize();
+  // FlutterBackground.initialize();
   sp = await SharedPreferences.getInstance();
   initializeDateFormatting().then((_) => runApp(MyApp()));
 
@@ -41,10 +42,6 @@ void main() async {
   //   statusBarColor: Colors.blue[600],
   // ));
 }
-
-
-
-
 void onStart() {
   AddManuallyViewModel viewModel = AddManuallyViewModel();
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +60,7 @@ void onStart() {
   });
   // bring to foreground
   service.setForegroundMode(true);
+  viewModel.rxList('ongoing');
   // if (!(await service.isServiceRunning())) timer.cancel();
   // var cron = Cron();
   // // viewModel.scheduleNotifications(pill, rxID, time);
@@ -114,7 +112,6 @@ class MyApp extends StatefulWidget {
 //     );
 //   }
 // }
-
 class _MyAppState extends State<MyApp> {
   bool onBoarding = sp.getBool('OnBoarding');
   String userID = sp.getInt('UserID').toString();
@@ -128,6 +125,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home:
+      // MyHomePage()
       // EditManual()
       // HomePage()
       // StartPage()
@@ -138,10 +136,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
 getPage(bool onBoarding, userID) {
   if (onBoarding == null) {
-
     return OnBoarding();
   } else if (userID != 'null') {
     return MainPage();

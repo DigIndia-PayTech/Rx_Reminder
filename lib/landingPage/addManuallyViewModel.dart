@@ -990,7 +990,6 @@ class AddManuallyViewModel extends BaseViewModel {
     var response = await http.post(Uri.parse(url), body: data);
     if (response.statusCode == 200) {
       print('success...rxpost updated....$userId');
-
       print(response.body);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MainPage()));
