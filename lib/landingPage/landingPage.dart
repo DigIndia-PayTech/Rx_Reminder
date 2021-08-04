@@ -293,7 +293,7 @@ class _LandingPageState extends State<LandingPage> {
                 appBar: AppBar(
                   toolbarHeight: 70,
                   automaticallyImplyLeading: false,
-                  leading: userId != null
+                  leading: userId == null
                       ? IconButton(
                           onPressed: () {
                             //userId != null?
@@ -305,17 +305,7 @@ class _LandingPageState extends State<LandingPage> {
                             //         builder: (context) => MainPage()));
                           },
                           icon: Icon(Icons.close))
-                      : IconButton(
-                      onPressed: () {
-                        //userId != null?
-                        // SystemNavigator.pop(); //:
-                        Navigator.push(
-                          // Navigator.of(context).pop();
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                      },
-                      icon: Icon(Icons.arrow_back)),
+                      : null,
                   backgroundColor: Color(0xff2c98f0),
                   elevation: 0.0,
                   title: Text(

@@ -29,12 +29,22 @@ class AddManual extends StatefulWidget {
 }
 var userId;
 
+
+
 getuserId() async {
   SharedPreferences sp;
   sp = await SharedPreferences.getInstance();
   userId = sp.getInt('UserID').toString();
 }
 class _AddManualState extends State<AddManual> {
+
+  @override
+  void initState(){
+   getuserId();
+   print('userId is: $userId');
+    super.initState();
+
+  }
   TextEditingController medNameController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
   String medForm;
@@ -194,7 +204,7 @@ class _AddManualState extends State<AddManual> {
             appBar: AppBar(
               backgroundColor: Color(0xff2c98f0),
               toolbarHeight: 70,
-              leading: userId != null
+              leading: userId == null
                   ? IconButton(
                   onPressed: () {
                     //userId != null?
@@ -203,7 +213,7 @@ class _AddManualState extends State<AddManual> {
                       // Navigator.of(context).pop();
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MainPage()));
+                            builder: (context) => LandingPage()));
                   },
                   icon: Icon(Icons.arrow_back))
                   : IconButton(
@@ -214,7 +224,7 @@ class _AddManualState extends State<AddManual> {
                       // Navigator.of(context).pop();
                         context,
                         MaterialPageRoute(
-                            builder: (context) => LandingPage()));
+                            builder: (context) => MainPage()));
                   },
                   icon: Icon(Icons.close)),
               elevation: 0.0,
