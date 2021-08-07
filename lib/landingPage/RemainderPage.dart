@@ -1,18 +1,14 @@
-import 'dart:convert';
+
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
-import 'package:Medicine_Remainder/FamilyMembers/AddFamily.dart';
 import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class RemainderPage extends StatefulWidget {
@@ -845,6 +841,7 @@ class _RemainderPageState extends State<RemainderPage> {
                               ),
                             ),
                           ),
+                          SizedBox(height: 30,)
                         ],
                       )),
                 ),

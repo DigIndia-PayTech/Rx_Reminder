@@ -1,3 +1,4 @@
+import 'package:Medicine_Remainder/landingPage/notService.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationManager {
@@ -11,7 +12,6 @@ class NotificationManager {
   getNotificationInstance() {
     return flutterLocalNotificationsPlugin;
   }
-
   void initNotifications() async{
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
@@ -40,7 +40,6 @@ class NotificationManager {
   ) async {
     await flutterLocalNotificationsPlugin.show(
         id, title, body, getPlatformChannelSpecfics());
-
     print('notification');
   }
 
@@ -53,7 +52,6 @@ class NotificationManager {
     // flutterLocalNotificationsPlugin.schedule(1, "Times Uppp", task,
     //     scheduledTime, generalNotificationDetails);
   }
-
   getPlatformChannelSpecfics() {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
@@ -64,15 +62,12 @@ class NotificationManager {
     var platformChannelSpecifics = NotificationDetails(
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
-
     return platformChannelSpecifics;
   }
-
   Future onSelectNotification(String payload) async {
     print('Notification clicked');
     return Future.value(0);
   }
-
   Future onDidReceiveLocalNotification(
       int id, String title, String body, String payload) async {
     return Future.value(1);

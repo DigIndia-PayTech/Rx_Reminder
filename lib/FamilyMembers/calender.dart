@@ -22,9 +22,6 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceHeight =
-        MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top;
-
     return Container(
       child: Column(
         children: [

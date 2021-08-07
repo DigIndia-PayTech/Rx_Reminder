@@ -1,10 +1,8 @@
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/FamilyMembers/AddFamily.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
-import 'package:Medicine_Remainder/landingPage/addManual.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/listPages/editProfile.dart';
 import 'package:Medicine_Remainder/listPages/pillList.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -148,8 +146,6 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    double sHeight = MediaQuery.of(context).size.height;
-    double sWidth = MediaQuery.of(context).size.width;
 
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
       disposeViewModel: false,
@@ -608,35 +604,9 @@ showAlertDialogLogout(BuildContext context, AddManuallyViewModel viewModel,
 
 showAlertDialogConfirm(BuildContext context, AddManuallyViewModel viewModel,
     {Pill pill}) {
-  Widget cancelButton = FlatButton(
-    child: Text(
-      "Try Again",
-      style: TextStyle(color: Colors.green, fontSize: 20),
-    ),
-    onPressed: () {
-      Navigator.pop(context);
-    },
-  );
 
-  Widget submitButton = FlatButton(
-    child: Text(
-      "Ok",
-      style: TextStyle(color: Colors.red, fontSize: 20),
-    ),
-    onPressed: () {
-      // viewModel.setReminderPost();
-      // getImage(imageSource);
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (BuildContext context) => SignUp(pill:pill),
-      //   ),
-      // );
-      //---log out of app----
-      // _showMessage();
-    },
-  );
+
 
   // set up the AlertDialog
   AwesomeDialog(
@@ -657,7 +627,7 @@ showAlertDialogConfirm(BuildContext context, AddManuallyViewModel viewModel,
       showAlertDialogLogout(context, viewModel);
       await Future<String>.delayed(const Duration(seconds: 2));
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MyApp()));
+          context, MaterialPageRoute(builder: (context) => LandingPage()));
     },
     btnOkText: 'Yes',
     btnOkIcon: Icons.arrow_forward_outlined,

@@ -15,11 +15,14 @@ import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
-    flutterEngine.getPlugins().add(new io.flutter.plugins.androidalarmmanager.AndroidAlarmManagerPlugin());
+    flutterEngine.getPlugins().add(new me.carda.awesome_notifications.AwesomeNotificationsPlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.core.FlutterFirebaseCorePlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingPlugin());
     flutterEngine.getPlugins().add(new de.julianassmann.flutter_background.FlutterBackgroundPlugin());
     flutterEngine.getPlugins().add(new id.flutter.flutter_background_service.FlutterBackgroundServicePlugin());
     flutterEngine.getPlugins().add(new com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.flutter_plugin_android_lifecycle.FlutterAndroidLifecyclePlugin());
+      com.example.flutter_sms.FlutterSmsPlugin.registerWith(shimPluginRegistry.registrarFor("com.example.flutter_sms.FlutterSmsPlugin"));
       io.paratoner.flutter_tesseract_ocr.FlutterTesseractOcrPlugin.registerWith(shimPluginRegistry.registrarFor("io.paratoner.flutter_tesseract_ocr.FlutterTesseractOcrPlugin"));
     flutterEngine.getPlugins().add(new io.github.ponnamkarthik.toast.fluttertoast.FlutterToastPlugin());
     flutterEngine.getPlugins().add(new vn.hunghd.flutter.plugins.imagecropper.ImageCropperPlugin());
@@ -27,6 +30,9 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new io.flutter.plugins.pathprovider.PathProviderPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     flutterEngine.getPlugins().add(new io.que.simple_ocr_plugin.SimpleOcrPlugin());
+    flutterEngine.getPlugins().add(new com.roketstorm.smsker.SmskerPlugin());
     flutterEngine.getPlugins().add(new com.shounakmulay.telephony.TelephonyPlugin());
+    flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
+    flutterEngine.getPlugins().add(new be.tramckrijte.workmanager.WorkmanagerPlugin());
   }
 }

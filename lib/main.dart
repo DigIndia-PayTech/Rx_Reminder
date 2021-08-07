@@ -1,96 +1,158 @@
 import 'dart:async';
-
+import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/OnBoardingScreens/onboarding.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
-import 'package:Medicine_Remainder/landingPage/notService.dart';
 import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
-import 'package:Medicine_Remainder/listPages/editRxlist.dart';
 import 'package:Medicine_Remainder/models/backGroundService.dart';
-import 'package:Medicine_Remainder/simpleOCR.dart';
-import 'package:cron/cron.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:Medicine_Remainder/utils/awesomeNotifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter/services.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:telephony/telephony.dart';
-
+import 'package:workmanager/workmanager.dart';
 
 SharedPreferences sp;
+AddManuallyViewModel viewModel;
+
 // final Telephony telephony = Telephony.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  AwesomeNotifications().initialize(
+    // set the icon to null if you want to use the default app icon
+      'resource://drawable/res_app_icon',
+      [
+        NotificationChannel(
+            channelKey: 'basic_channel',
+            channelName: 'Basic notifications',
+            channelDescription: 'Notification channel for basic tests',
+            defaultColor: Color(0xFF9D50DD),
+            ledColor: Colors.white
+        )
+      ]
+  );
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      // Insert here your friendly dialog box before call the request method
+      // This is very important to not harm the user experience
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
+
+
+  // FlutterBackgroundService.initialize(Some.instance.onStart);
+
+  // Workmanager().initialize(
+  //     callbackDispatcher, // The top level function, aka callbackDispatcher
+  //     isInDebugMode: true);
   // Firebase.initializeApp();
   // BackgroundService backgroundService = new BackgroundService();
+  // FlutterBackgroundService.initialize();
   // void foo(){
   //   backgroundService.start();
   // }
-  FlutterBackgroundService.initialize(onStart);
   // FlutterBackground.initialize();
   sp = await SharedPreferences.getInstance();
   initializeDateFormatting().then((_) => runApp(MyApp()));
-
   // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
   //   statusBarColor: Colors.blue[600],
   // ));
 }
-void onStart() {
-  AddManuallyViewModel viewModel = AddManuallyViewModel();
-  WidgetsFlutterBinding.ensureInitialized();
-  final service = FlutterBackgroundService();
-  service.onDataReceived.listen((event) {
-    if (event["action"] == "setAsForeground") {
-      service.setForegroundMode(true);
-      return;
-    }
-    if (event["action"] == "setAsBackground") {
-      service.setForegroundMode(false);
-    }
-    if (event["action"] == "stopService") {
-      service.stopBackgroundService();
-    }
-  });
-  // bring to foreground
-  service.setForegroundMode(true);
-  viewModel.rxList('ongoing');
-  // if (!(await service.isServiceRunning())) timer.cancel();
-  // var cron = Cron();
-  // // viewModel.scheduleNotifications(pill, rxID, time);
-  // cron.schedule(
-  //     Schedule.parse(
-  //         '*/5 */10 */1 * * *'),
-  //         () async {
-  //       print('Cron running');
-  //       var telephony = Telephony.instance;
-  //       int i = 0;
-  //       // print('user phn: $userPhn');
-  //       print('SMS sent to user ');
-  //       final NotificationManager notificationManager = NotificationManager();
-  //       notificationManager.initNotifications();
-  //       notificationManager.showNotification(
-  //         99,
-  //         'Time to take your ',
-  //         'Take 2 pills',
-  //       );
-  //       telephony.sendSms(
-  //           to: '8618178237', message: 'Time to take your  Take 6 pills');
-  //       cron.close();
-  //     });
-  // var telephony = Telephony.instance;
-  // telephony.sendSms(
-  //     to: '8884499678',
-  //     message:
-  //     'Time to take your  pills');
-  // });
+void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     print('');
+//     final NotificationManager notificationManager = NotificationManager();
+//     notificationManager.initNotifications();
+//     notificationManager.showNotification(
+//        1,
+//         'Time to take your tab',
+//         'Take 2 pills',);
+//     print("The iOS Background processing task was called");
+//
+//     // print("$simpleTaskKey was executed. inputData = $inputData");
+//     // print('hiii');
+// // final prefs = await SharedPreferences.getInstance();
+// // prefs.setBool("test", true);
+// // print("Bool from prefs: ${prefs.getBool("test")}");
+//     return Future.value(true);
+//   });
 }
+
+const simpleTaskKey = "simpleTask";
+Pill pill;
+
+// void onStart() {
+//   // AddManuallyViewModel viewModel = AddManuallyViewModel();
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final service = FlutterBackgroundService();
+//   service.onDataReceived.listen((event) {
+//     if (event["action"] == "setAsForeground") {
+//       service.setForegroundMode(true);
+//       print('foreground');
+//       return;
+//     }
+//     if (event["action"] == "setAsBackground") {
+//       print('background');
+//       service.setForegroundMode(false);
+//       return;
+//     }
+//     if (event["action"] == "stopService") {
+//       service.stopBackgroundService();
+//       print('stopp');
+//     }
+//   });
+//   // bring to foreground
+//   service.setForegroundMode(true);
+//   service.setAutoStartOnBootMode(true);
+//   service.isServiceRunning();
+//   // service.setNotificationInfo(title: 'hii', content: 'takee');
+//   // viewModel.scheduleNotifications(pill, pill.rxId, );
+//   Timer.periodic(Duration(seconds: 6), (timer) async {
+//     if (!(await service.isServiceRunning())) timer.cancel();
+//
+//     service.setNotificationInfo(
+//       title: "My App Service",
+//       content: "Updated at ${DateTime.now()}",
+//     );
+//     service.sendData(
+//       {"current_date": DateTime.now().toIso8601String()},
+//     );
+//     // print('$servic')
+//   });
+//   // viewModel.rxList('ongoing');
+//   // if (!(await service.isServiceRunning())) timer.cancel();
+//   // var cron = Cron();
+//   // // viewModel.scheduleNotifications(pill, rxID, time);
+//   // cron.schedule(
+//   //     Schedule.parse(
+//   //         '*/5 */10 */1 * * *'),
+//   //         () async {
+//   //       print('Cron running');
+//   //       var telephony = Telephony.instance;
+//   //       int i = 0;
+//   //       // print('user phn: $userPhn');
+//   //       print('SMS sent to user ');
+//   //       final NotificationManager notificationManager = NotificationManager();
+//   //       notificationManager.initNotifications();
+//   //       notificationManager.showNotification(
+//   //         99,
+//   //         'Time to take your ',
+//   //         'Take 2 pills',
+//   //       );
+//   //       telephony.sendSms(
+//   //           to: '8618178237', message: 'Time to take your  Take 6 pills');
+//   //       cron.close();
+//   //     });
+//   // var telephony = Telephony.instance;
+//   // telephony.sendSms(
+//   //     to: '8884499678',
+//   //     message:
+//   //     'Time to take your  pills');
+//   // });
+// }
 
 class MyApp extends StatefulWidget {
   @override
@@ -113,6 +175,18 @@ class MyApp extends StatefulWidget {
 //   }
 // }
 class _MyAppState extends State<MyApp> {
+  @override
+  initState(){
+    // Workmanager().initialize(
+    //   callbackDispatcher,
+    //   isInDebugMode: true,
+    // );
+    // Workmanager().registerOneOffTask(
+    //   "1",
+    //   simpleTaskKey,
+    // );
+    super.initState();
+  }
   bool onBoarding = sp.getBool('OnBoarding');
   String userID = sp.getInt('UserID').toString();
 
@@ -125,17 +199,17 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
       ),
       home:
-      // MyHomePage()
-      // EditManual()
-      // HomePage()
-      // StartPage()
-      // LocalNotificationScreen(),
+          // MyHomePage()
+          // EditManual()
+          // HomePage()
+          // StartPage()
+          // LocalNotificationScreen(),
 
-      getPage(onBoarding, userID),
-
+          getPage(onBoarding, userID),
     );
   }
 }
+
 getPage(bool onBoarding, userID) {
   if (onBoarding == null) {
     return OnBoarding();

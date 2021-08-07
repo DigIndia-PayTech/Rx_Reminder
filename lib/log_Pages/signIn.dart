@@ -2,9 +2,6 @@
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/log_Pages/Signup.dart';
-import 'package:email_validator/email_validator.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
@@ -22,8 +19,6 @@ class _SignInState extends State<SignIn> {
   bool today = false;
   bool isvalid = false;
   var selectedValue = 1;
-  Color _colorContainer = Color(0xffffffff);
-  Color _colorContainer1 = Color(0xffffffff);
   bool phnVisible = false;
   bool mailVisible = true;
   var pp;
@@ -59,7 +54,6 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    double sWidth = MediaQuery.of(context).size.width;
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
         disposeViewModel: false,
         viewModelBuilder: () => AddManuallyViewModel(),
@@ -120,7 +114,7 @@ class _SignInState extends State<SignIn> {
                         ),
                         child: SingleChildScrollView(
                           child: Container(
-                            height: MediaQuery.of(context).size.height - 200,
+                            height: MediaQuery.of(context).size.height,
                             child: Column(
                               children: [
                                 Row(
@@ -419,8 +413,6 @@ class _SignInState extends State<SignIn> {
                                       else {
                                         viewModel.email_mob.text = pp;
                                         print(viewModel.email_mob.text);
-
-
                                       // final isValid = _formKey.currentState.validate();
                                       // isvalid = EmailValidator.validate(viewModel.email.text);
                                       // if (isvalid) {
@@ -455,7 +447,7 @@ class _SignInState extends State<SignIn> {
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                       child: Container(
-                                        padding: EdgeInsets.all(12),
+                                        padding: EdgeInsets.all(8),
                                         alignment: Alignment.center,
                                         child: Text("SignIn",
                                             textAlign: TextAlign.center,
@@ -471,7 +463,7 @@ class _SignInState extends State<SignIn> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(
@@ -505,7 +497,8 @@ class _SignInState extends State<SignIn> {
                                       ],
                                     ),
                                   ),
-                                )
+                                ),
+                                SizedBox(height: 5,)
                               ],
                             ),
                           ),

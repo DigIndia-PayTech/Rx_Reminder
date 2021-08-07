@@ -4,6 +4,8 @@ PODS:
     - Flutter
   - flutter_local_notifications (0.0.1):
     - Flutter
+  - flutter_sms (1.1.0):
+    - Flutter
   - flutter_tesseract_ocr (0.3.4):
     - Flutter
     - SwiftyTesseract
@@ -75,16 +77,21 @@ PODS:
   - simple_ocr_plugin (0.0.1):
     - Flutter
     - GoogleMLKit/TextRecognition (~> 0.63.0)
+  - smsker (0.0.1):
+    - Flutter
   - SwiftyTesseract (3.1.3)
   - telephony (0.0.1):
     - Flutter
   - Toast (4.0.0)
   - TOCropViewController (2.6.0)
+  - url_launcher (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_background_service (from `.symlinks/plugins/flutter_background_service/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - flutter_sms (from `.symlinks/plugins/flutter_sms/ios`)
   - flutter_tesseract_ocr (from `.symlinks/plugins/flutter_tesseract_ocr/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
@@ -92,7 +99,9 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - simple_ocr_plugin (from `.symlinks/plugins/simple_ocr_plugin/ios`)
+  - smsker (from `.symlinks/plugins/smsker/ios`)
   - telephony (from `.symlinks/plugins/telephony/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
 SPEC REPOS:
   trunk:
@@ -119,6 +128,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_background_service/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  flutter_sms:
+    :path: ".symlinks/plugins/flutter_sms/ios"
   flutter_tesseract_ocr:
     :path: ".symlinks/plugins/flutter_tesseract_ocr/ios"
   fluttertoast:
@@ -133,13 +144,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences/ios"
   simple_ocr_plugin:
     :path: ".symlinks/plugins/simple_ocr_plugin/ios"
+  smsker:
+    :path: ".symlinks/plugins/smsker/ios"
   telephony:
     :path: ".symlinks/plugins/telephony/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_background_service: a4644870cc76287aaa6147b47107e52680b79c90
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  flutter_sms: 91ce41530f55c85d6524d82307a5d555844c086a
   flutter_tesseract_ocr: e7a711e46346f9b43598ca93871fe857bd6d8535
   fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   GoogleDataTransport: f56af7caa4ed338dc8e138a5d7c5973e66440833
@@ -159,10 +175,12 @@ SPEC CHECKSUMS:
   Protobuf: 7327d4444215b5f18e560a97f879ff5503c4581c
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   simple_ocr_plugin: 0f3889e10ed488b8b75e2161a2c5a761cba82cb3
+  smsker: 613bad0df184e468f5a3e1b1749a462b3661e50e
   SwiftyTesseract: 1f3d96668ae92dc2208d9842c8a59bea9fad2cbb
   telephony: c41768fae9fb5495781b05a72004106ca33ec777
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: ce13d36744da294d67f8e460dbb7aed7c09bd7f4
 

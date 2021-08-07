@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:Medicine_Remainder/FamilyMembers/selectFamily.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/listPages/Profile.dart';
+import 'package:Medicine_Remainder/utils/awesomeNotifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_background/flutter_background.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
@@ -22,8 +22,8 @@ import 'package:cron/cron.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smsker/smsker.dart';
 import 'package:stacked/stacked.dart';
 import 'package:telephony/telephony.dart';
 
@@ -59,8 +59,8 @@ class AddManuallyViewModel extends BaseViewModel {
             : hh;
     mm = int.parse(data.substring(3, 5));
     Time time = Time(hh, mm, 0);
-    print(time.hour);
-    print(time.minute);
+    // print(time.hour);
+    // print(time.minute);
     return time;
   }
 
@@ -177,24 +177,88 @@ class AddManuallyViewModel extends BaseViewModel {
   startBackgroundService() async {
     WidgetsFlutterBinding.ensureInitialized();
     FlutterBackground.initialize();
-    await FlutterBackgroundService.initialize(onStart);
+    // await FlutterBackgroundService.initialize(onStart);
   }
 
-  onStart() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    final service = FlutterBackgroundService();
-    service.setForegroundMode(true);
-    Timer.periodic(Duration(seconds: 5), (timer) async {
-      if (!(await service.isServiceRunning())) timer.cancel();
-      service.setNotificationInfo(
-        title: "My App Service",
-        content: "Updated at ${DateTime.now()}",
-      );
-      service.sendData(
-        {"current_date": DateTime.now().toIso8601String()},
-      );
-    });
-  }
+  // void onStart() {
+  //   // AddManuallyViewModel viewModel = AddManuallyViewModel();
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   final service = FlutterBackgroundService();
+  //   service.onDataReceived.listen((event) {
+  //     if (event["action"] == "setAsForeground") {
+  //       service.setForegroundMode(true);
+  //       print('foreground');
+  //       return;
+  //     }
+  //     if (event["action"] == "setAsBackground") {
+  //       print('background');
+  //       service.setForegroundMode(false);
+  //     }
+  //     if (event["action"] == "stopService") {
+  //       service.stopBackgroundService();
+  //       print('stopp');
+  //     }
+  //   });
+  //   // bring to foreground
+  //   service.setForegroundMode(true);
+  //   Timer.periodic(Duration(seconds: 6), (timer) async {
+  //     if (!(await service.isServiceRunning())) timer.cancel();
+  //
+  //     service.setNotificationInfo(
+  //       title: "My App Service",
+  //       content: "Updated at ${DateTime.now()}",
+  //     );
+  //     service.sendData(
+  //       {"current_date": DateTime.now().toIso8601String()},
+  //     );
+  //   });
+  //   // viewModel.rxList('ongoing');
+  //   // if (!(await service.isServiceRunning())) timer.cancel();
+  //   // var cron = Cron();
+  //   // // viewModel.scheduleNotifications(pill, rxID, time);
+  //   // cron.schedule(
+  //   //     Schedule.parse(
+  //   //         '*/5 */10 */1 * * *'),
+  //   //         () async {
+  //   //       print('Cron running');
+  //   //       var telephony = Telephony.instance;
+  //   //       int i = 0;
+  //   //       // print('user phn: $userPhn');
+  //   //       print('SMS sent to user ');
+  //   //       final NotificationManager notificationManager = NotificationManager();
+  //   //       notificationManager.initNotifications();
+  //   //       notificationManager.showNotification(
+  //   //         99,
+  //   //         'Time to take your ',
+  //   //         'Take 2 pills',
+  //   //       );
+  //   //       telephony.sendSms(
+  //   //           to: '8618178237', message: 'Time to take your  Take 6 pills');
+  //   //       cron.close();
+  //   //     });
+  //   // var telephony = Telephony.instance;
+  //   // telephony.sendSms(
+  //   //     to: '8884499678',
+  //   //     message:
+  //   //     'Time to take your  pills');
+  //   // });
+  // }
+
+  // onStart() async {
+  //   WidgetsFlutterBinding.ensureInitialized();
+  //   final service = FlutterBackgroundService();
+  //   service.setForegroundMode(true);
+  //   Timer.periodic(Duration(seconds: 5), (timer) async {
+  //     if (!(await service.isServiceRunning())) timer.cancel();
+  //     service.setNotificationInfo(
+  //       title: "My App Service",
+  //       content: "Updated at ${DateTime.now()}",
+  //     );
+  //     service.sendData(
+  //       {"current_date": DateTime.now().toIso8601String()},
+  //     );
+  //   });
+  // }
 
   // getUserId() async {
   //   rxname = medName;
@@ -501,20 +565,21 @@ class AddManuallyViewModel extends BaseViewModel {
   //   // });
   // }
 
-  doubleDigit(int num){
-    if(num==0){
+  doubleDigit(int num) {
+    if (num == 0) {
       return '00';
-    }
-    else{
+    } else {
       return '$num';
     }
   }
-
   scheduleNotifications(Pill pill, rxID, DateTime day) {
+    final NotificationManager notificationManager = NotificationManager();
+
     var cron = Cron();
     Duration duration = day.difference(DateTime.now());
-    if (duration.inSeconds > 1&&!(day.minute==0||day.hour==0||day.month==0)) {
-      if(day.minute==0||day.hour==0||day.month==0){
+    if (duration.inSeconds > 1 &&
+        !(day.minute == 0 || day.hour == 0 || day.month == 0)) {
+      if (day.minute == 0 || day.hour == 0 || day.month == 0) {
         print('Failure');
       }
       cron.schedule(
@@ -526,27 +591,35 @@ class AddManuallyViewModel extends BaseViewModel {
         int i = 0;
         print('user phn: $userPhn');
         print('SMS sent to user ');
-        final NotificationManager notificationManager = NotificationManager();
+        print('awesome scheduled');
         notificationManager.initNotifications();
         notificationManager.showNotification(
           int.parse(rxID),
           'Time to take your ${pill.rxTitle}',
           'Take ${pill.whenInDay[0].count} pills',
         );
-        telephony.sendSms(
-            to: userPhn,
-            message:
-                'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
+        Smsker.sendSms(
+                message:
+                    'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills',
+                phone: '$userPhn')
+            .catchError((onError) {
+          print(onError);
+        });
+        print('sms sent to user $userId ');
+        // telephony.sendSms(
+        //     to: userPhn,
+        //     message:
+        //         'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
         pill.familyMembers.forEach((member) {
           i++;
           print('Member Count: $i');
           print('SMS sent to ${member.mobile}');
-          telephony.sendSms(
-              to: member.mobile,
+          Smsker.sendSms(
+              phone: '${member.mobile}',
               message:
                   'Time to take your ${pill.rxTitle} Take ${pill.whenInDay[0].count} pills');
         });
-
+        cron.close();
         var url = '${server.serverurl}add_rx_history';
         print('fuiooo');
         var data = {
@@ -554,7 +627,7 @@ class AddManuallyViewModel extends BaseViewModel {
           "secretkey": "ADMIN",
           "rx_id": rxID,
           "track_date": pill.startDate,
-          "track_time": pill.whenInDay[0].time,
+          "track_time": pill.timeData,
           "status": 'Completed',
           // "gender": famGender.toString(),
         };
@@ -572,8 +645,8 @@ class AddManuallyViewModel extends BaseViewModel {
         } else {
           print('failed noti post..${response.statusCode}');
         }
-        cron.close();
-      });
+      }
+      );
     }
     //
     // final NotificationManager notificationManager = NotificationManager();
@@ -584,7 +657,6 @@ class AddManuallyViewModel extends BaseViewModel {
     //     'Take ${pill.whenInDay[0].count} pills',
     //     translateTime(pill.whenInDay[0].time));
   }
-
   //-------Add Family members post function-----
   familyPost(context, Pill pill, FamilyMember familyMember) async {
     sp = await SharedPreferences.getInstance();
@@ -760,7 +832,7 @@ class AddManuallyViewModel extends BaseViewModel {
     }
     List<String> scheduledIDs = [];
     scheduledIDs = sp.getStringList('scheduledIDs');
-    print(scheduledIDs);
+    // print(scheduledIDs);
     List<DateTime> days = [];
 
     // for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
@@ -820,6 +892,19 @@ class AddManuallyViewModel extends BaseViewModel {
           days.forEach((day) {
             pill.whenInDay.forEach((whenDay) {
               if (whenDay.time.trim() != '')
+                // AwesomeNotifications().initialize(
+                //   // set the icon to null if you want to use the default app icon
+                //     'resource://drawable/res_app_icon',
+                //     [
+                //       NotificationChannel(
+                //           channelKey: 'basic_channel',
+                //           channelName: 'Basic notifications',
+                //           channelDescription: 'Notification channel for basic tests',
+                //           defaultColor: Color(0xFF9D50DD),
+                //           ledColor: Colors.white
+                //       )
+                //     ]
+                // );
                 scheduleNotifications(
                     pill,
                     pill.rxId,
@@ -836,7 +921,6 @@ class AddManuallyViewModel extends BaseViewModel {
         }
       });
     }
-
     // if(){}
     for (int k = 0; k < pillList.length; k++) {
       switch (pillList[k].rxStatus) {

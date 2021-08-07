@@ -15,8 +15,7 @@ class Reminder extends StatefulWidget {
 class _ReminderState extends State<Reminder> {
   bool morning = false;
   Color selectColor = Colors.black;
-  double _height;
-  double _width;
+
   bool _timeVisible1 = false;
   bool _dateVisible = false;
   bool _timeVisible2 = false;

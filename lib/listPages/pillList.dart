@@ -1,15 +1,16 @@
+import 'dart:async';
+
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
-import 'package:Medicine_Remainder/landingPage/notificationManager.dart';
 import 'package:Medicine_Remainder/listPages/editRxlist.dart';
-import 'package:Medicine_Remainder/main.dart';
-import 'package:cron/cron.dart';
+import 'package:Medicine_Remainder/utils/awesomeNotifications.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:stacked/stacked.dart';
-import 'package:telephony/telephony.dart';
+import 'package:flutter/services.dart';
 
 class MyPills extends StatefulWidget {
   @override
@@ -20,16 +21,15 @@ class _MyPillsState extends State<MyPills> {
   String pageStatus = 'Ongoing';
   var selectedIndex;
   Pill pill;
+
   @override
-  void initState(){
+  void initState() {
     // WidgetsFlutterBinding.ensureInitialized();
     // // // Firebase.initializeApp();
     // FlutterBackgroundService.initialize(onStart);
     // FlutterBackground.initialize();
     super.initState();
   }
-
-
 
   Widget pillCards(Pill pill, AddManuallyViewModel model, int index) {
     return Container(
@@ -229,12 +229,113 @@ class _MyPillsState extends State<MyPills> {
         viewModelBuilder: () => AddManuallyViewModel(),
         disposeViewModel: false,
         onModelReady: (viewModel) {
-          viewModel.startBackgroundService();
+          AwesomeNotifications().initialize(
+              // set the icon to null if you want to use the default app icon
+                'resource://drawable/res_app_icon',
+                [
+                  NotificationChannel(
+                      channelKey: 'basic_channel',
+                      channelName: 'Basic notifications',
+                      channelDescription: 'Notification channel for basic tests',
+                      defaultColor: Color(0xFF9D50DD),
+                      ledColor: Colors.white
+                  )
+                ]
+            );
+          DateTime temp=DateTime(2021,8,6,19,16,0,0,0);
+          showNotificationAtScheduleCron(8,temp);
+          WidgetsFlutterBinding.ensureInitialized();
+          // final service = FlutterBackgroundService();
+          //
+          // FlutterBackgroundService().sendData({"action": "setAsForeground"});
+          // FlutterBackgroundService().sendData({"action": "setAsBackground"});
+          // service.onDataReceived.listen((event) {
+          //   FlutterBackgroundService().sendData({"action": "setAsForeground"});
+          //   FlutterBackgroundService().sendData({"action": "setAsBackground"});
+          //
+          //   service.sendData(
+          //     {"current_date": DateTime.now().toIso8601String()},
+          //   );
+          //   service.setNotificationInfo(
+          //         title: "My App Service",
+          //         content: "Updated at ${DateTime.now()}",
+          //       );
+          //   print('taakkkk');
+          // });
+
+          // void onStart() {
+          //   // AddManuallyViewModel viewModel = AddManuallyViewModel();
+          //   WidgetsFlutterBinding.ensureInitialized();
+          //   final service = FlutterBackgroundService();
+          //   service.onDataReceived.listen((event) {
+          //     if (event["action"] == "setAsForeground") {
+          //       service.setForegroundMode(true);
+          //       print('foreground');
+          //       return;
+          //     }
+          //     if (event["action"] == "setAsBackground") {
+          //       print('background');
+          //       service.setForegroundMode(false);
+          //       return;
+          //     }
+          //     if (event["action"] == "stopService") {
+          //       service.stopBackgroundService();
+          //       print('stopp');
+          //     }
+          //   });
+          //   // bring to foreground
+          //   service.setForegroundMode(true);
+          //   service.setAutoStartOnBootMode(true);
+          //   service.isServiceRunning();
+          //   // service.setNotificationInfo(title: 'hii', content: 'takee');
+          //   // viewModel.scheduleNotifications(pill, pill.rxId, );
+          //   Timer.periodic(Duration(seconds: 6), (timer) async {
+          //     if (!(await service.isServiceRunning())) timer.cancel();
+          //
+          //     service.setNotificationInfo(
+          //       title: "My App Service",
+          //       content: "Updated at ${DateTime.now()}",
+          //     );
+          //     service.sendData(
+          //       {"current_date": DateTime.now().toIso8601String()},
+          //     );
+          //     // print('$servic')
+          //   });
+          //   // viewModel.rxList('ongoing');
+          //   // if (!(await service.isServiceRunning())) timer.cancel();
+          //   // var cron = Cron();
+          //   // // viewModel.scheduleNotifications(pill, rxID, time);
+          //   // cron.schedule(
+          //   //     Schedule.parse(
+          //   //         '*/5 */10 */1 * * *'),
+          //   //         () async {
+          //   //       print('Cron running');
+          //   //       var telephony = Telephony.instance;
+          //   //       int i = 0;
+          //   //       // print('user phn: $userPhn');
+          //   //       print('SMS sent to user ');
+          //   //       final NotificationManager notificationManager = NotificationManager();
+          //   //       notificationManager.initNotifications();
+          //   //       notificationManager.showNotification(
+          //   //         99,
+          //   //         'Time to take your ',
+          //   //         'Take 2 pills',
+          //   //       );
+          //   //       telephony.sendSms(
+          //   //           to: '8618178237', message: 'Time to take your  Take 6 pills');
+          //   //       cron.close();
+          //   //     });
+          //   // var telephony = Telephony.instance;
+          //   // telephony.sendSms(
+          //   //     to: '8884499678',
+          //   //     message:
+          //   //     'Time to take your  pills');
+          //   // });
+          // }
+          // FlutterBackgroundService.initialize(onStart);
           viewModel.sharedPreferences();
           viewModel.rxList('onGoing');
           pageStatus = 'onGoing';
-          // viewModel.rxList(pageType);
-          //viewModel.getUser();
         },
         builder: (context, viewModel, child) {
           return Scaffold(
@@ -278,6 +379,20 @@ class _MyPillsState extends State<MyPills> {
                           fontSize: 20.0),
                       textAlign: TextAlign.center),
                 ),
+                actions: [
+                  // ElevatedButton(onPressed:(){
+                  //   print('fre');
+                  //   FlutterBackgroundService().sendData({
+                  //     'action':'setAsForeground'
+                  //   });
+                  // }, child: Text('fore')),
+                  // ElevatedButton(onPressed:(){
+                  //   print('pressed back');
+                  //   FlutterBackgroundService().sendData({
+                  //     'action':'setAsBackground'
+                  //   });
+                  // }, child: Text('press'))
+                ],
               ),
               body: Column(
                 children: [

@@ -27,14 +27,20 @@ dependencies:
   flutter_spinkit: ^5.0.0
   timezone: #^0.7.0
   rxdart: ^0.27.1
+  flutter_sms: ^2.3.1
+  smsker: ^0.1.1
 #  flutter_native_image: ^0.0.6
 #  learning_input_image: ^0.0.5
   provider:
   telephony:
 #  image_picker:
   image_picker:
+  awesome_notifications: ^0.0.6+10
+  firebase_core: ^1.0.1
+  firebase_messaging: ^10.0.0
   image_cropper:
   shared_preferences:
+  workmanager: ^0.4.1
   date_format: ^2.0.2
   image_picker_gallery_camera: ^0.2.2
   table_calendar:
@@ -54,7 +60,6 @@ dependencies:
   ff_navigation_bar:
   dotted_decoration: ^2.0.0
   flutter_local_notifications: ^6.1.0
-  android_alarm_manager: ^2.0.2
 #  firebase_messaging:
   flutter_background_service: ^0.1.5
   flutter_background: ^1.0.1

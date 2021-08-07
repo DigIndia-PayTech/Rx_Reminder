@@ -1,4 +1,4 @@
-import 'package:Medicine_Remainder/MainPage.dart';
+
 import 'package:Medicine_Remainder/OnBoardingScreens/onboardingModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
 import 'package:flutter/material.dart';
@@ -68,52 +68,53 @@ class _OnBoardingState extends State<OnBoarding> /*with ChangeNotifier*/ {
                                     .map((e) => ExplanationPage(data: e))
                                     .toList())),
                         flex: 6),
-                    Expanded(
-                        // flex: 3,
-                        child: Column(
+                    Spacer(),
+
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                            margin: const EdgeInsets.symmetric(vertical: 24),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: List.generate(data.length,
-                                  (index) => createCircle(index: index)),
-                            )),
-                        _currentIndex == data.length - 1
-                            ? InkWell(
-                                onTap: () async {
-                                  SharedPreferences sp =
-                                      await SharedPreferences.getInstance();
-                                  sp.setBool('OnBoarding', true);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LandingPage(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    // padding: EdgeInsets.all(5),
-                                    width: 320,
-                                    height: 40,
-                                    child: Text("Get Started",
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          color: Color(0xffffffff),
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w500,
-                                          fontStyle: FontStyle.normal,
-                                        )),
-                                    decoration: new BoxDecoration(
-                                        color: Color(0xff0066ff),
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                              )
-                            : Container()
+                    Container(
+                        margin: const EdgeInsets.symmetric(vertical: 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(data.length,
+                              (index) => createCircle(index: index)),
+                        )),
+                    _currentIndex == data.length - 1
+                        ? InkWell(
+                            onTap: () async {
+                              SharedPreferences sp =
+                                  await SharedPreferences.getInstance();
+                              sp.setBool('OnBoarding', true);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LandingPage(),
+                                ),
+                              );
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                // padding: EdgeInsets.all(5),
+                                width: 320,
+                                height: 40,
+                                child: Text("Get Started",
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      color: Color(0xffffffff),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                                decoration: new BoxDecoration(
+                                    color: Color(0xff0066ff),
+                                    borderRadius:
+                                        BorderRadius.circular(10))),
+                          )
+                        : Container()
                       ],
-                    ))
+                    ),
+                    SizedBox(height: 10,),
                   ],
                 ),
               )

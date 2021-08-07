@@ -1,12 +1,8 @@
-import 'dart:math';
+
 import 'package:Medicine_Remainder/Core/Models/familyModel.dart';
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
-import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -353,8 +349,6 @@ class _SelectFamilyState extends State<SelectFamily> {
 
   void editMember(
       AddManuallyViewModel viewModel, int index, BuildContext context) {
-    bool last = false;
-    bool today = false;
     var mob;
 
     TextEditingController famname = TextEditingController();

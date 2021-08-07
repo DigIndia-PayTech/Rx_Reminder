@@ -1,50 +1,52 @@
-
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
 import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/landingPage/landingPage.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/log_Pages/Signup.dart';
 import 'package:Medicine_Remainder/log_Pages/signIn.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 
 class AddManual extends StatefulWidget {
   String extractText;
   Pill pill;
-  AddManual({
-    this.extractText,
-    this.pill
-  });
+
+
+  AddManual({this.extractText, this.pill});
+  var userId;
+  setUserId() async {
+    SharedPreferences sp;
+    sp = await SharedPreferences.getInstance();
+    sp.setInt('UserID', userId);
+  }
+
   // const AddManual({Key? key}) : super(key: key);
   @override
   _AddManualState createState() => _AddManualState();
 }
-var userId;
 
-
-
-getuserId() async {
+var user;
+var uu;
+getUserId() async {
   SharedPreferences sp;
   sp = await SharedPreferences.getInstance();
-  userId = sp.getInt('UserID').toString();
+  user = sp.getInt('UserID').toString();
 }
+
 class _AddManualState extends State<AddManual> {
-
   @override
-  void initState(){
-   getuserId();
-   print('userId is: $userId');
+  void initState() {
+    getUserId();
+    print('userId is: $user');
+     uu = user;
     super.initState();
-
   }
+
   TextEditingController medNameController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
   String medForm;
@@ -59,174 +61,62 @@ class _AddManualState extends State<AddManual> {
   //   //     context,
   //   //     MaterialPageRoute(
   //   //         builder: (context) => AddManually()));
-  //   print('herrruuuuu');
-  //   sp.setString('rxtitle', medNameController.text.toString());
+  //   print('');
+  //   sp.setString('rxTitle', medNameController.text.toString());
   // }
   final scaffoldState = GlobalKey<ScaffoldState>();
 
-  void _editMsg() {
-    scaffoldState.currentState.showBottomSheet(
-      (context) => Container(
-        height: 462,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black12,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            color: Colors.white),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.fromLTRB(150, 20, 0, 0),
-                    child: new Text("Message",
-                        style: TextStyle(
-                          fontFamily: 'Oxygen',
-                          color: Color(0xff4b5567),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          letterSpacing: -0.408,
-                        ))),
-                Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.fromLTRB(80, 20, 0, 0),
-                    child: new Text("Edit",
-                        style: TextStyle(
-                          fontFamily: 'Oxygen',
-                          color: Color(0xff4b5567),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                          letterSpacing: -0.408,
-                        )))
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              height: 123,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black12),
-                  color: Color(0xffffffff),
-                  borderRadius: BorderRadius.circular(10)),
-              child: TextField(
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-
-                // maxLines: 1,
-                // controller: viewModel.medicineName,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintMaxLines: 4,
-                  hintStyle: TextStyle(
-                    fontFamily: 'Oxygen',
-                    color: Color(0xff9c9b9f),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                  ),
-                  hintText:
-                      " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sit in pretium urna ullamcorper elit amet. Posuere massa risus tempus",
-                ),
-              ),
-            ),
-
-            Spacer(),
-            // Spacer(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: InkWell(
-                onTap: () {
-                  // Navigator.push(context,
-                  //     MaterialPageRoute(builder: (context) => RemainderPage()));
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black12),
-                      color: Color(0xff2c98f0),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    alignment: Alignment.center,
-                    child: Text("Save",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Color(0xffffffff),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        )),
-                  ),
-                ),
-              ),
-            )
-            // Spacer(),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    double sHeight = MediaQuery.of(context).size.height;
-    double sWidth = MediaQuery.of(context).size.width;
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => AddManuallyViewModel(),
       onModelReady: (viewModel) {
-        pill=widget.pill??Pill();
-        qtyController.text=pill.totalTablets;
-        medNameController.text=widget.extractText??pill.rxTitle;
+        viewModel.sharedPreferences();
+        print('user id is ${viewModel.userId}');
+        pill = widget.pill ?? Pill();
+        qtyController.text = pill.totalTablets;
+        medNameController.text = widget.extractText ?? pill.rxTitle;
       },
       builder: (context, viewModel, child) {
         return WillPopScope(
-          onWillPop: () async  {
-          if (userId != null)
-            return Future.value(true);
-          else {
-            SystemNavigator.pop();
-            return Future.value(false);
-          }
-        },
+          onWillPop: () async {
+            if (user != null)
+              return Future.value(true);
+            else {
+              SystemNavigator.pop();
+              return Future.value(false);
+            }
+          },
           child: Scaffold(
             key: scaffoldState,
             backgroundColor: Color(0xff2c98f0),
             appBar: AppBar(
               backgroundColor: Color(0xff2c98f0),
               toolbarHeight: 70,
-              leading: userId == null
+              leading: user != null
                   ? IconButton(
-                  onPressed: () {
-                    //userId != null?
-                    // SystemNavigator.pop(); //:
-                    Navigator.push(
-                      // Navigator.of(context).pop();
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LandingPage()));
-                  },
-                  icon: Icon(Icons.arrow_back))
+                      onPressed: () {
+                        //userId != null?
+                        // SystemNavigator.pop(); //:
+                        Navigator.push(
+                            // Navigator.of(context).pop();
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LandingPage()));
+                      },
+                      icon: Icon(Icons.arrow_back))
                   : IconButton(
-                  onPressed: () {
-                    //userId != null?
-                    // SystemNavigator.pop(); //:
-                    Navigator.push(
-                      // Navigator.of(context).pop();
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MainPage()));
-                  },
-                  icon: Icon(Icons.close)),
+                      onPressed: () {
+                        //userId != null?
+                        // SystemNavigator.pop(); //:
+                        Navigator.push(
+                            // Navigator.of(context).pop();
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LandingPage()));
+                      },
+                      icon: Icon(Icons.close)),
               elevation: 0.0,
               title: Text(
                 'Add Pill',
@@ -414,7 +304,7 @@ class _AddManualState extends State<AddManual> {
                                       width: 40,
                                       color: pill.type == 'Tonic'
                                           ? Color(0xffffffff)
-                                    : null,
+                                          : null,
                                     ),
                                     Container(
                                         padding: EdgeInsets.only(left: 1),
@@ -460,7 +350,7 @@ class _AddManualState extends State<AddManual> {
                                       width: 35,
                                       color: pill.type == 'Drops'
                                           ? Color(0xffffffff)
-                                    : null,
+                                          : null,
                                     ),
                                     Container(
                                         padding: EdgeInsets.only(left: 1),
@@ -485,7 +375,8 @@ class _AddManualState extends State<AddManual> {
                       Container(
                         margin: EdgeInsets.fromLTRB(20, 30, 20, 0),
                         alignment: Alignment.centerLeft,
-                        child: Text("Total number of capsules contains in the bottle:",
+                        child: Text(
+                            "Total number of capsules contains in the bottle:",
                             style: TextStyle(
                               fontFamily: 'Oxygen',
                               color: Color(0xff4b5567),
@@ -511,7 +402,6 @@ class _AddManualState extends State<AddManual> {
                                 keyboardType: TextInputType.number,
                                 controller: qtyController,
                                 decoration: InputDecoration(
-
                                   enabledBorder: InputBorder.none,
                                   focusedBorder: InputBorder.none,
                                 ),
@@ -534,57 +424,53 @@ class _AddManualState extends State<AddManual> {
                         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                         child: InkWell(
                           onTap: () async {
-                            pill.rxTitle=medNameController.text;
-                            pill.totalTablets=qtyController.text;
-                            SharedPreferences sp =
-                                await SharedPreferences.getInstance();
-                            int userID = sp.getInt('UserID');
-                            if (userID == null) {
-                              showAlertDialog(context, viewModel,pill: pill);
-                            } else if (medNameController.text.toString()== '') {
+                            pill.rxTitle = medNameController.text;
+                            pill.totalTablets = qtyController.text;
+                            viewModel.sharedPreferences();
+                            viewModel.getUser();
+                            // print('this user id is ${viewModel.userId}');
+                            // SharedPreferences sp =
+                            //     await SharedPreferences.getInstance();
+                            // int userID = sp.getInt('UserID');
+                            if (viewModel.userId == 'null') {
+                              showAlertDialog(context, viewModel, pill: pill);
+                            } else if (medNameController.text.toString() ==
+                                '') {
                               return Fluttertoast.showToast(
-                                  msg:
-                                  "Enter Rx Title",
+                                  msg: "Enter Rx Title",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.CENTER,
                                   timeInSecForIosWeb: 2,
                                   backgroundColor: Colors.red,
                                   textColor: Colors.white,
                                   fontSize: 16.0);
-                            }
-                            else if (qtyController.text.toString()== '') {
+                            } else if (qtyController.text.toString() == '') {
                               return Fluttertoast.showToast(
-                                  msg:
-                                  "Enter Quantity",
+                                  msg: "Enter Quantity",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.CENTER,
                                   timeInSecForIosWeb: 2,
                                   backgroundColor: Colors.red,
                                   textColor: Colors.white,
                                   fontSize: 16.0);
-                            }
-                            else if (pill.type== null) {
+                            } else if (pill.type == null) {
                               return Fluttertoast.showToast(
-                                  msg:
-                                  "Select Pill type",
+                                  msg: "Select Pill type",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.CENTER,
                                   timeInSecForIosWeb: 2,
                                   backgroundColor: Colors.red,
                                   textColor: Colors.white,
                                   fontSize: 16.0);
-                            }
-                            else
-                              {
+                            } else {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
-                                      RemainderPage(pill:pill),
+                                      RemainderPage(pill: pill),
                                 ),
                               );
                             }
-
                             // var route = new MaterialPageRoute(
                             //   builder: (BuildContext context) =>
                             //
@@ -624,7 +510,9 @@ class _AddManualState extends State<AddManual> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30,)
+                      SizedBox(
+                        height: 30,
+                      )
                     ],
                   ),
                 ),
@@ -637,27 +525,8 @@ class _AddManualState extends State<AddManual> {
   }
 }
 
-showAlertDialog(BuildContext context,AddManuallyViewModel viewModel,{Pill pill}) {
-  Widget signUp = FlatButton(
-    child: Text(
-      "SignUp",
-      style: TextStyle(color: Colors.black, fontSize: 20),
-    ),
-    onPressed: () {
-
-    },
-  );
-  Widget signIn = FlatButton(
-    child: Text(
-      "SignIn",
-      style: TextStyle(color: Colors.black, fontSize: 20),
-    ),
-    onPressed: () {
-
-    },
-  );
-
-
+showAlertDialog(BuildContext context, AddManuallyViewModel viewModel,
+    {Pill pill}) {
   // set up the AlertDialog
 
   AwesomeDialog(
@@ -670,27 +539,25 @@ showAlertDialog(BuildContext context,AddManuallyViewModel viewModel,{Pill pill})
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => SignIn(pill:pill),
+          builder: (BuildContext context) => SignIn(pill: pill),
         ),
       );
     },
     btnCancelText: 'SignIn',
     btnCancelColor: Colors.green,
-      btnCancelIcon: Icons.login,
+    btnCancelIcon: Icons.login,
     btnOkOnPress: () {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (BuildContext context) => SignUp(pill:pill),
+          builder: (BuildContext context) => SignUp(pill: pill),
         ),
       );
     },
     btnOkText: 'SignUp',
     btnOkColor: Colors.blue,
-      btnOkIcon: Icons.app_registration_rounded,
+    btnOkIcon: Icons.app_registration_rounded,
   )..show();
-
-
 
   // show the dialog
   // showDialog(

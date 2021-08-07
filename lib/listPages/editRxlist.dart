@@ -2,9 +2,7 @@
 import 'package:Medicine_Remainder/Core/Models/pillListModel.dart';
 import 'package:Medicine_Remainder/Core/toastPage.dart';
 import 'package:Medicine_Remainder/MainPage.dart';
-import 'package:Medicine_Remainder/landingPage/RemainderPage.dart';
 import 'package:Medicine_Remainder/landingPage/AddManuallyViewModel.dart';
-import 'package:Medicine_Remainder/listPages/HomePage.dart';
 import 'package:Medicine_Remainder/log_Pages/Signup.dart';
 import 'package:Medicine_Remainder/log_Pages/signIn.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -40,7 +38,7 @@ class _EditManualState extends State<EditManual> {
   TextEditingController timeController1 = TextEditingController();
   TextEditingController timeController2 = TextEditingController();
   TextEditingController timeController3 = TextEditingController();
-  double count = 0;
+  var count;
   var chosenvalue;
   String when;
   // setText(viewModel) async{
@@ -59,101 +57,20 @@ class _EditManualState extends State<EditManual> {
 
   String _hour, _minute, _time;
   String _setTime1, _setTime2, _setTime3, _setDate1, _setDate2;
-  void _showMessage() {
-    scaffoldState.currentState.showBottomSheet(
-          (context) => Container(
-        height: 462,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black12,
-            ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              topRight: Radius.circular(30),
-            ),
-            color: Color(0xfffafafa)),
-        child: Column(
-          children: [
-            Container(
-                margin: EdgeInsets.only(top: 20),
-                width: 134,
-                height: 4,
-                decoration: new BoxDecoration(
-                    color: Color(0xff343434),
-                    borderRadius: BorderRadius.circular(100))),
-            Container(
-              margin: EdgeInsets.fromLTRB(100, 50, 100, 0),
-              // padding: EdgeInsets.symmetric(horizontal: 10),
-              // height: 50,
-
-              child: Image.asset('assets/images/addtab.png'),
-            ),
-
-            Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text("Medicine Added \n   Successfully",
-                    style: TextStyle(
-                      fontFamily: 'Oxygen',
-                      color: Color(0xff343434),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    ))),
-
-            Spacer(),
-            // Spacer(),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MainPage()));
-                },
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black12),
-                      color: Color(0xff2c98f0),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    alignment: Alignment.center,
-                    child: Text("Ok",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: Color(0xffffffff),
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          fontStyle: FontStyle.normal,
-                        )),
-                  ),
-                ),
-              ),
-            )
-            // Spacer(),
-          ],
-        ),
-      ),
-    );
-  }
 
   String dateTime;
 
-  List<double> list = [
-    1/2,
-    1,
-    2,
-    3,
-    4,
-    5,
+  List<String> list = [
+    '1/2',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
   ];
   DateTime selectedDate = DateTime.now();
 
   TimeOfDay selectedTime = TimeOfDay(hour: 00, minute: 00);
-
-
 
   Future<Null> _selectDate1(BuildContext context,AddManuallyViewModel viewModel) async {
     final DateTime picked = await showDatePicker(
@@ -278,7 +195,7 @@ class _EditManualState extends State<EditManual> {
         timeController2.text = pill.whenInDay[1].time;
         timeController3.text = pill.whenInDay[2].time;
         when= pill.whenInDay[0].when;
-        count=double.parse(pill.whenInDay[0].count);
+        count=int.parse(pill.whenInDay[0].count);
         dateController1.text = pill.startDate;
         dateController2.text = pill.endDate;
         // qtyController.text=pill.totalTablets;
@@ -876,15 +793,15 @@ class _EditManualState extends State<EditManual> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: DropdownButtonHideUnderline(
                               // to hide the default underline of the dropdown button
-                              child: DropdownButton<double>(
+                              child: DropdownButton<String>(
                                 icon: Icon(
                                   Icons.arrow_drop_down,
                                   size: 35,
                                   color: Colors.black,
                                 ),
                                 // icon color of the dropdown button
-                                items: list.map((double value) {
-                                  return DropdownMenuItem<double>(
+                                items: list.map((String value) {
+                                  return DropdownMenuItem<String>(
                                     value: value,
                                     child: Text(
                                       '\t\t\t$value',
@@ -892,7 +809,7 @@ class _EditManualState extends State<EditManual> {
                                     ),
                                   );
                                 }).toList(),
-                                onChanged: (value) {
+                                onChanged: (String value) {
                                   setState(() {
                                     count = value;
                                   });
@@ -1099,24 +1016,8 @@ class _EditManualState extends State<EditManual> {
 }
 
 showAlertDialog(BuildContext context,AddManuallyViewModel viewModel,{Pill pill}) {
-  Widget signUp = FlatButton(
-    child: Text(
-      "SignUp",
-      style: TextStyle(color: Colors.black, fontSize: 20),
-    ),
-    onPressed: () {
 
-    },
-  );
-  Widget signIn = FlatButton(
-    child: Text(
-      "SignIn",
-      style: TextStyle(color: Colors.black, fontSize: 20),
-    ),
-    onPressed: () {
 
-    },
-  );
 
 
   // set up the AlertDialog

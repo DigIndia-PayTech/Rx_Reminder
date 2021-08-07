@@ -1,6 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
 
+import 'dart:io';
 import 'package:Medicine_Remainder/Core/Models/profileModel.dart';
 import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/listPages/Profile.dart';
@@ -78,8 +77,7 @@ class _editprofileState extends State<editprofile> {
 
   @override
   Widget build(BuildContext context) {
-    double sHeight = MediaQuery.of(context).size.height;
-    double sWidth = MediaQuery.of(context).size.width;
+
     return ViewModelBuilder<AddManuallyViewModel>.reactive(
       disposeViewModel: false,
       viewModelBuilder: () => AddManuallyViewModel(),

@@ -3,7 +3,6 @@ import 'package:Medicine_Remainder/landingPage/addManuallyViewModel.dart';
 import 'package:Medicine_Remainder/log_Pages/signIn.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:stacked/stacked.dart';
@@ -21,7 +20,6 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   bool userpasswrd = false;
 
-  var _formKey = GlobalKey<FormState>();
   bool userconf = false;
 
   bool last = false;
@@ -30,10 +28,9 @@ class _SignUpState extends State<SignUp> {
   // final bool isValid ;
   bool today = false;
   bool isvalid = false;
-  Color _colorContainer = Color(0xffffffff);
+
   String initialCountry = 'NG';
   // PhoneNumber number = PhoneNumber(isoCode: 'NG');
-  Color _colorContainer1 = Color(0xffffffff);
   var pp;
 
   @override
